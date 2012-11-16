@@ -6,36 +6,12 @@
 
 // Imports required to access the account info
 
-#include <glib.h>
 #include <libaccounts-glib/ag-manager.h>
 #include <libaccounts-glib/ag-account.h>
 #include <libaccounts-glib/ag-account-service.h>
+
+#include "account.h"
 #include "glib/GLibSignal.h"
-
-class Account : public QObject
-{
-    friend class AccountManager;
-
-    Q_OBJECT
-
-public:
-    explicit Account(AgAccountService* service, QObject* parent = 0);
-    Account(const Account&) : QObject() {}
-
-    QString displayName();
-
-    void setDisplayName(QString name);
-
-    bool enabled();
-
-    void setEnabled(bool enabled);
-
-    QString providerName();
-
-
-private:
-    AgAccountService* _service;
-};
 
 class AccountsManager : public QObject
 {

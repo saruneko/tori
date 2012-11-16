@@ -1,50 +1,10 @@
 // Always include sigc BEFORE any Qt code
 #include <sigc++/sigc++.h>
+#include <glib.h>
 
 #include "accounts_manager.h"
 
 
-Account::Account(AgAccountService *service, QObject* parent)
-    : QObject(parent)
-{
-    _service = service;
-}
-
-QString Account::displayName()
-{
-    AgAccount* acc = ag_account_service_get_account(_service);
-    return QString(ag_account_get_display_name(acc));
-}
-
-void Account::setDisplayName(QString name)
-{
-    AgAccount* acc = ag_account_service_get_account(_service);
-    const char* new_name = name.toUtf8().data();
-
-    ag_account_set_display_name(acc, new_name);
-}
-
-bool Account::enabled()
-{
-    AgAccount* acc = ag_account_service_get_account(_service);
-    return ag_account_get_enabled(acc) == TRUE;
-}
-
-void Account::setEnabled(bool enabled)
-{
-    AgAccount* acc = ag_account_service_get_account(_service);
-
-    if(enabled)
-        ag_account_set_enabled(acc, TRUE);
-    else
-        ag_account_set_enabled(acc, FALSE);
-}
-
-QString Account::providerName()
-{
-    AgAccount* acc = ag_account_service_get_account(_service);
-    return QString(ag_account_get_provider_name(acc));
-}
 
 AccountsManager::AccountsManager(QObject *parent) :
     QObject(parent)
@@ -111,7 +71,7 @@ QList<Account> AccountsManager::getAllAccounts()
        Account acc(raw_acc);
        result.append(acc);
    }
-   g_list_free_full(raw_accs, g_object_unref);
+   g_list_free(raw_accs);
 
    return result;
 

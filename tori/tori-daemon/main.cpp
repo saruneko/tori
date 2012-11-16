@@ -11,7 +11,13 @@ int main(int argc, char *argv[])
     AccountsManager man(0);
 
     QList<Account> accs = man.getAllAccounts();
-    printf("Found %d accounts", accs.length());
+    Account ac1 = accs.at(0);
+
+    // get the provider name
+    ac1.providerName();
+
+    // get the auth data
+    ac1.authData().parameters();
     
     return a.exec();
 }

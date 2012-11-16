@@ -18,9 +18,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     accounts/accounts_manager.cpp \
-    glib/GLibSignal.cpp
+    glib/GLibSignal.cpp \
+    accounts/account.cpp
 
 HEADERS += \
     accounts/accounts_manager.h \
     glib/GLibSignal.h \
-    glib/GLibSignal-inl.h
+    glib/GLibSignal-inl.h \
+    accounts/account.h
