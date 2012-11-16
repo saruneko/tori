@@ -2,16 +2,31 @@
 import QtQuick 1.1
 
 Rectangle {
-    width: 360
-    height: 360
-    Text {
-        text: qsTr("Hello World")
-        anchors.centerIn: parent
-    }
-    MouseArea {
+    id: main
+    width: 800
+    height: 750
+    color: "#55555a"
+
+    property int columns: 2
+
+    Rectangle {
+        id: container
         anchors.fill: parent
-        onClicked: {
-            Qt.quit();
+        anchors.margins: 8
+        anchors.topMargin: 48
+        color: parent.color
+
+        Row {
+            id: row
+            anchors.fill: parent
+            spacing: 12
+            Timeline {}
+            Timeline {
+                header_text: "2. Direct Messages"
+                header_user: "@ninja-ide"
+            }
         }
     }
+
+    Header {}
 }
