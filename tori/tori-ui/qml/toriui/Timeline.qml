@@ -10,45 +10,24 @@ ShadowRectangle {
     property alias header_text: txt_title.text
     property alias header_user: txt_username.text
 
-    Flickable{
+    Component {
+        id: twitDelegate
+        Twit{}
+    }
+
+    ListView {
         id: view
         anchors.fill: parent
         anchors.topMargin: 40
-        contentWidth: timeline_column.width
-        contentHeight: timeline_column.height
 
-        Column{
-            id: timeline_column
-            spacing: 5
+        model: TimelineModel { id: timelineModel }
+        delegate: twitDelegate
+        highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
+        focus: true
 
-            move: Transition {
-                 NumberAnimation { properties: "y"; easing.type: Easing.OutBounce }
-             }
-             add: Transition {
-                 NumberAnimation { properties: "y"; easing.type: Easing.OutQuad }
-             }
+//            Twit{color: "#323436"}
+//            Twit{}
 
-            Rectangle {
-                height: 1
-                width: timeline.width
-                color: "transparent"
-            }
-
-            Twit{}
-            Twit{color: "#323436"}
-            Twit{}
-            Twit{color: "#323436"}
-            Twit{}
-            Twit{color: "#323436"}
-            Twit{}
-            Twit{}
-            Twit{color: "#323436"}
-            Twit{}
-            Twit{color: "#323436"}
-            Twit{}
-            Twit{color: "#323436"}
-            Twit{}
-        }
 
         // Only show the scrollbars when the view is moving.
         states: State {
@@ -105,17 +84,25 @@ ShadowRectangle {
         pageSize: view.visibleArea.heightRatio
     }
 
-    function add_twit(){
-        var component = Qt.createComponent("Twit.qml");
-        if (component.status == Component.Ready) {
-            var newTwit = component.createObject(timeline_column);
-            newTwit.message = "Nuevo Twit!";
-            newTwit.username = "Gatox";
-            newTwit.nickname = "@gatox";
-        }
+    function add_twit(username){
+        timelineModel.insert(0, {username: username})
     }
 
     Component.onCompleted: {
-        timeline.add_twit();
+        timeline.add_twit("Gatox");
+        timeline.add_twit("Diego Sarmentero");
+        timeline.add_twit("Gatox");
+        timeline.add_twit("Diego Sarmentero");
+        timeline.add_twit("Gatox");
+        timeline.add_twit("Diego Sarmentero");
+        timeline.add_twit("Gatox");
+        timeline.add_twit("Diego Sarmentero");
+        timeline.add_twit("Gatox");
+        timeline.add_twit("Diego Sarmentero");
+        timeline.add_twit("Gatox");
+        timeline.add_twit("Diego Sarmentero");
+        timeline.add_twit("Gatox");
+        timeline.add_twit("Diego Sarmentero");
+        view.currentIndex = 6;
     }
 }
