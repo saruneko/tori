@@ -3,7 +3,7 @@ import QtQuick 1.1
 ShadowRectangle {
     id: timeline
     width: parent.width / main.columns - container.anchors.margins
-    height: parent.height- 150
+    height: parent.height
     color: "#26282a"
     radius: 5
 
@@ -38,6 +38,10 @@ ShadowRectangle {
 
         transitions: Transition {
             NumberAnimation { properties: "opacity"; duration: 400 }
+        }
+
+        onCurrentIndexChanged: {
+            verticalScrollBar.to_read = currentIndex / count;
         }
     }
 
@@ -85,7 +89,7 @@ ShadowRectangle {
     }
 
     function add_twit(username){
-        timelineModel.insert(0, {username: username})
+        timelineModel.insert(0, {username: username});
     }
 
     Component.onCompleted: {

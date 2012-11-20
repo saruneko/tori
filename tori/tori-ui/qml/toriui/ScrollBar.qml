@@ -52,6 +52,7 @@ Item {
     property real pageSize
     property variant orientation : Qt.Vertical
     property int offset: 50
+    property real to_read: 0.33
 
     // A light, semi-transparent background
     Rectangle {
@@ -61,10 +62,10 @@ Item {
         radius: orientation == Qt.Vertical ? (width/2 - 1) : (height/2 - 1)
         color: "white"
         opacity: 0.3
-//        gradient: Gradient {
-//             GradientStop { position: 0.0; color: "yellow" }
-//             GradientStop { position: 0.33; color: "white" }
-//         }
+        gradient: Gradient {
+             GradientStop { position: 0.0; color: "yellow" }
+             GradientStop { position: to_read; color: "white" }
+         }
     }
 
     // Size the bar to the required size, depending upon the orientation.

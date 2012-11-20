@@ -46,7 +46,7 @@ ShadowRectangle {
                 id: message_id
                 text: "Esto es un twit para la aplicacion Tori, y deberia tener 140 caracteres, asi que: blah blah blah2 blah2 blah3 blah3 y no termina mas esto..."
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                width: timeline.width - picture_id.width - twit_row.spacing
+                width: timeline.width - picture_id.width - twit_row.spacing - 10
                 font.pointSize: 11
                 color: "#aaabab"
             }
@@ -75,7 +75,6 @@ ShadowRectangle {
         // Make the state changes smooth
         ParallelAnimation {
             ColorAnimation { property: "color"; duration: 500 }
-//            NumberAnimation { duration: 300; properties: "detailsOpacity,x,contentY,height,width" }
             NumberAnimation { duration: 300; properties: "x,contentY,height,width" }
         }
     }
