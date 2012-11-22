@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef KEYRING_H_1353544999
-#define KEYRING_H_1353544999
+#ifndef KEYRING_H_1353545988
+#define KEYRING_H_1353545988
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
