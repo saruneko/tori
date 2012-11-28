@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef KEYRING_H_1353547301
-#define KEYRING_H_1353547301
+#ifndef KEYRING_H_1354134614
+#define KEYRING_H_1354134614
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -54,7 +54,7 @@ public Q_SLOTS: // METHODS
         return reply;
     }
 
-    inline QDBusPendingReply<QHash<QString, Secret> > GetSecrets(const QList<QDBusObjectPath> &items, const QDBusObjectPath &session)
+    inline QDBusPendingReply<QVariantMap> GetSecrets(const QList<QDBusObjectPath> &items, const QDBusObjectPath &session)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(items) << QVariant::fromValue(session);
@@ -102,13 +102,13 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("ReadAlias"), argumentList);
     }
 
-    inline QDBusPendingReply<QList<QDBusObjectPath> , QList<QDBusObjectPath> > SearchItems(const QHash<QString, QString> &attributes)
+    inline QDBusPendingReply<QList<QDBusObjectPath> , QList<QDBusObjectPath> > SearchItems(const QVariantMap &attributes)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(attributes);
         return asyncCallWithArgumentList(QLatin1String("SearchItems"), argumentList);
     }
-    inline QDBusReply<QList<QDBusObjectPath> > SearchItems(const QHash<QString, QString> &attributes, QList<QDBusObjectPath> &locked)
+    inline QDBusReply<QList<QDBusObjectPath> > SearchItems(const QVariantMap &attributes, QList<QDBusObjectPath> &locked)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(attributes);
