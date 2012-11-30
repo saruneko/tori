@@ -21,17 +21,29 @@ SOURCES += main.cpp \
     tori_dbus_daemon.cpp \
     tori_dbus_adaptor.cpp \
     twitter/account_manager.cpp \
-    keyring/keyring.cpp \
-    keyring/secret.cpp
+    keyring/secret.cpp \
+    keyring/collection.cpp \
+    keyring/service.cpp \
+    keyring/item.cpp \
+    keyring/session.cpp \
+    keyring/prompt.cpp
 
 HEADERS += \
     twitter/oauth_client.h \
     tori_dbus_daemon.h \
     tori_dbus_adaptor.h \
     twitter/account_manager.h \
-    keyring/keyring.h \
-    keyring/secret.h
+    keyring/secret.h \
+    keyring/collection.h \
+    keyring/service.h \
+    keyring/item.h \
+    keyring/session.h \
+    keyring/prompt.h
 
 OTHER_FILES += \
     com.saruneko.tori.xml \
-    org.freedesktop.secrets.service.xml
+    org.freedesktop.secret.collection.xml \
+    org.freedesktop.secret.service.xml \
+    org.freedesktop.secret.item.xml \
+    org.freedesktop.secret.session.xml \
+    org.freedesktop.secret.prompt.xml
