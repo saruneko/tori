@@ -26,7 +26,8 @@ SOURCES += main.cpp \
     keyring/service.cpp \
     keyring/item.cpp \
     keyring/session.cpp \
-    keyring/prompt.cpp
+    keyring/prompt.cpp \
+    keyring/keyring.cpp
 
 HEADERS += \
     twitter/oauth_client.h \
@@ -38,7 +39,8 @@ HEADERS += \
     keyring/service.h \
     keyring/item.h \
     keyring/session.h \
-    keyring/prompt.h
+    keyring/prompt.h \
+    keyring/keyring.h
 
 OTHER_FILES += \
     com.saruneko.tori.xml \

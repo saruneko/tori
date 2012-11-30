@@ -62,7 +62,7 @@ public Q_SLOTS: // METHODS
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(items) << QVariant::fromValue(session);
-        return asyncCallWithArgumentList(QLatin1String("GetSecrets"), argumentList);
+        return asyncCallWithArgumentList(QLatin1String("Getid, Secrets"), argumentList);
     }
 
     inline QDBusPendingReply<QList<QDBusObjectPath> , QDBusObjectPath> Lock(const QList<QDBusObjectPath> &objects)
