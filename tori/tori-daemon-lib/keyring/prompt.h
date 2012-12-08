@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef PROMPT_H_1354835032
-#define PROMPT_H_1354835032
+#ifndef PROMPT_H_1355187876
+#define PROMPT_H_1355187876
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -21,14 +21,14 @@
 #include <QtDBus/QtDBus>
 
 /*
- * Proxy class for interface org.freedesktop.secret.prompt
+ * Proxy class for interface org.freedesktop.Secret.Prompt
  */
 class PromptInterface: public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
-    { return "org.freedesktop.secret.prompt"; }
+    { return "org.freedesktop.Secret.Prompt"; }
 
 public:
     PromptInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
@@ -55,8 +55,8 @@ Q_SIGNALS: // SIGNALS
 
 namespace org {
   namespace freedesktop {
-    namespace secret {
-      typedef ::PromptInterface prompt;
+    namespace Secret {
+      typedef ::PromptInterface Prompt;
     }
   }
 }

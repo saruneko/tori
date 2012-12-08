@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef SESSION_H_1354835032
-#define SESSION_H_1354835032
+#ifndef SESSION_H_1355187876
+#define SESSION_H_1355187876
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -22,14 +22,14 @@
 #include "secret.h"
 
 /*
- * Proxy class for interface org.freedesktop.secret.session
+ * Proxy class for interface org.freedesktop.Secret.Session
  */
 class SessionInterface: public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
-    { return "org.freedesktop.secret.session"; }
+    { return "org.freedesktop.Secret.Session"; }
 
 public:
     SessionInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
@@ -48,8 +48,8 @@ Q_SIGNALS: // SIGNALS
 
 namespace org {
   namespace freedesktop {
-    namespace secret {
-      typedef ::SessionInterface session;
+    namespace Secret {
+      typedef ::SessionInterface Session;
     }
   }
 }

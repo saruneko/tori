@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef SERVICE_H_1354835032
-#define SERVICE_H_1354835032
+#ifndef SERVICE_H_1355187876
+#define SERVICE_H_1355187876
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -22,14 +22,14 @@
 #include "secret.h"
 
 /*
- * Proxy class for interface org.freedesktop.secret.service
+ * Proxy class for interface org.freedesktop.Secret.Service
  */
 class ServiceInterface: public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
-    { return "org.freedesktop.secret.service"; }
+    { return "org.freedesktop.Secret.Service"; }
 
 public:
     ServiceInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
@@ -155,8 +155,8 @@ Q_SIGNALS: // SIGNALS
 
 namespace org {
   namespace freedesktop {
-    namespace secret {
-      typedef ::ServiceInterface service;
+    namespace Secret {
+      typedef ::ServiceInterface Service;
     }
   }
 }

@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef ITEM_H_1354835032
-#define ITEM_H_1354835032
+#ifndef ITEM_H_1355187876
+#define ITEM_H_1355187876
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -22,24 +22,24 @@
 #include "secret.h"
 
 /*
- * Proxy class for interface org.freedesktop.secret.item
+ * Proxy class for interface org.freedesktop.Secret.Item
  */
 class ItemInterface: public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
-    { return "org.freedesktop.secret.item"; }
+    { return "org.freedesktop.Secret.Item"; }
 
 public:
     ItemInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
 
     ~ItemInterface();
 
-    Q_PROPERTY( DbusStringHash Attributes READ attributes WRITE setAttributes)
-    inline  DbusStringHash attributes() const
-    { return qvariant_cast<  DbusStringHash >(property("Attributes")); }
-    inline void setAttributes( DbusStringHash value)
+    Q_PROPERTY( DBusStringHash Attributes READ attributes WRITE setAttributes)
+    inline  DBusStringHash attributes() const
+    { return qvariant_cast<  DBusStringHash >(property("Attributes")); }
+    inline void setAttributes( DBusStringHash value)
     { setProperty("Attributes", QVariant::fromValue(value)); }
 
     Q_PROPERTY(qulonglong Created READ created)
@@ -86,8 +86,8 @@ Q_SIGNALS: // SIGNALS
 
 namespace org {
   namespace freedesktop {
-    namespace secret {
-      typedef ::ItemInterface item;
+    namespace Secret {
+      typedef ::ItemInterface Item;
     }
   }
 }
