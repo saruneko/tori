@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef PROMPT_H_1354280308
-#define PROMPT_H_1354280308
+#ifndef PROMPT_H_1354835032
+#define PROMPT_H_1354835032
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -42,9 +42,10 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("Dismiss"), argumentList);
     }
 
-    inline QDBusPendingReply<> Prompt()
+    inline QDBusPendingReply<> Prompt(const QString &window_id)
     {
         QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(window_id);
         return asyncCallWithArgumentList(QLatin1String("Prompt"), argumentList);
     }
 

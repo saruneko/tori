@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef SESSION_H_1354280308
-#define SESSION_H_1354280308
+#ifndef SESSION_H_1354835032
+#define SESSION_H_1354835032
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>

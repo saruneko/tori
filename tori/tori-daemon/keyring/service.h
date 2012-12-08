@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef SERVICE_H_1354280308
-#define SERVICE_H_1354280308
+#ifndef SERVICE_H_1354835032
+#define SERVICE_H_1354835032
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -62,7 +62,7 @@ public Q_SLOTS: // METHODS
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(items) << QVariant::fromValue(session);
-        return asyncCallWithArgumentList(QLatin1String("Getid, Secrets"), argumentList);
+        return asyncCallWithArgumentList(QLatin1String("GetSecrets"), argumentList);
     }
 
     inline QDBusPendingReply<QList<QDBusObjectPath> , QDBusObjectPath> Lock(const QList<QDBusObjectPath> &objects)
