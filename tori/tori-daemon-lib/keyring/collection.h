@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef COLLECTION_H_1354280308
-#define COLLECTION_H_1354280308
+#ifndef COLLECTION_H_1355187876
+#define COLLECTION_H_1355187876
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -22,14 +22,14 @@
 #include "secret.h"
 
 /*
- * Proxy class for interface org.freedesktop.secret.collection
+ * Proxy class for interface org.freedesktop.Secret.Collection
  */
 class CollectionInterface: public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
-    { return "org.freedesktop.secret.collection"; }
+    { return "org.freedesktop.Secret.Collection"; }
 
 public:
     CollectionInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
@@ -97,8 +97,8 @@ Q_SIGNALS: // SIGNALS
 
 namespace org {
   namespace freedesktop {
-    namespace secret {
-      typedef ::CollectionInterface collection;
+    namespace Secret {
+      typedef ::CollectionInterface Collection;
     }
   }
 }

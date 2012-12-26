@@ -20,32 +20,20 @@ SOURCES += main.cpp \
     twitter/oauth_client.cpp \
     tori_dbus_daemon.cpp \
     tori_dbus_adaptor.cpp \
-    twitter/account_manager.cpp \
-    keyring/secret.cpp \
-    keyring/collection.cpp \
-    keyring/service.cpp \
-    keyring/item.cpp \
-    keyring/session.cpp \
-    keyring/prompt.cpp \
-    keyring/keyring.cpp
+    twitter/account_manager.cpp
 
 HEADERS += \
     twitter/oauth_client.h \
     tori_dbus_daemon.h \
     tori_dbus_adaptor.h \
-    twitter/account_manager.h \
-    keyring/secret.h \
-    keyring/collection.h \
-    keyring/service.h \
-    keyring/item.h \
-    keyring/session.h \
-    keyring/prompt.h \
-    keyring/keyring.h
+    twitter/account_manager.h
 
-OTHER_FILES += \
-    com.saruneko.tori.xml \
-    org.freedesktop.secret.collection.xml \
-    org.freedesktop.secret.service.xml \
-    org.freedesktop.secret.item.xml \
-    org.freedesktop.secret.session.xml \
-    org.freedesktop.secret.prompt.xml
+OTHER_FILES +=
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../tori-daemon-lib/release/ -ltori-daemon-lib
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../tori-daemon-lib/debug/ -ltori-daemon-lib
+else:symbian: LIBS += -ltori-daemon-lib
+else:unix: LIBS += -L$$OUT_PWD/../tori-daemon-lib/ -ltori-daemon-lib
+
+INCLUDEPATH += $$PWD/../tori-daemon-lib
+DEPENDPATH += $$PWD/../tori-daemon-lib
