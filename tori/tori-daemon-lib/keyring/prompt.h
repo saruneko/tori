@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef PROMPT_H_1354280308
-#define PROMPT_H_1354280308
+#ifndef PROMPT_H_1355187876
+#define PROMPT_H_1355187876
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -21,14 +21,14 @@
 #include <QtDBus/QtDBus>
 
 /*
- * Proxy class for interface org.freedesktop.secret.prompt
+ * Proxy class for interface org.freedesktop.Secret.Prompt
  */
 class PromptInterface: public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
-    { return "org.freedesktop.secret.prompt"; }
+    { return "org.freedesktop.Secret.Prompt"; }
 
 public:
     PromptInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
@@ -42,9 +42,10 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("Dismiss"), argumentList);
     }
 
-    inline QDBusPendingReply<> Prompt()
+    inline QDBusPendingReply<> Prompt(const QString &window_id)
     {
         QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(window_id);
         return asyncCallWithArgumentList(QLatin1String("Prompt"), argumentList);
     }
 
@@ -54,8 +55,8 @@ Q_SIGNALS: // SIGNALS
 
 namespace org {
   namespace freedesktop {
-    namespace secret {
-      typedef ::PromptInterface prompt;
+    namespace Secret {
+      typedef ::PromptInterface Prompt;
     }
   }
 }
