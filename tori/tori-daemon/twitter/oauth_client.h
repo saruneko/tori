@@ -8,8 +8,6 @@
 #include <QObject>
 #include <QtOAuth>
 
-#include "../tori_dbus_daemon.h"
-
 class OAuthClient: public QObject
 {
     Q_OBJECT

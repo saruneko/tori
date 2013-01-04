@@ -31,7 +31,11 @@ unix:!symbian {
 }
 
 SOURCES += \
+    core/account_manager.cpp \
+    core/account_manager_adaptor.cpp \
+    core/account_adaptor.cpp \
     dbus/dbus_helper.cpp \
+    dbus/signal_mapper.cpp \
     keyring/session.cpp \
     keyring/service.cpp \
     keyring/secret.cpp \
@@ -41,12 +45,15 @@ SOURCES += \
     keyring/interface_factory.cpp \
     keyring/keyring_signal_mapper.cpp \
     keyring/keyring.cpp \
-    tori_daemon.cpp \
-    dbus/signal_mapper.cpp
+    tori_daemon.cpp
 
 HEADERS +=\
     tori-daemon-lib_global.h \
+    core/account_manager.h \
+    core/account_manager_adaptor.h \
+    core/account_adaptor.h \
     dbus/dbus_helper.h \
+    dbus/signal_mapper.h \
     keyring/session.h \
     keyring/service.h \
     keyring/secret.h \
@@ -57,8 +64,7 @@ HEADERS +=\
     keyring/async_call_data.h \
     keyring/keyring_signal_mapper.h \
     keyring/keyring.h \
-    tori_daemon.h \
-    dbus/signal_mapper.h
+    tori_daemon.h
 
 OTHER_FILES += \
     org.freedesktop.secret.session.xml \
@@ -66,4 +72,7 @@ OTHER_FILES += \
     org.freedesktop.secret.prompt.xml \
     org.freedesktop.secret.item.xml \
     org.freedesktop.secret.collection.xml \
-    com.saruneko.tori.xml
+    org.saruneko.tori.account.xml \
+    generate-dbus-server.sh \
+    generate-dbus-secrets-client.sh \
+    org.saruneko.tori.account_manager.xml

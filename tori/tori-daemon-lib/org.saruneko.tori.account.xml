@@ -1,9 +1,5 @@
 <node>
-  <interface name="com.saruneko.tori">
-    <method name="getAccounts">
-        <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
-        <arg name="accountId" type="a{su}" direction="out" />
-    </method>
+  <interface name="com.saruneko.tori.Account">
     <method name="setPin">
         <arg name="pin" type="s" direction="in" />
         <arg name="accountId" type="u" direction="in" />
@@ -19,15 +15,6 @@
     <signal name="authenticated">
         <arg name="accountId" type="u" direction="out"/>
         <arg name="username" type="s" direction="out"/>
-    </signal>
-    <signal name="accountCreated">
-        <arg name="accountId" type="u" direction="out"/>
-    </signal>
-    <signal name="accountUpdated">
-        <arg name="accountId" type="u" direction="out"/>
-    </signal>
-    <signal name="accountDeleted">
-        <arg name="accountId" type="u" direction="out"/>
     </signal>
  </interface>
 </node>

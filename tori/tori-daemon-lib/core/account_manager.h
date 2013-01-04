@@ -21,29 +21,48 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "dbus_helper.h"
+#ifndef ACCOUNT_MANAGER_H
+#define ACCOUNT_MANAGER_H
+
+#include <QScopedPointer>
+#include <QDBusObjectPath>
+#include <QObject>
+#include <QVariantMap>
 
 namespace tori
 {
 
-namespace dbus
+namespace core
 {
 
-// required for the init
-int DBusHelper::DBUS_STRING_MAP_ID = 0;
-DBusHelper::_init DBusHelper::_initializer;
-
-DBusHelper::DBusHelper(QObject *parent) :
-    QObject(parent)
+class AccountManagerPrivate;
+class AccountManager : public QObject
 {
-}
+    Q_DECLARE_PRIVATE(AccountManager)
+    Q_OBJECT
+public:
+    explicit AccountManager(QObject *parent = 0);
+    ~AccountManager();
 
+    QHash<QString, QDBusObjectPath> getAccounts();
 
-QVariant DBusHelper::getVariant(DBusStringHash hash)
-{
-    return QVariant(DBUS_STRING_MAP_ID, &hash);
-}
+Q_SIGNALS:
+    void accountCreated(quint32 acc_id, QString accountName);
+    void accountDeleted(quint32 acc_id, QString accountName);
+    void accountUpdated(quint32 acc_id, QString accountName);
 
-} // dbus
+private:
+    QScopedPointer<AccountManagerPrivate> d_ptr;
+
+private:
+    Q_PRIVATE_SLOT(d_func(), void onAccountCreated(quint32))
+    Q_PRIVATE_SLOT(d_func(), void onAccountDeleted(quint32))
+    Q_PRIVATE_SLOT(d_func(), void onAccountUpdated(quint32))
+
+};
+
+} // core
 
 } // tori
+
+#endif // ACCOUNT_MANAGER_H
