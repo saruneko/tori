@@ -21,8 +21,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <QVariant>
 #include <Accounts/Manager>
+#include <QVariant>
+#include <QxtLogger>
 #include "account_manager.h"
 
 namespace tori
@@ -56,7 +57,7 @@ private:
     Accounts::Manager* _man;
 };
 
-QString AccountManagerPrivate::BASE_ACCOUNT_URL = "%1";
+QString AccountManagerPrivate::BASE_ACCOUNT_URL = "/org/saruneko/tori/account/%1";
 
 AccountManagerPrivate::AccountManagerPrivate(AccountManager* parent) :
     q_ptr(parent)
@@ -86,9 +87,13 @@ QHash<QString, QDBusObjectPath> AccountManagerPrivate::getAccounts()
     // loop and just add those accounts from twitter
     Accounts::AccountIdList allAccounts = _man->accountList();
 
+    qxtLog->debug() << "Number of accounts found:" << allAccounts.length();
+
     for(int pos = 0; pos < allAccounts.length(); ++pos)
     {
         Accounts::Account* acc = _man->account(allAccounts.at(pos));
+        qxtLog->debug() << "Account id:" << acc->id() << "Account provider:" << acc->providerName();
+
         if(acc->providerName() == "twitter")
         {
             accounts[acc->displayName()] = QDBusObjectPath(
@@ -138,9 +143,10 @@ AccountManager::~AccountManager()
 {
 }
 
-QHash<QString, QDBusObjectPath> AccountManager::getAccounts()
+DBusObjectPathHash AccountManager::getAccounts()
 {
     Q_D(AccountManager);
+    qxtLog->debug() << "AccountManager::getAccounts()";
     return d->getAccounts();
 }
 

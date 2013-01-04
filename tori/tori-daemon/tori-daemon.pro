@@ -16,11 +16,9 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += main.cpp \
-    twitter/oauth_client.cpp
+SOURCES += main.cpp
 
-HEADERS += \
-    twitter/oauth_client.h
+HEADERS +=
 
 OTHER_FILES +=
 

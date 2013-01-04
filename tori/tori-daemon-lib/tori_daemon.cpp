@@ -22,7 +22,11 @@
  */
 
 #include <QxtLogger>
+#include "dbus/dbus_helper.h"
 #include "tori_daemon.h"
+
+
+using namespace tori::core;
 
 namespace tori
 {
@@ -34,56 +38,27 @@ ToriDaemon::ToriDaemon(QObject *parent) :
     // create the keyring that will be used to store and retrieve the different
     // tokens
     _keyring = new keyring::Keyring(_conn);
-
-    connect(_keyring, SIGNAL(sessionOpened()),
-        this, SLOT(onKeyringSessionOpened()));
-    connect(_keyring, SIGNAL(credentialsSet(Accounts::AccountId, bool)),
-        this, SLOT(onAccountSecretStored(Accounts::AccountId, bool)));
-    connect(_keyring, SIGNAL(credentialsFound(Accounts::AccountId, QString, QString, bool)),
-        this, SLOT(onCredentialsFound(Accounts::AccountId, QString, QString, bool)));
+    _accManager = new AccountManager();
 }
 
 void ToriDaemon::start()
 {
      qxtLog->enableAllLogLevels();
     _keyring->openSession();
+    bool started = startAccountManagerService();
 }
 
-void ToriDaemon::onKeyringSessionOpened()
+bool ToriDaemon::startAccountManagerService()
 {
-    // we can start the diff dbus daemons
-    qxtLog->debug() << "Keyring session opened.";
-    _keyring->setCredentials(0, "test", "testSecret");
-}
-
-void ToriDaemon::onAccountSecretStored(Accounts::AccountId id, bool stored)
-{
-    qxtLog->debug() << "onAccountSecretStored";
-
-    if(stored)
+    qxtLog->debug("Starting dbus services");
+    _accAdaptor = new AccountManagerAdaptor(_accManager);
+    bool ret = _conn.registerService("org.saruneko.tori.AccountManager");
+    if (ret)
     {
-        qxtLog->debug() << "Secrets stored.";
-        _keyring->getCredentials(id);
+        ret = _conn.registerObject("/", _accManager);
+        return ret;
     }
-}
-
-void ToriDaemon::onCredentialsFound(Accounts::AccountId id, QString token, QString tokenSecret, bool found)
-{
-    qxtLog->debug() << "onCredentialsFound";
-    if(found)
-    {
-        qxtLog->debug() << "Credentials found" << id << "token: " << token << "token secret:" << tokenSecret;
-        _keyring->deleteCredentials(id);
-    }
-    else
-    {
-        qxtLog->debug() << "Creds not found!";
-    }
-}
-
-void ToriDaemon::onKeyringSessionOpenError()
-{
-    qDebug() << "Error opening Keyring";
+    return false;
 }
 
 } // tori

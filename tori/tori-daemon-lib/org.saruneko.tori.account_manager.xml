@@ -1,7 +1,7 @@
 <node>
-  <interface name="com.saruneko.tori.AccountManager">
+  <interface name="org.saruneko.tori.AccountManager">
     <method name="getAccounts">
-        <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QHash&lt;QString, QDBusObjectPath&gt;"/>
+        <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="DBusObjectPathHash"/>
         <arg name="accounts" type="a{so}" direction="out" />
     </method>
     <signal name="accountCreated">

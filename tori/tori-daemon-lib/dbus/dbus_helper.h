@@ -30,6 +30,7 @@
 #include <QObject>
 
 typedef QHash<QString, QString> DBusStringHash;
+typedef QHash<QString, QDBusObjectPath> DBusObjectPathHash;
 
 namespace tori
 {
@@ -42,6 +43,7 @@ class DBusHelper : public QObject
     Q_OBJECT
 public:
     static int DBUS_STRING_MAP_ID;
+    static int DBUS_OBJECTPATH_MAP_ID;
 
     explicit DBusHelper(QObject *parent = 0);
 
@@ -54,6 +56,10 @@ public:
                 qRegisterMetaType<DBusStringHash>("DBusStringHash");
                 qDBusRegisterMetaType<DBusStringHash>();
                 DBUS_STRING_MAP_ID = QMetaType::type("DBusStringHash");
+
+                qRegisterMetaType<DBusObjectPathHash>("DBusObjectPathHash");
+                qDBusRegisterMetaType<DBusObjectPathHash>();
+                DBUS_OBJECTPATH_MAP_ID = QMetaType::type("DBusObjectPathHash");
             }
     } _initializer;
 
@@ -66,4 +72,6 @@ public:
 } // tori
 
 Q_DECLARE_METATYPE(DBusStringHash)
+Q_DECLARE_METATYPE(DBusObjectPathHash)
+
 #endif // DBUS_HELPER_H

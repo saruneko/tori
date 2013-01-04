@@ -28,6 +28,7 @@
 #include <QDBusObjectPath>
 #include <QObject>
 #include <QVariantMap>
+#include "dbus/dbus_helper.h"
 
 namespace tori
 {
@@ -44,7 +45,8 @@ public:
     explicit AccountManager(QObject *parent = 0);
     ~AccountManager();
 
-    QHash<QString, QDBusObjectPath> getAccounts();
+public slots:
+    DBusObjectPathHash getAccounts();
 
 Q_SIGNALS:
     void accountCreated(quint32 acc_id, QString accountName);

@@ -9,8 +9,8 @@
  * before re-generating it.
  */
 
-#ifndef ACCOUNT_ADAPTOR_H_1357303295
-#define ACCOUNT_ADAPTOR_H_1357303295
+#ifndef ACCOUNT_ADAPTOR_H_1357318922
+#define ACCOUNT_ADAPTOR_H_1357318922
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
