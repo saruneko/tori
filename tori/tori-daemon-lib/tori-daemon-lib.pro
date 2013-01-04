@@ -42,7 +42,8 @@ SOURCES += \
     keyring/keyring_signal_mapper.cpp \
     keyring/keyring.cpp \
     tori_daemon.cpp \
-    dbus/signal_mapper.cpp
+    dbus/signal_mapper.cpp \
+    core/xdg_basedir.cpp
 
 HEADERS +=\
     tori-daemon-lib_global.h \
@@ -58,7 +59,8 @@ HEADERS +=\
     keyring/keyring_signal_mapper.h \
     keyring/keyring.h \
     tori_daemon.h \
-    dbus/signal_mapper.h
+    dbus/signal_mapper.h \
+    core/xdg_basedir.h
 
 OTHER_FILES += \
     org.freedesktop.secret.session.xml \
