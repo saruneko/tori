@@ -7,6 +7,7 @@
 QT       += network testlib dbus gui
 
 TARGET = tori-daemon-tests
+QMAKE_CXXFLAGS += -std=c++0x
 CONFIG   += console
 CONFIG   -= app_bundle
 

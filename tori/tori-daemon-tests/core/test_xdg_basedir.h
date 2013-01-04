@@ -25,6 +25,7 @@
 #ifndef TEST_XDG_BASEDIR_H
 #define TEST_XDG_BASEDIR_H
 
+#include <functional>
 #include <QHash>
 #include <QObject>
 #include "core/xdg_basedir.h"
@@ -35,6 +36,7 @@ namespace tori
 
 namespace core
 {
+
 
 class TestXDGBasedir : public QObject
 {
@@ -56,15 +58,15 @@ private slots:
     void testConfigEnv();
     void testDataDirsDefault();
     void testDataDirsEnv();
-    void testDataPathsDefault();
-    void testDataPathsEnv();
-    void testLoadFirstConfigPath();
-    void testLoadFirstConfigPathMissing();
-    void testSaveConfigPath();
-    void testSaveDataPath();
 
 private:
 
+    void testDefault(QString envVar, std::function<QString(void)> callBack, QString expected);
+    void testUserSet(QString envVar, std::function<QString(void)> cb, QString expected);
+    void testCollectionDefault(QString envVar, std::function<QList<QString>()> cb,
+        QString expected);
+    void testCollectionEnv(QString envVar, std::function<QList<QString>()> cb,
+        QList<QString> expected);
     QHash<QString, QString> _envData;
 };
 
