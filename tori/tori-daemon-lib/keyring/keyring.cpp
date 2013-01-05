@@ -28,8 +28,7 @@
 #include <QList>
 #include <QObject>
 #include <QxtLogger>
-#include <qjson/parser.h>
-#include <qjson/serializer.h>
+#include <QxtJSON>
 
 #include "dbus/signal_mapper.h"
 #include "async_call_data.h"
@@ -147,8 +146,6 @@ protected:
 
 private:
     QString _windowId;
-    QJson::Parser _parser;
-    QJson::Serializer _serializer;
     QDBusConnection _conn;
     QSharedPointer<dbus::DBusSignalMapper> _searchItemsForGetMapper;
     QSharedPointer<dbus::DBusSignalMapper> _searchItemsForDeleteMapper;
@@ -644,7 +641,7 @@ void KeyringPrivate::onCollectionUnlocked(QDBusPendingCallWatcher* call, QObject
     secret.insert(TOKEN_KEY, data->token);
     secret.insert(TOKEN_SECRET_KEY, data->tokenSecret);
 
-    QByteArray json = _serializer.serialize(secret);
+    QByteArray json =  QxtJSON::stringify(secret).toUtf8();
     Secret secretStruct(QDBusObjectPath(_session->path()), QString("").toUtf8(), json, QString("application/octet-stream").toUtf8());
 
     QVariantMap properties;
@@ -685,17 +682,7 @@ void KeyringPrivate::onGetSecret(QDBusPendingCallWatcher* call, QObject* obj)
     ASSERT_DBUS_REPLY_IS_ERROR(call, reply, q->credentialsError(data->accId))
 
     Secret secret =  reply.argumentAt<0>();
-
-    bool ok;
-    QVariantMap result = _parser.parse(secret.getValue(), &ok).toMap();
-    if (!ok)
-    {
-        qxtLog->critical() << "Credentials could not be parsed.";
-        // we cannot parse the tokens, lets raise an error
-        emit q->credentialsError(data->accId);
-        call->deleteLater();
-        return;
-    }
+    QVariantMap result = QxtJSON::parse(secret.getValue()).toMap();
 
     // assert that the info is present
     if (!result.contains(KeyringPrivate::TOKEN_KEY) || !result.contains(KeyringPrivate::TOKEN_SECRET_KEY))
