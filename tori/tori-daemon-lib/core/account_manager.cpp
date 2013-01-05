@@ -22,8 +22,11 @@
  */
 
 #include <Accounts/Manager>
+#include <QHash>
 #include <QVariant>
 #include <QxtLogger>
+#include "core/account.h"
+#include "core/account_adaptor.h"
 #include "account_manager.h"
 
 namespace tori
@@ -39,7 +42,7 @@ class AccountManagerPrivate
     Q_DECLARE_PUBLIC(AccountManager)
 
 public:
-    AccountManagerPrivate(AccountManager* parent);
+    AccountManagerPrivate(QDBusConnection connection, AccountManager* parent);
 
     QHash<QString, QDBusObjectPath> getAccounts();
 
@@ -55,12 +58,15 @@ private:
 private:
     AccountManager* q_ptr;
     Accounts::Manager* _man;
+    QHash<Accounts::AccountId, QPair<Account*, AccountAdaptor*> > _accounts;
+    QDBusConnection _conn;
 };
 
 QString AccountManagerPrivate::BASE_ACCOUNT_URL = "/org/saruneko/tori/account/%1";
 
-AccountManagerPrivate::AccountManagerPrivate(AccountManager* parent) :
-    q_ptr(parent)
+AccountManagerPrivate::AccountManagerPrivate(QDBusConnection connection, AccountManager* parent) :
+    q_ptr(parent),
+    _conn(connection)
 {
     Q_Q(AccountManager);
     _man = new Accounts::Manager("microblogging");
@@ -96,8 +102,22 @@ QHash<QString, QDBusObjectPath> AccountManagerPrivate::getAccounts()
 
         if(acc->providerName() == "twitter")
         {
-            accounts[acc->displayName()] = QDBusObjectPath(
-                AccountManagerPrivate::BASE_ACCOUNT_URL.arg(QString::number(acc->id())));
+            QString path = AccountManagerPrivate::BASE_ACCOUNT_URL.arg(QString::number(acc->id()));
+            accounts[acc->displayName()] = QDBusObjectPath(path);
+
+            if (!_accounts.contains(acc->id()))
+            {
+                Account* account = new Account(acc);
+                AccountAdaptor* adaptor = new AccountAdaptor(account);
+
+                QPair<Account*, AccountAdaptor*> pair;
+                pair.first = account;
+                pair.second = adaptor;
+                _accounts[acc->id()] = pair;
+
+                // register the object to the dbus service
+                _conn.registerObject(path, account);
+            }
         }
     }
     return accounts;
@@ -109,6 +129,16 @@ void AccountManagerPrivate::onAccountCreated(Accounts::AccountId acc_id)
     if(isTwitterAccount(acc_id))
     {
         Accounts::Account* acc = _man->account(acc_id);
+        Account* account = new Account(acc);
+        AccountAdaptor* adaptor = new AccountAdaptor(acc);
+        QPair<Account*, AccountAdaptor*> pair;
+        pair.first = account;
+        pair.second = adaptor;
+        _accounts[acc->id()] = pair;
+
+        QString path = AccountManagerPrivate::BASE_ACCOUNT_URL.arg(QString::number(acc->id()));
+        _conn.registerObject(path, account);
+
         emit q->accountCreated(acc->id(), acc->displayName());
     }
 }
@@ -119,6 +149,11 @@ void AccountManagerPrivate::onAccountDeleted(Accounts::AccountId acc_id)
     if(isTwitterAccount(acc_id))
     {
         Accounts::Account* acc = _man->account(acc_id);
+        QString path = AccountManagerPrivate::BASE_ACCOUNT_URL.arg(QString::number(acc->id()));
+        _accounts.remove(acc_id);
+
+        // unregister the account from the dbus connection
+        _conn.unregisterObject(path);
         emit q->accountDeleted(acc->id(), acc->displayName());
     }
 }
@@ -133,9 +168,9 @@ void AccountManagerPrivate::onAccountUpdated(Accounts::AccountId acc_id)
     }
 }
 
-AccountManager::AccountManager(QObject *parent) :
+AccountManager::AccountManager(QDBusConnection connection, QObject *parent) :
     QObject(parent),
-    d_ptr(new AccountManagerPrivate(this))
+    d_ptr(new AccountManagerPrivate(connection, this))
 {
 }
 

@@ -45,7 +45,8 @@ SOURCES += \
     keyring/interface_factory.cpp \
     keyring/keyring_signal_mapper.cpp \
     keyring/keyring.cpp \
-    tori_daemon.cpp
+    tori_daemon.cpp \
+    core/account.cpp
 
 HEADERS +=\
     tori-daemon-lib_global.h \
@@ -64,7 +65,8 @@ HEADERS +=\
     keyring/async_call_data.h \
     keyring/keyring_signal_mapper.h \
     keyring/keyring.h \
-    tori_daemon.h
+    tori_daemon.h \
+    core/account.h
 
 OTHER_FILES += \
     org.freedesktop.secret.session.xml \

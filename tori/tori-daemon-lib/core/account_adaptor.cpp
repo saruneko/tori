@@ -33,15 +33,15 @@ AccountAdaptor::~AccountAdaptor()
     // destructor
 }
 
-void AccountAdaptor::authenticate(uint accountId)
+void AccountAdaptor::authenticate()
 {
     // handle method call com.saruneko.tori.Account.authenticate
-    QMetaObject::invokeMethod(parent(), "authenticate", Q_ARG(uint, accountId));
+    QMetaObject::invokeMethod(parent(), "authenticate");
 }
 
-void AccountAdaptor::setPin(const QString &pin, uint accountId)
+void AccountAdaptor::setPin(const QString &pin)
 {
     // handle method call com.saruneko.tori.Account.setPin
-    QMetaObject::invokeMethod(parent(), "setPin", Q_ARG(QString, pin), Q_ARG(uint, accountId));
+    QMetaObject::invokeMethod(parent(), "setPin", Q_ARG(QString, pin));
 }
 

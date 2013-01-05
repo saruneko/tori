@@ -9,8 +9,8 @@
  * before re-generating it.
  */
 
-#ifndef ACCOUNT_ADAPTOR_H_1357318922
-#define ACCOUNT_ADAPTOR_H_1357318922
+#ifndef ACCOUNT_ADAPTOR_H_1357320634
+#define ACCOUNT_ADAPTOR_H_1357320634
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -32,18 +32,13 @@ class AccountAdaptor: public QDBusAbstractAdaptor
 "  <interface name=\"com.saruneko.tori.Account\">\n"
 "    <method name=\"setPin\">\n"
 "      <arg direction=\"in\" type=\"s\" name=\"pin\"/>\n"
-"      <arg direction=\"in\" type=\"u\" name=\"accountId\"/>\n"
 "    </method>\n"
-"    <method name=\"authenticate\">\n"
-"      <arg direction=\"in\" type=\"u\" name=\"accountId\"/>\n"
-"    </method>\n"
+"    <method name=\"authenticate\"/>\n"
 "    <signal name=\"oauthPinUrl\">\n"
 "      <arg direction=\"out\" type=\"s\" name=\"pinUrl\"/>\n"
-"      <arg direction=\"out\" type=\"u\" name=\"accountId\"/>\n"
 "      <arg direction=\"out\" type=\"s\" name=\"username\"/>\n"
 "    </signal>\n"
 "    <signal name=\"authenticated\">\n"
-"      <arg direction=\"out\" type=\"u\" name=\"accountId\"/>\n"
 "      <arg direction=\"out\" type=\"s\" name=\"username\"/>\n"
 "    </signal>\n"
 "  </interface>\n"
@@ -54,11 +49,11 @@ public:
 
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
-    void authenticate(uint accountId);
-    void setPin(const QString &pin, uint accountId);
+    void authenticate();
+    void setPin(const QString &pin);
 Q_SIGNALS: // SIGNALS
-    void authenticated(uint accountId, const QString &username);
-    void oauthPinUrl(const QString &pinUrl, uint accountId, const QString &username);
+    void authenticated(const QString &username);
+    void oauthPinUrl(const QString &pinUrl, const QString &username);
 };
 
 #endif

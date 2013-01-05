@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 Manuel de la Pena <mandel@themacaque.com>
+ * Copyright (c) 2012 mandel
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -21,44 +21,41 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <QxtLogger>
-#include "dbus/dbus_helper.h"
-#include "tori_daemon.h"
+#ifndef ACCOUNT_H
+#define ACCOUNT_H
 
-
-using namespace tori::core;
+#include <Accounts/Account>
+#include <QObject>
+#include <QScopedPointer>
 
 namespace tori
 {
 
-ToriDaemon::ToriDaemon(QObject *parent) :
-    QObject(parent),
-    _conn(QDBusConnection::sessionBus())
+namespace core
 {
-    // create the keyring that will be used to store and retrieve the different
-    // tokens
-    _keyring = new keyring::Keyring(_conn);
-    _accManager = new AccountManager(_conn);
-}
 
-void ToriDaemon::start()
+class AccountPrivate;
+class Account : public QObject
 {
-     qxtLog->enableAllLogLevels();
-    _keyring->openSession();
-    bool started = startAccountManagerService();
-}
+    Q_DECLARE_PRIVATE(Account)
+    Q_OBJECT
+public:
+    explicit Account(Accounts::Account* acc, QObject *parent = 0);
+    ~Account();
 
-bool ToriDaemon::startAccountManagerService()
-{
-    qxtLog->debug("Starting dbus services");
-    _accAdaptor = new AccountManagerAdaptor(_accManager);
-    bool ret = _conn.registerService("org.saruneko.tori.AccountManager");
-    if (ret)
-    {
-        ret = _conn.registerObject("/", _accManager);
-        return ret;
-    }
-    return false;
-}
+    void authenticate();
+    void setPin(const QString& pin);
+signals:
+    
+    void authenticated(const QString& username);
+    void oauthPinUrl(const QString& pinUrl, const QString& username);
+
+private:
+    QScopedPointer<AccountPrivate> d_ptr;
+};
+
+} // core
 
 } // tori
+
+#endif // ACCOUNT_H

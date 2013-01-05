@@ -25,6 +25,7 @@
 #define ACCOUNT_MANAGER_H
 
 #include <QScopedPointer>
+#include <QDBusConnection>
 #include <QDBusObjectPath>
 #include <QObject>
 #include <QVariantMap>
@@ -42,7 +43,7 @@ class AccountManager : public QObject
     Q_DECLARE_PRIVATE(AccountManager)
     Q_OBJECT
 public:
-    explicit AccountManager(QObject *parent = 0);
+    explicit AccountManager(QDBusConnection connection, QObject *parent = 0);
     ~AccountManager();
 
 public slots:
