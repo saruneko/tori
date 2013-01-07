@@ -18,7 +18,7 @@ DEFINES += TORIDAEMONLIB_LIBRARY
 
 unix {
     CONFIG += link_pkgconfig
-    PKGCONFIG += accounts-qt libsignon-qt qoauth QJson
+    PKGCONFIG += accounts-qt libsignon-qt qoauth
 }
 
 unix:!symbian {
@@ -33,7 +33,9 @@ unix:!symbian {
 SOURCES += \
     core/account_manager.cpp \
     core/account_manager_adaptor.cpp \
+    core/account.cpp \
     core/account_adaptor.cpp \
+    core/xdg_basedir.cpp \
     dbus/dbus_helper.cpp \
     dbus/signal_mapper.cpp \
     keyring/session.cpp \
@@ -45,14 +47,15 @@ SOURCES += \
     keyring/interface_factory.cpp \
     keyring/keyring_signal_mapper.cpp \
     keyring/keyring.cpp \
-    tori_daemon.cpp \
-    core/account.cpp
+    tori_daemon.cpp 
 
 HEADERS +=\
     tori-daemon-lib_global.h \
     core/account_manager.h \
     core/account_manager_adaptor.h \
+    core/account.h \
     core/account_adaptor.h \
+    core/xdg_basedir.h \
     dbus/dbus_helper.h \
     dbus/signal_mapper.h \
     keyring/session.h \
@@ -66,7 +69,6 @@ HEADERS +=\
     keyring/keyring_signal_mapper.h \
     keyring/keyring.h \
     tori_daemon.h \
-    core/account.h
 
 OTHER_FILES += \
     org.freedesktop.secret.session.xml \

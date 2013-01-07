@@ -7,6 +7,7 @@
 QT       += network testlib dbus gui
 
 TARGET = tori-daemon-tests
+QMAKE_CXXFLAGS += -std=c++0x
 CONFIG   += console
 CONFIG   -= app_bundle
 
@@ -17,7 +18,8 @@ SOURCES += \
     main.cpp \
     keyring/test_keyring.cpp \
     dbus/test_signal_mapper.cpp \
-    keyring/test_keyring_signal_mapper.cpp
+    keyring/test_keyring_signal_mapper.cpp \
+    core/test_xdg_basedir.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 unix {
@@ -45,4 +47,5 @@ HEADERS += \
     test_runner.h \
     keyring/test_keyring.h \
     dbus/test_signal_mapper.h \
-    keyring/test_keyring_signal_mapper.h
+    keyring/test_keyring_signal_mapper.h \
+    core/test_xdg_basedir.h
