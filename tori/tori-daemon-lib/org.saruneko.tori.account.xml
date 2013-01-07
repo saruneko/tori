@@ -13,5 +13,8 @@
         <arg name="authenticated" type="b" direction="out"/>
         <arg name="username" type="s" direction="out"/>
     </signal>
+    <signal name="authenticationError">
+        <arg name="error" type="u" direction="out"/>
+    </signal>
  </interface>
 </node>

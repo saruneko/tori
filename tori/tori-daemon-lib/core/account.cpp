@@ -154,6 +154,7 @@ void AccountPrivate::isAuthenticated()
 
 void AccountPrivate::setPin(const QString& pin)
 {
+    Q_Q(Account);
     _mutex.lock();
     // lock just in case we have more than one client asking to auth the data
 
@@ -169,10 +170,12 @@ void AccountPrivate::setPin(const QString& pin)
 
         // store the tokens in the keyring
         _key->setCredentials(_acc->id(), _token, _tokenSecret);
+        emit q->authenticated(true, _acc->displayName());
     }
     else
     {
         // send an error to the client
+        emit q->authenticationError(_oauth->error());
     }
     _mutex.unlock();
 }
