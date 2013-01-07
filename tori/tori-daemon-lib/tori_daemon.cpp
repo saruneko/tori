@@ -38,7 +38,7 @@ ToriDaemon::ToriDaemon(QObject *parent) :
     // create the keyring that will be used to store and retrieve the different
     // tokens
     _keyring = new keyring::Keyring(_conn);
-    _accManager = new AccountManager(_conn);
+    _accManager = new AccountManager(_conn, _keyring);
 }
 
 void ToriDaemon::start()
