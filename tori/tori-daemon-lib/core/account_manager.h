@@ -45,7 +45,7 @@ class AccountManager : public QObject
     Q_OBJECT
 public:
     explicit AccountManager(QDBusConnection connection,
-        tori::keyring::Keyring* key, QObject *parent = 0);
+        tori::keyring::Keyring* key, bool useDefault = false, QObject *parent = 0);
     ~AccountManager();
 
 public slots:
