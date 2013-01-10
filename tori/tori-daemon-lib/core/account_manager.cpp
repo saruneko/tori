@@ -42,7 +42,7 @@ class AccountManagerPrivate
     Q_DECLARE_PUBLIC(AccountManager)
 
 public:
-    AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key, AccountManager* parent);
+    AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key, AccountManager* parent, bool useDefault=false);
 
     QHash<QString, QDBusObjectPath> getAccounts();
 
@@ -61,14 +61,16 @@ private:
     QHash<Accounts::AccountId, QPair<Account*, AccountAdaptor*> > _accounts;
     tori::keyring::Keyring* _key;
     QDBusConnection _conn;
+    bool _useDefault;
 };
 
 QString AccountManagerPrivate::BASE_ACCOUNT_URL = "/org/saruneko/tori/account/%1";
 
 AccountManagerPrivate::AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key,
-    AccountManager* parent) :
+    AccountManager* parent, bool useDefault) :
     q_ptr(parent),
-    _conn(connection)
+    _conn(connection),
+    _useDefault(useDefault)
 {
     Q_Q(AccountManager);
     _man = new Accounts::Manager("microblogging");
@@ -110,7 +112,7 @@ QHash<QString, QDBusObjectPath> AccountManagerPrivate::getAccounts()
 
             if (!_accounts.contains(acc->id()))
             {
-                Account* account = new Account(acc, _key);
+                Account* account = new Account(acc, _key, _useDefault);
                 AccountAdaptor* adaptor = new AccountAdaptor(account);
 
                 QPair<Account*, AccountAdaptor*> pair;
@@ -132,7 +134,7 @@ void AccountManagerPrivate::onAccountCreated(Accounts::AccountId acc_id)
     if(isTwitterAccount(acc_id))
     {
         Accounts::Account* acc = _man->account(acc_id);
-        Account* account = new Account(acc, _key);
+        Account* account = new Account(acc, _key, _useDefault);
         AccountAdaptor* adaptor = new AccountAdaptor(acc);
         QPair<Account*, AccountAdaptor*> pair;
         pair.first = account;
@@ -171,10 +173,10 @@ void AccountManagerPrivate::onAccountUpdated(Accounts::AccountId acc_id)
     }
 }
 
-AccountManager::AccountManager(QDBusConnection connection, tori::keyring::Keyring* key,
+AccountManager::AccountManager(QDBusConnection connection, tori::keyring::Keyring* key, bool useDefault,
     QObject *parent) :
     QObject(parent),
-    d_ptr(new AccountManagerPrivate(connection, key, this))
+    d_ptr(new AccountManagerPrivate(connection, key, this, useDefault))
 {
 }
 

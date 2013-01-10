@@ -39,7 +39,7 @@ class AccountPrivate
 {
     Q_DECLARE_PUBLIC(Account)
 public:
-    AccountPrivate(Accounts::Account* acc, tori::keyring::Keyring* key, Account* parent);
+    AccountPrivate(Accounts::Account* acc, tori::keyring::Keyring* key, Account* parent, bool useDefault=false);
 
     void authenticate();
     void isAuthenticated();
@@ -52,6 +52,8 @@ private:
     static const QString REQUEST_TOKEN_URL;
     static const QString AUTHENTICATE_URL;
     static const QString ACCESS_TOKEN_URL;
+    static const QString DEFAULT_TOKEN;
+    static const QString DEFAULT_TOKEN_SECRET;
 
     Accounts::Account* _acc;
     tori::keyring::Keyring* _key;
@@ -69,7 +71,11 @@ const QString AccountPrivate::REQUEST_TOKEN_URL = "https://api.twitter.com/oauth
 const QString AccountPrivate::AUTHENTICATE_URL = "https://api.twitter.com/oauth/authenticate";
 const QString AccountPrivate::ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
 
-AccountPrivate::AccountPrivate(Accounts::Account* acc, tori::keyring::Keyring* key, Account* parent) :
+// default values from gwibber
+const QString AccountPrivate::DEFAULT_TOKEN = "IOW164CqEJdlrkXlrQ17GA";
+const QString AccountPrivate::DEFAULT_TOKEN_SECRET = "mJ38xSp6kqUzB2XMOq9USrmTgWAXOqXpS0g6WUEk";
+
+AccountPrivate::AccountPrivate(Accounts::Account* acc, tori::keyring::Keyring* key, Account* parent, bool useDefault) :
     _acc(acc),
     _key(key),
     q_ptr(parent)
@@ -93,6 +99,12 @@ AccountPrivate::AccountPrivate(Accounts::Account* acc, tori::keyring::Keyring* k
             q, SLOT(onCredentialsFound(Accounts::AccountId, QString, QString, bool)));
 
     qxtLog->debug() << "ConsumerKey and ConsumerSecret retrieved";
+    if (useDefault)
+    {
+        qxtLog->debug() << "Using default token and token secret.";
+        _token = AccountPrivate::DEFAULT_TOKEN.toUtf8();
+        _tokenSecret = AccountPrivate::DEFAULT_TOKEN_SECRET.toUtf8();
+    }
 }
 
 void AccountPrivate::authenticate()
@@ -201,9 +213,9 @@ void AccountPrivate::onCredentialsFound(Accounts::AccountId id, QString token, Q
     }
 }
 
-Account::Account(Accounts::Account* acc, tori::keyring::Keyring* key,
+Account::Account(Accounts::Account* acc, tori::keyring::Keyring* key, bool useDefault,
     QObject *parent) : QObject(parent),
-    d_ptr(new AccountPrivate(acc, key, this))
+    d_ptr(new AccountPrivate(acc, key, this, useDefault))
 {
 }
 
