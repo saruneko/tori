@@ -39,6 +39,12 @@ void AccountAdaptor::authenticate()
     QMetaObject::invokeMethod(parent(), "authenticate");
 }
 
+void AccountAdaptor::isAuthenticated()
+{
+    // handle method call com.saruneko.tori.Account.isAuthenticated
+    QMetaObject::invokeMethod(parent(), "isAuthenticated");
+}
+
 void AccountAdaptor::setPin(const QString &pin)
 {
     // handle method call com.saruneko.tori.Account.setPin
