@@ -19,7 +19,8 @@ SOURCES += \
     keyring/test_keyring.cpp \
     dbus/test_signal_mapper.cpp \
     keyring/test_keyring_signal_mapper.cpp \
-    core/test_xdg_basedir.cpp
+    core/test_xdg_basedir.cpp \
+    keyring/test_secret.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 unix {
@@ -48,4 +49,5 @@ HEADERS += \
     keyring/test_keyring.h \
     dbus/test_signal_mapper.h \
     keyring/test_keyring_signal_mapper.h \
-    core/test_xdg_basedir.h
+    core/test_xdg_basedir.h \
+    keyring/test_secret.h
