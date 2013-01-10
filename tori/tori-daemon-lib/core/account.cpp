@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 Manuel de la Pena <mandel@themacaque.com>
+ * Copyright (c) 2012 mandel
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -21,44 +21,67 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <QxtLogger>
-#include "dbus/dbus_helper.h"
-#include "tori_daemon.h"
-
-
-using namespace tori::core;
+#include "account.h"
 
 namespace tori
 {
 
-ToriDaemon::ToriDaemon(QObject *parent) :
+namespace core
+{
+
+class AccountPrivate
+{
+    Q_DECLARE_PUBLIC(Account)
+public:
+    AccountPrivate(Accounts::Account* acc, Account* parent);
+
+    void authenticate();
+    void setPin(const QString& pin);
+
+private:
+
+    Account* q_ptr;
+    Accounts::Account* _acc;
+};
+
+AccountPrivate::AccountPrivate(Accounts::Account* acc, Account* parent) :
+    _acc(acc),
+    q_ptr(parent)
+{
+}
+
+void AccountPrivate::authenticate()
+{
+}
+
+void AccountPrivate::setPin(const QString& pin)
+{
+}
+
+Account::Account(Accounts::Account* acc, QObject *parent) :
     QObject(parent),
-    _conn(QDBusConnection::sessionBus())
+    d_ptr(new AccountPrivate(acc, this))
 {
-    // create the keyring that will be used to store and retrieve the different
-    // tokens
-    _keyring = new keyring::Keyring(_conn);
-    _accManager = new AccountManager(_conn);
 }
 
-void ToriDaemon::start()
+Account::~Account()
 {
-     qxtLog->enableAllLogLevels();
-    _keyring->openSession();
-    bool started = startAccountManagerService();
 }
 
-bool ToriDaemon::startAccountManagerService()
+void Account::authenticate()
 {
-    qxtLog->debug("Starting dbus services");
-    _accAdaptor = new AccountManagerAdaptor(_accManager);
-    bool ret = _conn.registerService("org.saruneko.tori.AccountManager");
-    if (ret)
-    {
-        ret = _conn.registerObject("/", _accManager);
-        return ret;
-    }
-    return false;
+    Q_D(Account);
+    d->authenticate();
 }
+
+void Account::setPin(const QString& pin)
+{
+    Q_D(Account);
+    d->setPin(pin);
+}
+
+} // core
 
 } // tori
+
+#include "moc_account.cpp"

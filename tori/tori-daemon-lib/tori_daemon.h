@@ -28,6 +28,8 @@
 #include <QObject>
 #include <Accounts/Account>
 #include "keyring/keyring.h"
+#include "core/account_manager.h"
+#include "core/account_manager_adaptor.h"
 
 
 namespace tori
@@ -41,19 +43,13 @@ public:
 
     void start();
 
-signals:
-    
-public slots:
-
-private Q_SLOTS:
-    void onKeyringSessionOpened();
-    void onAccountSecretStored(Accounts::AccountId id, bool stored);
-    void onKeyringSessionOpenError();
-    void onCredentialsFound(Accounts::AccountId id, QString token, QString tokenSecret, bool found);
-
+private:
+    bool startAccountManagerService();
 private:
     QDBusConnection _conn;
     keyring::Keyring* _keyring;
+    tori::core::AccountManager* _accManager;
+    AccountManagerAdaptor* _accAdaptor;
 };
 
 } // tori

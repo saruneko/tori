@@ -1,0 +1,20 @@
+<node>
+  <interface name="org.saruneko.tori.AccountManager">
+    <method name="getAccounts">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="DBusObjectPathHash"/>
+        <arg name="accounts" type="a{so}" direction="out" />
+    </method>
+    <signal name="accountCreated">
+        <arg name="accountId" type="u" direction="out"/>
+        <arg name="accountName" type="s" direction="out"/>
+    </signal>
+    <signal name="accountUpdated">
+        <arg name="accountId" type="u" direction="out"/>
+        <arg name="accountName" type="s" direction="out"/>
+    </signal>
+    <signal name="accountDeleted">
+        <arg name="accountId" type="u" direction="out"/>
+        <arg name="accountName" type="s" direction="out"/>
+    </signal>
+ </interface>
+</node>

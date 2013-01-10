@@ -1,0 +1,15 @@
+<node>
+  <interface name="com.saruneko.tori.Account">
+    <method name="setPin">
+        <arg name="pin" type="s" direction="in" />
+    </method>
+    <method name="authenticate"/>
+    <signal name="oauthPinUrl">
+        <arg name="pinUrl" type="s" direction="out"/>
+        <arg name="username" type="s" direction="out"/>
+    </signal>
+    <signal name="authenticated">
+        <arg name="username" type="s" direction="out"/>
+    </signal>
+ </interface>
+</node>

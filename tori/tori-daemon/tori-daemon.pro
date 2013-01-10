@@ -16,17 +16,9 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += main.cpp \
-    twitter/oauth_client.cpp \
-    tori_dbus_daemon.cpp \
-    tori_dbus_adaptor.cpp \
-    twitter/account_manager.cpp
+SOURCES += main.cpp
 
-HEADERS += \
-    twitter/oauth_client.h \
-    tori_dbus_daemon.h \
-    tori_dbus_adaptor.h \
-    twitter/account_manager.h
+HEADERS +=
 
 OTHER_FILES +=
 

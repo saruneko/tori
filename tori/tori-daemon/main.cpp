@@ -1,9 +1,5 @@
 #include <QCoreApplication>
-#include "keyring/keyring.h"
 #include "tori_daemon.h"
-
-#include "tori_dbus_adaptor.h"
-#include "tori_dbus_daemon.h"
 
 int main(int argc, char *argv[])
 {
