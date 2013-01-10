@@ -42,7 +42,7 @@ class Account : public QObject
     Q_OBJECT
 public:
     explicit Account(Accounts::Account* acc,
-        tori::keyring::Keyring* keyring, QObject *parent = 0);
+        tori::keyring::Keyring* keyring, bool useDefault=false, QObject *parent = 0);
     ~Account();
 
 public slots:
