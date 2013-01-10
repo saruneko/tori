@@ -42,7 +42,7 @@ class AccountManagerPrivate
     Q_DECLARE_PUBLIC(AccountManager)
 
 public:
-    AccountManagerPrivate(QDBusConnection connection, AccountManager* parent);
+    AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key, AccountManager* parent);
 
     QHash<QString, QDBusObjectPath> getAccounts();
 
@@ -59,17 +59,20 @@ private:
     AccountManager* q_ptr;
     Accounts::Manager* _man;
     QHash<Accounts::AccountId, QPair<Account*, AccountAdaptor*> > _accounts;
+    tori::keyring::Keyring* _key;
     QDBusConnection _conn;
 };
 
 QString AccountManagerPrivate::BASE_ACCOUNT_URL = "/org/saruneko/tori/account/%1";
 
-AccountManagerPrivate::AccountManagerPrivate(QDBusConnection connection, AccountManager* parent) :
+AccountManagerPrivate::AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key,
+    AccountManager* parent) :
     q_ptr(parent),
     _conn(connection)
 {
     Q_Q(AccountManager);
     _man = new Accounts::Manager("microblogging");
+    _key = key;
 
     // do connect the signals so that we can let people know changes happened
     q->connect(_man, SIGNAL(accountCreated(Accounts::AccountId)),
@@ -107,7 +110,7 @@ QHash<QString, QDBusObjectPath> AccountManagerPrivate::getAccounts()
 
             if (!_accounts.contains(acc->id()))
             {
-                Account* account = new Account(acc);
+                Account* account = new Account(acc, _key);
                 AccountAdaptor* adaptor = new AccountAdaptor(account);
 
                 QPair<Account*, AccountAdaptor*> pair;
@@ -129,7 +132,7 @@ void AccountManagerPrivate::onAccountCreated(Accounts::AccountId acc_id)
     if(isTwitterAccount(acc_id))
     {
         Accounts::Account* acc = _man->account(acc_id);
-        Account* account = new Account(acc);
+        Account* account = new Account(acc, _key);
         AccountAdaptor* adaptor = new AccountAdaptor(acc);
         QPair<Account*, AccountAdaptor*> pair;
         pair.first = account;
@@ -168,9 +171,10 @@ void AccountManagerPrivate::onAccountUpdated(Accounts::AccountId acc_id)
     }
 }
 
-AccountManager::AccountManager(QDBusConnection connection, QObject *parent) :
+AccountManager::AccountManager(QDBusConnection connection, tori::keyring::Keyring* key,
+    QObject *parent) :
     QObject(parent),
-    d_ptr(new AccountManagerPrivate(connection, this))
+    d_ptr(new AccountManagerPrivate(connection, key, this))
 {
 }
 

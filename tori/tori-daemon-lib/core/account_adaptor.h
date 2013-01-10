@@ -9,8 +9,8 @@
  * before re-generating it.
  */
 
-#ifndef ACCOUNT_ADAPTOR_H_1357320634
-#define ACCOUNT_ADAPTOR_H_1357320634
+#ifndef ACCOUNT_ADAPTOR_H_1357565404
+#define ACCOUNT_ADAPTOR_H_1357565404
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -34,12 +34,17 @@ class AccountAdaptor: public QDBusAbstractAdaptor
 "      <arg direction=\"in\" type=\"s\" name=\"pin\"/>\n"
 "    </method>\n"
 "    <method name=\"authenticate\"/>\n"
+"    <method name=\"isAuthenticated\"/>\n"
 "    <signal name=\"oauthPinUrl\">\n"
 "      <arg direction=\"out\" type=\"s\" name=\"pinUrl\"/>\n"
 "      <arg direction=\"out\" type=\"s\" name=\"username\"/>\n"
 "    </signal>\n"
 "    <signal name=\"authenticated\">\n"
+"      <arg direction=\"out\" type=\"b\" name=\"authenticated\"/>\n"
 "      <arg direction=\"out\" type=\"s\" name=\"username\"/>\n"
+"    </signal>\n"
+"    <signal name=\"authenticationError\">\n"
+"      <arg direction=\"out\" type=\"u\" name=\"error\"/>\n"
 "    </signal>\n"
 "  </interface>\n"
         "")
@@ -50,9 +55,11 @@ public:
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
     void authenticate();
+    void isAuthenticated();
     void setPin(const QString &pin);
 Q_SIGNALS: // SIGNALS
-    void authenticated(const QString &username);
+    void authenticated(bool authenticated, const QString &username);
+    void authenticationError(uint error);
     void oauthPinUrl(const QString &pinUrl, const QString &username);
 };
 
