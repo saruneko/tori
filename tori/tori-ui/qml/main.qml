@@ -1,16 +1,41 @@
 import QtQuick 2.0
+import Ubuntu.Components 0.1
+import Ubuntu.Components.Popups 0.1
+
 
 Rectangle {
-    width: 360
-    height: 360
-    Text {
-        text: qsTr("Tori UI")
-        anchors.centerIn: parent
+    width: units.gu(65)
+    height: units.gu(100)
+
+    Component {
+         id: dialog
+         Dialog {
+             id: dialogue
+             title: "Select Account"
+             AccountsList {}
+             Button {
+                 text: "Close"
+                 onClicked: PopupUtils.close(dialogue)
+             }
+         }
     }
-    MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            Qt.quit();
-        }
+
+    MenuBar {
+        id: menuBar
+        anchors.left: parent.left
+    }
+
+    Header {
+        id: header
+        anchors.left: menuBar.right
+        width: parent.width - menuBar.width
+    }
+
+    TwitLine {
+        id: twitLine
+        anchors.left: menuBar.right
+        anchors.top: header.bottom
+        width: parent.width - menuBar.width
+        height:parent.height - header.height
     }
 }

@@ -15,4 +15,13 @@ SOURCES += main.cpp
 HEADERS  +=
 
 OTHER_FILES += \
-    qml/main.qml
+    qml/main.qml \
+    qml/MenuBar.qml \
+    qml/ScrollBar.qml \
+    qml/Header.qml \
+    qml/TwitLine.qml \
+    qml/AccountsList.qml \
+    qml/ButtonImage.qml
+
+RESOURCES += \
+    resources.qrc
