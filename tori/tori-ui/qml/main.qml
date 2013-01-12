@@ -15,6 +15,7 @@ Rectangle {
     property alias myAccount: myAccount_timeline
     property alias search: search_timeline
     property variant current_line: main_timeline
+    property bool showing_dialog: false
 
     color: timeline_background_color
 
@@ -22,11 +23,15 @@ Rectangle {
          id: dialog
          Dialog {
              id: dialogue
+             z: current_line.z + 1
              title: "Select Account"
              AccountsList {}
              Button {
                  text: "Close"
-                 onClicked: PopupUtils.close(dialogue)
+                 onClicked: {
+                     showing_dialog = false;
+                     PopupUtils.close(dialogue)
+                 }
              }
          }
     }
@@ -79,10 +84,12 @@ Rectangle {
     }
 
     function show_column(line, header_text){
-        line.z = current_line.z + 1;
-        header.z = line.z + 1;
-        header.title = header_text;
-        line.x = menuBar.width;
-        current_line = line;
+        if(line != current_line){
+            line.z = current_line.z + 1;
+            header.z = line.z + 1;
+            header.title = header_text;
+            line.x = menuBar.width;
+            current_line = line;
+        }
     }
 }

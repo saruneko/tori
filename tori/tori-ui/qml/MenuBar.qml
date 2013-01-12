@@ -33,7 +33,10 @@ Rectangle {
                 radius: units.gu(1)
             }
 
-            onClicked: PopupUtils.open(dialog, currentAccount)
+            onClicked: {
+                PopupUtils.open(dialog, currentAccount)
+                main.showing_dialog = true;
+            }
         }
         ButtonImage {
             id: btnTimeline

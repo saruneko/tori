@@ -106,12 +106,14 @@ Rectangle {
         }
 
         onEntered: {
-            time.visible = false;
-            retweet.visible = true;
-            reply.visible = true;
-            favorite.visible = true;
-            color = "#f0f7f7";
-            imgRounded.border.color = "#f0f7f7";
+            if(!main.showing_dialog){
+                time.visible = false;
+                retweet.visible = true;
+                reply.visible = true;
+                favorite.visible = true;
+                color = "#f0f7f7";
+                imgRounded.border.color = "#f0f7f7";
+            }
         }
         onExited: {
             time.visible = true;

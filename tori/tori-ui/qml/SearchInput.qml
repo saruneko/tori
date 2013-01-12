@@ -1,9 +1,10 @@
 import QtQuick 2.0
+import Ubuntu.Components 0.1
 
-Rectangle{
+Rectangle {
     id: search_box
     color: "#3a3d42"
-    radius: 20
+    radius: units.gu(3)
     smooth: true
 
     Behavior on border.color { ColorAnimation{duration: 200} }
