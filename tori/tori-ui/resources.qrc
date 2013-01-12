@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/imgs">
+        <file>img/gatox_face.png</file>
+    </qresource>
+</RCC>
