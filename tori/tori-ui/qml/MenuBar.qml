@@ -42,7 +42,10 @@ Rectangle {
             text: "timeline"
             color: "#34a3ec"
 
-            onClicked: toggle_buttons(btnTimeline)
+            onClicked: {
+                toggle_buttons(btnTimeline);
+                main.show_column(main.timeline, "Timeline");
+            }
         }
         ButtonImage {
             id: btnMentions
@@ -51,7 +54,10 @@ Rectangle {
             text: "mentions"
             color: "transparent"
 
-            onClicked: toggle_buttons(btnMentions)
+            onClicked: {
+                toggle_buttons(btnMentions);
+                main.show_column(main.mentions, "Mentions");
+            }
         }
         ButtonImage {
             id: btnDirect
@@ -60,7 +66,10 @@ Rectangle {
             text: "direct messages"
             color: "transparent"
 
-            onClicked: toggle_buttons(btnDirect)
+            onClicked: {
+                toggle_buttons(btnDirect);
+                main.show_column(main.directMessages, "Direct Messages");
+            }
         }
         ButtonImage {
             id: btnUser
@@ -69,7 +78,10 @@ Rectangle {
             text: "gatox"
             color: "transparent"
 
-            onClicked: toggle_buttons(btnUser)
+            onClicked: {
+                toggle_buttons(btnUser);
+                main.show_column(main.myAccount, "Account");
+            }
         }
         ButtonImage {
             id: btnSearch
@@ -78,7 +90,10 @@ Rectangle {
             text: "search"
             color: "transparent"
 
-            onClicked: toggle_buttons(btnSearch)
+            onClicked: {
+                toggle_buttons(btnSearch);
+                main.show_column(main.search, "Search");
+            }
         }
     }
 

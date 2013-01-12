@@ -21,7 +21,12 @@ OTHER_FILES += \
     qml/Header.qml \
     qml/TwitLine.qml \
     qml/AccountsList.qml \
-    qml/ButtonImage.qml
+    qml/ButtonImage.qml \
+    qml/Twit.qml \
+    qml/AccountTimeline.qml \
+    qml/Timeline.qml \
+    qml/SearchTimeline.qml \
+    qml/SearchInput.qml
 
 RESOURCES += \
     resources.qrc

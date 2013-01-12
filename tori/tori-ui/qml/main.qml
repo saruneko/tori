@@ -4,8 +4,19 @@ import Ubuntu.Components.Popups 0.1
 
 
 Rectangle {
+    id: main
     width: units.gu(65)
     height: units.gu(100)
+
+    property variant timeline_background_color: "#f9f9f9"
+    property alias timeline: main_timeline
+    property alias mentions: mentions_timeline
+    property alias directMessages: directMessages_timeline
+    property alias myAccount: myAccount_timeline
+    property alias search: search_timeline
+    property variant current_line: main_timeline
+
+    color: timeline_background_color
 
     Component {
          id: dialog
@@ -25,17 +36,53 @@ Rectangle {
         anchors.left: parent.left
     }
 
+    TwitLine {
+        id: main_timeline
+        x: menuBar.width
+        anchors.top: header.bottom
+        width: parent.width - menuBar.width
+        height:parent.height - header.height
+    }
+    TwitLine {
+        id: mentions_timeline
+        x: main.width
+        anchors.top: header.bottom
+        width: parent.width - menuBar.width
+        height:parent.height - header.height
+    }
+    TwitLine {
+        id: directMessages_timeline
+        x: main.width
+        anchors.top: header.bottom
+        width: parent.width - menuBar.width
+        height:parent.height - header.height
+    }
+    AccountTimeline {
+        id: myAccount_timeline
+        x: main.width
+        anchors.top: header.bottom
+        width: parent.width - menuBar.width
+        height:parent.height - header.height
+    }
+    SearchTimeline {
+        id: search_timeline
+        x: main.width
+        anchors.top: header.bottom
+        width: parent.width - menuBar.width
+        height:parent.height - header.height
+    }
+
     Header {
         id: header
         anchors.left: menuBar.right
         width: parent.width - menuBar.width
     }
 
-    TwitLine {
-        id: twitLine
-        anchors.left: menuBar.right
-        anchors.top: header.bottom
-        width: parent.width - menuBar.width
-        height:parent.height - header.height
+    function show_column(line, header_text){
+        line.z = current_line.z + 1;
+        header.z = line.z + 1;
+        header.title = header_text;
+        line.x = menuBar.width;
+        current_line = line;
     }
 }
