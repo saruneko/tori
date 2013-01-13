@@ -11,7 +11,10 @@ Rectangle {
     border.width: 1
     border.color: "gray"
 
+    property alias title: label.text
+
     Label {
+        id: label
         text: "Timeline"
         fontSize: "large"
         anchors.centerIn: parent
