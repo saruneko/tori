@@ -21,7 +21,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <QxtLogger>
+#include <QDebug>
 #include "dbus/dbus_helper.h"
 #include "tori_daemon.h"
 
@@ -43,14 +43,13 @@ ToriDaemon::ToriDaemon(QObject *parent) :
 
 void ToriDaemon::start()
 {
-     qxtLog->enableAllLogLevels();
     _keyring->openSession();
     bool started = startAccountManagerService();
 }
 
 bool ToriDaemon::startAccountManagerService()
 {
-    qxtLog->debug("Starting dbus services");
+    qDebug("Starting dbus services");
     _accAdaptor = new AccountManagerAdaptor(_accManager);
     bool ret = _conn.registerService("org.saruneko.tori.AccountManager");
     if (ret)

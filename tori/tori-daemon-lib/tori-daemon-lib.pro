@@ -18,7 +18,7 @@ DEFINES += TORIDAEMONLIB_LIBRARY
 
 unix {
     CONFIG += link_pkgconfig
-    PKGCONFIG += accounts-qt libsignon-qt qoauth
+    PKGCONFIG += accounts-qt qoauth
 }
 
 unix:!symbian {

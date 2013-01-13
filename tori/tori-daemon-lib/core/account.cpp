@@ -24,9 +24,9 @@
 #include "account.h"
 #include <Accounts/AccountService>
 #include <Accounts/AuthData>
+#include <QDebug>
 #include <QMutex>
 #include <QtOAuth>
-#include <QxtLogger>
 
 
 namespace tori
@@ -98,10 +98,10 @@ AccountPrivate::AccountPrivate(Accounts::Account* acc, tori::keyring::Keyring* k
     q->connect(_key, SIGNAL(credentialsFound(Accounts::AccountId, QString, QString, bool)),
             q, SLOT(onCredentialsFound(Accounts::AccountId, QString, QString, bool)));
 
-    qxtLog->debug() << "ConsumerKey and ConsumerSecret retrieved";
+    qDebug() << "ConsumerKey and ConsumerSecret retrieved";
     if (useDefault)
     {
-        qxtLog->debug() << "Using default token and token secret.";
+        qDebug() << "Using default token and token secret.";
         _token = AccountPrivate::DEFAULT_TOKEN.toUtf8();
         _tokenSecret = AccountPrivate::DEFAULT_TOKEN_SECRET.toUtf8();
     }
@@ -115,7 +115,7 @@ void AccountPrivate::authenticate()
 
     if (_token.isEmpty() || _tokenSecret.isEmpty())
     {
-        qxtLog->debug() << "Token and TokenSecret are empty";
+        qDebug() << "Token and TokenSecret are empty";
         _oauth->setConsumerKey(_consumerKey);
         _oauth->setConsumerSecret(_consumerSecret);
 
@@ -135,12 +135,12 @@ void AccountPrivate::authenticate()
         url.append("?");
         url.append(QOAuth::tokenParameterName() + "=" + _token);
 
-        qxtLog->debug() << "Url for pin is:" << url;
+        qDebug() << "Url for pin is:" << url;
         emit q->oauthPinUrl(url, _acc->displayName());
     }
     else
     {
-        qxtLog->debug() << "Credentials already present.";
+        qDebug() << "Credentials already present.";
         emit q->authenticated(true, _acc->displayName());
     }
     _mutex.unlock();
@@ -149,17 +149,17 @@ void AccountPrivate::authenticate()
 void AccountPrivate::isAuthenticated()
 {
     Q_Q(Account);
-    qxtLog->debug() << "AccountPrivate::isAuthenticated()";
+    qDebug() << "AccountPrivate::isAuthenticated()";
 
     // check if we do have the token and token secret
     if (_token.isEmpty() || _tokenSecret.isEmpty())
     {
-        qxtLog->debug() << "Getting credentials from keyring for accoutn with id:" << _acc->id();
+        qDebug() << "Getting credentials from keyring for accoutn with id:" << _acc->id();
         _key->getCredentials(_acc->id());
     }
     else
     {
-        qxtLog->debug() << "Credentials already present";
+        qDebug() << "Credentials already present";
         emit q->authenticated(true, _acc->displayName());
     }
 }
@@ -195,7 +195,7 @@ void AccountPrivate::setPin(const QString& pin)
 void AccountPrivate::onCredentialsFound(Accounts::AccountId id, QString token, QString tokenSecret, bool found)
 {
     Q_Q(Account);
-    qxtLog->debug() << "AccountPrivate::onCredentialsFound for id:" << id  << "Was found:" << found;
+    qDebug() << "AccountPrivate::onCredentialsFound for id:" << id  << "Was found:" << found;
     // onlye deal with the signal if it is our same account id
     if (_acc->id() == id)
     {

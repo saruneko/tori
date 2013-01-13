@@ -22,9 +22,9 @@
  */
 
 #include <Accounts/Manager>
+#include <QDebug>
 #include <QHash>
 #include <QVariant>
-#include <QxtLogger>
 #include "core/account.h"
 #include "core/account_adaptor.h"
 #include "account_manager.h"
@@ -98,12 +98,12 @@ QHash<QString, QDBusObjectPath> AccountManagerPrivate::getAccounts()
     // loop and just add those accounts from twitter
     Accounts::AccountIdList allAccounts = _man->accountList();
 
-    qxtLog->debug() << "Number of accounts found:" << allAccounts.length();
+    qDebug() << "Number of accounts found:" << allAccounts.length();
 
     for(int pos = 0; pos < allAccounts.length(); ++pos)
     {
         Accounts::Account* acc = _man->account(allAccounts.at(pos));
-        qxtLog->debug() << "Account id:" << acc->id() << "Account provider:" << acc->providerName();
+        qDebug() << "Account id:" << acc->id() << "Account provider:" << acc->providerName();
 
         if(acc->providerName() == "twitter")
         {
@@ -187,7 +187,7 @@ AccountManager::~AccountManager()
 DBusObjectPathHash AccountManager::getAccounts()
 {
     Q_D(AccountManager);
-    qxtLog->debug() << "AccountManager::getAccounts()";
+    qDebug() << "AccountManager::getAccounts()";
     return d->getAccounts();
 }
 

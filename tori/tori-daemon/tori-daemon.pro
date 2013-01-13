@@ -10,7 +10,7 @@ QT       -= gui
 
 TARGET = tori-daemon
 CONFIG += console link_pkgconfig oauth
-PKGCONFIG += accounts-qt libsignon-qt qoauth
+PKGCONFIG += accounts-qt qoauth
 QMAKE_CXXFLAGS += -std=c++0x
 CONFIG   -= app_bundle
 TEMPLATE = app
