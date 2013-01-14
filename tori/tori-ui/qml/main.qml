@@ -51,6 +51,7 @@ Rectangle {
     TwitLine {
         id: mentions_timeline
         x: main.width
+
         anchors.top: header.bottom
         width: parent.width - menuBar.width
         height:parent.height - header.height
@@ -79,14 +80,15 @@ Rectangle {
 
     Header {
         id: header
+        z: current_line.z + 1;
         anchors.left: menuBar.right
         width: parent.width - menuBar.width
     }
 
     function show_column(line, header_text){
         if(line != current_line){
+            current_line.scale = 0.5
             line.z = current_line.z + 1;
-            header.z = line.z + 1;
             header.title = header_text;
             line.x = menuBar.width;
             current_line = line;
