@@ -51,7 +51,6 @@ Rectangle {
     TwitLine {
         id: mentions_timeline
         x: main.width
-
         anchors.top: header.bottom
         width: parent.width - menuBar.width
         height:parent.height - header.height
