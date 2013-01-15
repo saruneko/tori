@@ -1,6 +1,6 @@
 import QtQuick 2.0
 
-Timeline {
+BaseMainContainer {
     Component {
         id: twitDelegate
         Twit{}
@@ -36,25 +36,25 @@ Timeline {
         pageSize: view.visibleArea.heightRatio
     }
 
-    function add_twit(username){
-        twitLineModel.insert(0, {username: username});
+    function add_twit(username, origin){
+        twitLineModel.insert(0, {username: username, twit_id: "", twit_origin: origin});
     }
 
     Component.onCompleted: {
-        add_twit("Gatox");
-        add_twit("Diego Sarmentero");
-        add_twit("Gatox");
-        add_twit("Diego Sarmentero");
-        add_twit("Gatox");
-        add_twit("Diego Sarmentero");
-        add_twit("Gatox");
-        add_twit("Diego Sarmentero");
-        add_twit("Gatox");
-        add_twit("Diego Sarmentero");
-        add_twit("Gatox");
-        add_twit("Diego Sarmentero");
-        add_twit("Gatox");
-        add_twit("Diego Sarmentero");
+        add_twit("Gatox", "Retweeted by @diegosarmentero");
+        add_twit("Diego Sarmentero", "diegosarmentero");
+        add_twit("Gatox", "Retweeted by @diegosarmentero");
+        add_twit("Diego Sarmentero", "diegosarmentero");
+        add_twit("Gatox", "Retweeted by @diegosarmentero");
+        add_twit("Diego Sarmentero", "diegosarmentero");
+        add_twit("Gatox", "Retweeted by @diegosarmentero");
+        add_twit("Diego Sarmentero", "diegosarmentero");
+        add_twit("Gatox", "Retweeted by @diegosarmentero");
+        add_twit("Diego Sarmentero", "diegosarmentero");
+        add_twit("Gatox", "Retweeted by @diegosarmentero");
+        add_twit("Diego Sarmentero", "diegosarmentero");
+        add_twit("Gatox", "Retweeted by @diegosarmentero");
+        add_twit("Diego Sarmentero", "diegosarmentero");
     }
 
 }

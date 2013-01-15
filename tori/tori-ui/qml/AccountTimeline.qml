@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 
-Timeline {
+BaseMainContainer {
     Column {
         anchors.fill: parent
         Rectangle {
@@ -12,20 +12,26 @@ Timeline {
             Image{
                 anchors.fill: parent
                 fillMode: Image.Tile
-                source: "../img/account_background.png"
+                source: "../img/dark_background.png"
             }
 
-            Image {
+            UbuntuShape{
                 id: picture_id
+                width: units.gu(16)
+                height: units.gu(16)
+                color: "transparent"
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.leftMargin: units.gu(1)
                 anchors.topMargin: units.gu(1)
-                source: "../img/gatox_face.png"
-                width: units.gu(16)
-                height: units.gu(16)
-                asynchronous: true
+                image: Image {
+                    source: "../img/gatox_face.png"
+                    anchors.fill: parent
+                    anchors.centerIn: parent
+                    asynchronous: true
+                }
             }
+
             Column {
                 anchors.left: picture_id.right
                 anchors.leftMargin: units.gu(1)
