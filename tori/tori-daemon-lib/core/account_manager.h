@@ -29,8 +29,8 @@
 #include <QDBusObjectPath>
 #include <QObject>
 #include <QVariantMap>
-#include "dbus/dbus_helper.h"
-#include "keyring/keyring.h"
+#include "../dbus/dbus_helper.h"
+#include "../keyring/keyring.h"
 
 namespace tori
 {

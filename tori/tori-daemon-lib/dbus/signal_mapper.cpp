@@ -21,7 +21,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <QHash>
+#include <QtCore/QHash>
 #include "signal_mapper.h"
 
 namespace tori

@@ -198,4 +198,4 @@ DBusObjectPathHash AccountManager::getAccounts()
 
 } // tori
 
-#include "moc_account_manager.cpp"
+//#include "moc_account_manager.cpp"

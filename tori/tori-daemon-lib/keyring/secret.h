@@ -24,11 +24,11 @@
 #ifndef SECRET_H
 #define SECRET_H
 
-#include <QtDBus>
+#include <QDBusObjectPath>
 #include <QByteArray>
 #include <QHash>
 #include <QString>
-#include "dbus/dbus_helper.h"
+#include "../dbus/dbus_helper.h"
 
 class Secret
 {

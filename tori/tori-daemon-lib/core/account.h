@@ -51,7 +51,7 @@ public slots:
     void setPin(const QString& pin);
 
 signals:
-    
+
     void authenticated(bool authenticated, const QString &username);
     void authenticationError(uint error);
     void oauthPinUrl(const QString& pinUrl, const QString& username);

@@ -22,7 +22,7 @@
  */
 
 #include <QDebug>
-#include "dbus/dbus_helper.h"
+#include "./dbus/dbus_helper.h"
 #include "tori_daemon.h"
 
 

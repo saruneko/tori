@@ -24,12 +24,12 @@
 #ifndef TORI_DAEMON_H
 #define TORI_DAEMON_H
 
-#include <QDBusConnection>
-#include <QObject>
+#include <QtDBus/QDBusConnection>
+#include <QtCore/QObject>
 #include <Accounts/Account>
-#include "keyring/keyring.h"
-#include "core/account_manager.h"
-#include "core/account_manager_adaptor.h"
+#include "./keyring/keyring.h"
+#include "./core/account_manager.h"
+#include "./core/account_manager_adaptor.h"
 
 
 namespace tori
