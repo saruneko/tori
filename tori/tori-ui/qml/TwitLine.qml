@@ -1,6 +1,6 @@
 import QtQuick 2.0
 
-Timeline {
+BaseMainContainer {
     Component {
         id: twitDelegate
         Twit{}

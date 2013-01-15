@@ -14,6 +14,7 @@ Rectangle {
     property alias directMessages: directMessages_timeline
     property alias myAccount: myAccount_timeline
     property alias search: search_timeline
+    property alias write: write_twit
     property variant current_line: main_timeline
     property bool showing_dialog: false
 
@@ -71,6 +72,22 @@ Rectangle {
     }
     SearchTimeline {
         id: search_timeline
+        x: main.width
+        anchors.top: header.bottom
+        width: parent.width - menuBar.width
+        height:parent.height - header.height
+    }
+
+    WriteTwit {
+        id: write_twit
+        x: main.width
+        anchors.top: header.bottom
+        width: parent.width - menuBar.width
+        height:parent.height - header.height
+    }
+
+    ReadTwit {
+        id: read_twit
         x: main.width
         anchors.top: header.bottom
         width: parent.width - menuBar.width

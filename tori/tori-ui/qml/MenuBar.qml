@@ -13,31 +13,28 @@ Rectangle {
         anchors.topMargin: units.gu(2)
         anchors.bottomMargin: units.gu(10)
         spacing: units.gu(2)
+
         Button {
             id: currentAccount
             width: parent.width
             height: units.gu(10)
             color: "transparent"
-            Image {
-                id: img
-                source: "../img/gatox_face.png"
-                anchors.fill: parent
-                anchors.centerIn: parent
-                fillMode: Image.PreserveAspectFit
-            }
-            Rectangle { // rounded corners for img
-                anchors.fill: img
+            UbuntuShape{
+                width: parent.width
+                height: parent.height
                 color: "transparent"
-                border.color: "#212121" // color of background
-                border.width: units.gu(1)
-                radius: units.gu(1)
+                image: Image {
+                    id: img
+                    source: "../img/gatox_face.png"
+                    anchors.fill: parent
+                    anchors.centerIn: parent
+                    fillMode: Image.PreserveAspectFit
+                }
             }
 
-            onClicked: {
-                PopupUtils.open(dialog, currentAccount)
-                main.showing_dialog = true;
-            }
+            onClicked: PopupUtils.open(dialog, currentAccount)
         }
+
         ButtonImage {
             id: btnTimeline
             width: parent.width
@@ -101,11 +98,17 @@ Rectangle {
     }
 
     Button {
+        id: btnWrite
         width: parent.width
         height: units.gu(8)
         color: "lightblue"
         text: "write"
         anchors.bottom: parent.bottom
+
+        onClicked: {
+            toggle_buttons(btnWrite);
+            main.show_column(main.write, "Write Twit!");
+        }
     }
 
     function toggle_buttons(button){
@@ -114,6 +117,7 @@ Rectangle {
         btnDirect.color = "transparent";
         btnUser.color = "transparent";
         btnSearch.color = "transparent";
+        btnWrite.color = "transparent";
         button.color = "#34a3ec";
     }
 }

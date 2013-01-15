@@ -2,8 +2,16 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 
 BaseMainContainer {
+    id: writeTwit
+
+    Image{
+        anchors.fill: parent
+        fillMode: Image.Tile
+        source: "../img/dark_background.png"
+    }
     Column {
         anchors.fill: parent
+        spacing: units.gu(2)
         Rectangle {
             id: details
             z: 2
@@ -15,23 +23,17 @@ BaseMainContainer {
                 source: "../img/dark_background.png"
             }
 
-            UbuntuShape{
+            Image {
                 id: picture_id
-                width: units.gu(16)
-                height: units.gu(16)
-                color: "transparent"
                 anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.leftMargin: units.gu(1)
                 anchors.topMargin: units.gu(1)
-                image: Image {
-                    source: "../img/gatox_face.png"
-                    anchors.fill: parent
-                    anchors.centerIn: parent
-                    asynchronous: true
-                }
+                source: "../img/gatox_face.png"
+                width: units.gu(16)
+                height: units.gu(16)
+                asynchronous: true
             }
-
             Column {
                 anchors.left: picture_id.right
                 anchors.leftMargin: units.gu(1)
@@ -98,9 +100,10 @@ BaseMainContainer {
                 }
             }
         }
-        TwitLine {
-            width: parent.width
-            height: parent.height - details.height
+
+        BusyIndicator {
+            id: busyIndicator
+            x: (parent.width / 2) - (width / 2)
         }
     }
 }

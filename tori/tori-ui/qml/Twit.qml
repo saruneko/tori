@@ -9,24 +9,21 @@ Rectangle {
     border.color: "#efefef"
     color: "transparent"
 
-    Image {
+    UbuntuShape{
         id: picture_id
+        width: units.gu(9)
+        height: units.gu(9)
+        color: "transparent"
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.leftMargin: units.gu(1)
         anchors.topMargin: units.gu(1)
-        source: "../img/gatox_face.png"
-        width: units.gu(9)
-        height: units.gu(9)
-        asynchronous: true
-    }
-    Rectangle {
-        id: imgRounded
-        anchors.fill: picture_id
-        color: "transparent"
-        border.color: main.timeline_background_color // color of background
-        border.width: units.gu(0.8)
-        radius: units.gu(1)
+        image: Image {
+            source: "../img/gatox_face.png"
+            anchors.fill: parent
+            anchors.centerIn: parent
+            asynchronous: true
+        }
     }
 
     Rectangle {
@@ -35,7 +32,7 @@ Rectangle {
         anchors.top: parent.top
         anchors.leftMargin: units.gu(1)
         anchors.topMargin: units.gu(1.5)
-        width: parent.width - imgRounded.width
+        width: parent.width - picture_id.width
         Column {
             id: twit_content
             spacing: units.gu(1)
@@ -51,7 +48,7 @@ Rectangle {
                 id: message_id
                 text: "Esto es un twit para la aplicacion Tori, y deberia tener 140 caracteres, asi que: blah blah blah2 blah2 blah3 blah3 y no termina mas esto..."
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                width: twit.width - imgRounded.width - units.gu(3)
+                width: twit.width - picture_id.width - units.gu(3)
                 fontSize: "medium"
                 color: "#323232"
             }
@@ -112,13 +109,11 @@ Rectangle {
                 reply.visible = true;
                 favorite.visible = true;
                 color = "#f0f7f7";
-                imgRounded.border.color = "#f0f7f7";
             }
         }
         onExited: {
             time.visible = true;
             color = "transparent";
-            imgRounded.border.color = main.timeline_background_color;
             retweet.visible = false;
             reply.visible = false;
             favorite.visible = false;
