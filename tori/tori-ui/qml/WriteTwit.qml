@@ -24,7 +24,7 @@ BaseMainContainer {
             children: users
         }
 
-        TextArea {
+        CustomUbuntuTextArea {
             id: twitWrite
             width: parent.width
             contentWidth: parent.width - units.gu(1)

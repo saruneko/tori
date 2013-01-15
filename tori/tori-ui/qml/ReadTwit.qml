@@ -4,106 +4,108 @@ import Ubuntu.Components 0.1
 BaseMainContainer {
     id: writeTwit
 
-    Image{
-        anchors.fill: parent
-        fillMode: Image.Tile
-        source: "../img/dark_background.png"
-    }
     Column {
         anchors.fill: parent
+        anchors.margins: units.gu(1)
         spacing: units.gu(2)
-        Rectangle {
+        UbuntuShape {
             id: details
             z: 2
             width: parent.width
-            height: units.gu(34)
-            Image{
-                anchors.fill: parent
-                fillMode: Image.Tile
-                source: "../img/dark_background.png"
-            }
+            height: units.gu(33)
+            color: main.timeline_background_color
 
-            Image {
-                id: picture_id
-                anchors.left: parent.left
-                anchors.top: parent.top
-                anchors.leftMargin: units.gu(1)
-                anchors.topMargin: units.gu(1)
-                source: "../img/gatox_face.png"
-                width: units.gu(16)
-                height: units.gu(16)
-                asynchronous: true
-            }
             Column {
-                anchors.left: picture_id.right
-                anchors.leftMargin: units.gu(1)
-                anchors.top: parent.top
-                anchors.topMargin: units.gu(5)
-                spacing: units.dp(2)
-                Label{
-                    id: displayname
-                    text: "Gatox"
-                    color: "white"
-                    fontSize: "x-large"
-                    font.bold: true
-                    width: details.width - picture_id.width - units.gu(5)
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                Label{
-                    id: username
-                    text: "@diegosarmentero"
-                    color: "white"
-                    fontSize: "large"
-                    width: details.width - picture_id.width - units.gu(5)
-                    horizontalAlignment: Text.AlignHCenter
-                }
-                Label{
-                    id: follow_info
-                    text: "Following each other"
-                    color: "gray"
-                    fontSize: "small"
-                    width: details.width - picture_id.width - units.gu(5)
-                    horizontalAlignment: Text.AlignHCenter
-                }
-            }
-            Label{
-                width: details.width
-                anchors.top: picture_id.bottom
-                anchors.left: details.left
-                anchors.right: details.right
-                anchors.topMargin: units.gu(1)
-                anchors.leftMargin: units.gu(4)
-                anchors.rightMargin: units.gu(4)
-                text: "Creator and Developer of NINJA-IDE! - Software Engineer @Canonical - Programmer... Computer Geek... Human Being?? - In Flatland! · http://diegosarmentero.com "
-                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                fontSize: "medium"
-                color: "white"
-                horizontalAlignment: Text.AlignHCenter
-            }
-
-            Row {
-                width: details.width
-                anchors.left: details.left
-                anchors.right: details.right
-                anchors.bottom: details.bottom
-                anchors.leftMargin: units.gu(2)
-                anchors.rightMargin: units.gu(2)
-                anchors.bottomMargin: units.gu(1)
+                anchors.fill: parent
+                anchors.margins: units.gu(1)
                 spacing: units.gu(2)
-                Button {
-                    width: (details.width / 2) - units.gu(3)
-                    text: "Followers"
+                Label {
+                    id: twit_text
+                    color: "#323232"
+                    text: "Esto es un twit para la aplicacion <a href='http://saruneko.org/tori'>Tori</a>, y deberia tener 140 caracteres, asi que: blah blah blah2 blah2 blah3 blah3 y no termina mas esto..."
+                    fontSize: "large"
+                    width: parent.width
+                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                    smooth: true
                 }
-                Button {
-                    width: (details.width / 2) - units.gu(3)
-                    text: "Following"
+
+                Row {
+                    spacing: units.gu(2)
+                    UbuntuShape{
+                        id: picture_id
+                        width: units.gu(9)
+                        height: units.gu(9)
+                        color: "transparent"
+                        image: Image {
+                            source: "../img/gatox_face.png"
+                            anchors.fill: parent
+                            anchors.centerIn: parent
+                            asynchronous: true
+                        }
+                    }
+
+                    Column {
+                        spacing: units.gu(1)
+
+                        Label {
+                            text: "Diego Sarmentero"
+                            color: "#323232"
+                        }
+                        Label {
+                            text: "30 minutes ago"
+                            color: "#323232"
+                        }
+                        Label {
+                            text: "Tue 15 January 1:00pm via Twitter"
+                            fontSize: "small"
+                        }
+                    }
+                }
+
+                Row {
+                    spacing: units.gu(2)
+                    ButtonImage{
+                        id: reply
+                        width: units.gu(6)
+                        height: units.gu(6)
+                        color: "blue"
+        //                source: "../img/reply.png"
+        //                fillMode: Image.PreserveAspectFit
+                    }
+                    ButtonImage{
+                        id: retweet
+                        width: units.gu(6)
+                        height: units.gu(6)
+                        image.source: "../img/retweet.png"
+        //                fillMode: Image.PreserveAspectFit
+                    }
+                    ButtonImage{
+                        id: favorite
+                        width: units.gu(6)
+                        height: units.gu(6)
+                        color: "yellow"
+        //                source: "../img/reply.png"
+        //                fillMode: Image.PreserveAspectFit
+                    }
                 }
             }
         }
 
-        BusyIndicator {
-            id: busyIndicator
-            x: (parent.width / 2) - (width / 2)
+        ActivityIndicator {
+            id: activity
+            running: true
+            z: 2
+            x: (writeTwit.width / 2) - (activity.width / 2)
+            visible: true
         }
+
+        TwitLine {
+            width: parent.width
+            height: parent.height - activity.y - units.gu(2)
+        }
+    }
+
+    Component.onCompleted: {
+        activity.visible = false;
     }
 }

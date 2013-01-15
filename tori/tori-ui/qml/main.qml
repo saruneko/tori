@@ -110,4 +110,13 @@ Rectangle {
             current_line = line;
         }
     }
+
+    function show_twit(twit_id){
+        menuBar.toggle_buttons();
+        current_line.scale = 0.5
+        read_twit.z = current_line.z + 1;
+        header.title = "Twit";
+        read_twit.x = menuBar.width;
+        current_line = read_twit;
+    }
 }

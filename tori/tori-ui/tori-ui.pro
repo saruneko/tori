@@ -30,7 +30,8 @@ OTHER_FILES += \
     qml/WriteTwit.qml \
     qml/BusyIndicator.qml \
     qml/ReadTwit.qml \
-    qml/SelectUser.qml
+    qml/SelectUser.qml \
+    qml/CustomUbuntuTextArea.qml
 
 RESOURCES += \
     resources.qrc

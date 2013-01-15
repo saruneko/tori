@@ -32,7 +32,10 @@ Rectangle {
                 }
             }
 
-            onClicked: PopupUtils.open(dialog, currentAccount)
+            onClicked: {
+                main.showing_dialog = true;
+                PopupUtils.open(dialog, currentAccount)
+            }
         }
 
         ButtonImage {
@@ -118,6 +121,8 @@ Rectangle {
         btnUser.color = "transparent";
         btnSearch.color = "transparent";
         btnWrite.color = "transparent";
-        button.color = "#34a3ec";
+        if(button){
+            button.color = "#34a3ec";
+        }
     }
 }

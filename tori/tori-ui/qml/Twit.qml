@@ -4,10 +4,23 @@ import Ubuntu.Components 0.1
 Rectangle {
     id: twit
     width: parent.width
-    height: units.gu(14)
+    height: units.gu(16)
     border.width: units.dp(1)
     border.color: "#efefef"
     color: "transparent"
+
+    property string twitId: twit_id
+
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
+        onClicked: {
+            main.show_twit(twitId);
+        }
+
+        onEntered: show_buttons();
+        onExited: hide_buttons();
+    }
 
     UbuntuShape{
         id: picture_id
@@ -52,6 +65,14 @@ Rectangle {
                 fontSize: "medium"
                 color: "#323232"
             }
+            Label {
+                id: origin_id
+                text: twit_origin
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                width: twit.width - picture_id.width - units.gu(3)
+                fontSize: "small"
+                color: "gray"
+            }
         }
 
         Row{
@@ -67,57 +88,72 @@ Rectangle {
                 color: "gray"
             }
 
-            Rectangle{
+            ButtonImage{
                 id: reply
                 width: units.gu(3)
                 height: units.gu(3)
                 color: "blue"
 //                source: "../img/reply.png"
-//                fillMode: Image.PreserveAspectFit
                 visible: false
+
+                onHoveredChanged: {
+                    if(hovered){
+                        show_buttons();
+                    }else{
+                        hide_buttons();
+                    }
+                }
             }
-            Image{
+            ButtonImage{
                 id: retweet
                 width: units.gu(3)
                 height: units.gu(3)
-                source: "../img/retweet.png"
-                fillMode: Image.PreserveAspectFit
+                image.source: "../img/retweet.png"
                 visible: false
+
+                onHoveredChanged: {
+                    if(hovered){
+                        show_buttons();
+                    }else{
+                        hide_buttons();
+                    }
+                }
             }
-            Rectangle{
+            ButtonImage{
                 id: favorite
                 width: units.gu(3)
                 height: units.gu(3)
                 color: "yellow"
 //                source: "../img/reply.png"
-//                fillMode: Image.PreserveAspectFit
                 visible: false
+
+                onHoveredChanged: {
+                    if(hovered){
+                        show_buttons();
+                    }else{
+                        hide_buttons();
+                    }
+                }
             }
         }
     }
 
-    MouseArea {
-        anchors.fill: parent
-        hoverEnabled: true
-        onClicked: {
+    function show_buttons(){
+        if(!main.showing_dialog){
+            time.visible = false;
+            retweet.visible = true;
+            reply.visible = true;
+            favorite.visible = true;
+            color = "#f0f7f7";
         }
+    }
 
-        onEntered: {
-            if(!main.showing_dialog){
-                time.visible = false;
-                retweet.visible = true;
-                reply.visible = true;
-                favorite.visible = true;
-                color = "#f0f7f7";
-            }
-        }
-        onExited: {
-            time.visible = true;
-            color = "transparent";
-            retweet.visible = false;
-            reply.visible = false;
-            favorite.visible = false;
-        }
+    function hide_buttons(){
+        time.visible = true;
+        color = "transparent";
+        retweet.visible = false;
+        reply.visible = false;
+        favorite.visible = false;
     }
 
 }
