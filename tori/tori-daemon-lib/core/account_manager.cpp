@@ -93,6 +93,7 @@ bool AccountManagerPrivate::isTwitterAccount(Accounts::AccountId acc_id)
 
 QHash<QString, QDBusObjectPath> AccountManagerPrivate::getAccounts()
 {
+    Q_Q(AccountManager);
     QHash<QString, QDBusObjectPath> accounts;
 
     // loop and just add those accounts from twitter
@@ -112,7 +113,7 @@ QHash<QString, QDBusObjectPath> AccountManagerPrivate::getAccounts()
 
             if (!_accounts.contains(acc->id()))
             {
-                Account* account = new Account(acc, _key, _useDefault);
+                Account* account = new Account(acc, q);
                 AccountAdaptor* adaptor = new AccountAdaptor(account);
 
                 QPair<Account*, AccountAdaptor*> pair;
@@ -134,7 +135,7 @@ void AccountManagerPrivate::onAccountCreated(Accounts::AccountId acc_id)
     if(isTwitterAccount(acc_id))
     {
         Accounts::Account* acc = _man->account(acc_id);
-        Account* account = new Account(acc, _key, _useDefault);
+        Account* account = new Account(acc, q);
         AccountAdaptor* adaptor = new AccountAdaptor(acc);
         QPair<Account*, AccountAdaptor*> pair;
         pair.first = account;
