@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 
-Timeline {
+BaseMainContainer {
     id: searchTimeline
     Column {
         anchors.fill: parent
@@ -13,7 +13,7 @@ Timeline {
             Image{
                 anchors.fill: parent
                 fillMode: Image.Tile
-                source: "../img/account_background.png"
+                source: "../img/dark_background.png"
             }
 
             SearchInput {

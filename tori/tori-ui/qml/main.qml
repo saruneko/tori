@@ -14,6 +14,7 @@ Rectangle {
     property alias directMessages: directMessages_timeline
     property alias myAccount: myAccount_timeline
     property alias search: search_timeline
+    property alias write: write_twit
     property variant current_line: main_timeline
     property bool showing_dialog: false
 
@@ -77,19 +78,45 @@ Rectangle {
         height:parent.height - header.height
     }
 
+    WriteTwit {
+        id: write_twit
+        x: main.width
+        anchors.top: header.bottom
+        width: parent.width - menuBar.width
+        height:parent.height - header.height
+    }
+
+    ReadTwit {
+        id: read_twit
+        x: main.width
+        anchors.top: header.bottom
+        width: parent.width - menuBar.width
+        height:parent.height - header.height
+    }
+
     Header {
         id: header
+        z: current_line.z + 1;
         anchors.left: menuBar.right
         width: parent.width - menuBar.width
     }
 
     function show_column(line, header_text){
         if(line != current_line){
+            current_line.scale = 0.5
             line.z = current_line.z + 1;
-            header.z = line.z + 1;
             header.title = header_text;
             line.x = menuBar.width;
             current_line = line;
         }
+    }
+
+    function show_twit(twit_id){
+        menuBar.toggle_buttons();
+        current_line.scale = 0.5
+        read_twit.z = current_line.z + 1;
+        header.title = "Twit";
+        read_twit.x = menuBar.width;
+        current_line = read_twit;
     }
 }
