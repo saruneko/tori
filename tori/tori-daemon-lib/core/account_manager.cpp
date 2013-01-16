@@ -21,10 +21,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <Accounts/Manager>
 #include <QDebug>
 #include <QHash>
 #include <QVariant>
+#include <Accounts/Manager>
 #include "core/account.h"
 #include "core/account_adaptor.h"
 #include "account_manager.h"
