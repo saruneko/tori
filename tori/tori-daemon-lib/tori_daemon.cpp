@@ -43,6 +43,7 @@ ToriDaemon::ToriDaemon(QObject *parent) :
 
 void ToriDaemon::start()
 {
+    qDebug() << "Starting daemon...";
     _keyring->openSession();
     bool started = startAccountManagerService();
 }

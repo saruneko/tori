@@ -49,9 +49,6 @@ signals:
     void authenticationError(uint error);
 
 private:
-    Q_PRIVATE_SLOT(d_func(), void onCredentialsFound(Accounts::AccountId id, QString token, QString tokenSecret, bool found))
-
-private:
     QScopedPointer<AccountPrivate> d_ptr;
 };
 

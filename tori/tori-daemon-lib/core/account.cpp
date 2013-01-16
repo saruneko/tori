@@ -40,9 +40,6 @@ class AccountPrivate
 public:
     AccountPrivate(Accounts::Account* acc, Account* parent);
 
-protected:
-    void onCredentialsFound(Accounts::AccountId id, QString token, QString tokenSecret, bool found);
-
 private:
     static const QString DEFAULT_TOKEN;
     static const QString DEFAULT_TOKEN_SECRET;

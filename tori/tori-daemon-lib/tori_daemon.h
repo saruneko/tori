@@ -26,7 +26,6 @@
 
 #include <QtDBus/QDBusConnection>
 #include <QtCore/QObject>
-#include <Accounts/Account>
 #include "./keyring/keyring.h"
 #include "./core/account_manager.h"
 #include "./core/account_manager_adaptor.h"
