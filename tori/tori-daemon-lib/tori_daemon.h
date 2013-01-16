@@ -26,9 +26,9 @@
 
 #include <QtDBus/QDBusConnection>
 #include <QtCore/QObject>
-#include "./keyring/keyring.h"
-#include "./core/account_manager.h"
-#include "./core/account_manager_adaptor.h"
+#include "keyring/keyring.h"
+#include "core/account_manager.h"
+#include "core/account_manager_adaptor.h"
 
 
 namespace tori

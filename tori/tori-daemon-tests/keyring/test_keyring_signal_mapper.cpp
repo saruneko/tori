@@ -22,7 +22,7 @@
  */
 
 
-#include <QLabel>
+#include <QtWidgets/QLabel>
 #include <QSignalSpy>
 #include "test_keyring_signal_mapper.h"
 
