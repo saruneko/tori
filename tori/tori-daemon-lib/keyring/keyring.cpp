@@ -28,7 +28,8 @@
 #include <QHash>
 #include <QList>
 #include <QObject>
-#include <QxtJSON>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 #include "dbus/signal_mapper.h"
 #include "async_call_data.h"
@@ -639,11 +640,12 @@ void KeyringPrivate::onCollectionUnlocked(QDBusPendingCallWatcher* call, QObject
     _interfaceFactory->create<CollectionInterface>(SECRET_SERVICE, data->interfacePath, _conn));
 
     // serialize token and token secret in json
-    QVariantMap secret;
+    QJsonObject secret;
     secret.insert(TOKEN_KEY, data->token);
     secret.insert(TOKEN_SECRET_KEY, data->tokenSecret);
 
-    QByteArray json =  QxtJSON::stringify(secret).toUtf8();
+    QJsonDocument doc(secret);
+    QByteArray json = doc.toJson();
     Secret secretStruct(QDBusObjectPath(_session->path()), QString("").toUtf8(), json, QString("application/octet-stream").toUtf8());
 
     QVariantMap properties;
@@ -684,7 +686,8 @@ void KeyringPrivate::onGetSecret(QDBusPendingCallWatcher* call, QObject* obj)
     ASSERT_DBUS_REPLY_IS_ERROR(call, reply, q->credentialsError(data->accId))
 
     Secret secret =  reply.argumentAt<0>();
-    QVariantMap result = QxtJSON::parse(secret.getValue()).toMap();
+    QJsonDocument jsonData = QJsonDocument::fromBinaryData(secret.getValue());
+    QVariantMap result = jsonData.toVariant().toMap();
 
     // assert that the info is present
     if (!result.contains(KeyringPrivate::TOKEN_KEY) || !result.contains(KeyringPrivate::TOKEN_SECRET_KEY))
