@@ -83,6 +83,7 @@ AccountManagerPrivate::AccountManagerPrivate(QDBusConnection connection, tori::k
         q, SLOT(onAccountUpdated(Accounts::AccountId)));
     q->connect(_man, SIGNAL(accountRemoved(Accounts::AccountId)),
         q, SLOT(onAccountDeleted(Accounts::AccountId)));
+
 }
 
 bool AccountManagerPrivate::isTwitterAccount(Accounts::AccountId acc_id)

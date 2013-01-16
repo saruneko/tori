@@ -55,6 +55,7 @@ bool ToriDaemon::startAccountManagerService()
     bool ret = _conn.registerService("org.saruneko.tori.AccountManager");
     if (ret)
     {
+        qDebug("Account manager registered.");
         ret = _conn.registerObject("/", _accManager);
         return ret;
     }
