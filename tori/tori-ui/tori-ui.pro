@@ -19,14 +19,19 @@ OTHER_FILES += \
     qml/MenuBar.qml \
     qml/ScrollBar.qml \
     qml/Header.qml \
-    qml/TwitLine.qml \
     qml/AccountsList.qml \
     qml/ButtonImage.qml \
     qml/Twit.qml \
     qml/AccountTimeline.qml \
-    qml/Timeline.qml \
     qml/SearchTimeline.qml \
-    qml/SearchInput.qml
+    qml/SearchInput.qml \
+    qml/TwitLine.qml \
+    qml/BaseMainContainer.qml \
+    qml/WriteTwit.qml \
+    qml/BusyIndicator.qml \
+    qml/ReadTwit.qml \
+    qml/SelectUser.qml \
+    qml/CustomUbuntuTextArea.qml
 
 RESOURCES += \
     resources.qrc

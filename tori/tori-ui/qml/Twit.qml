@@ -4,29 +4,39 @@ import Ubuntu.Components 0.1
 Rectangle {
     id: twit
     width: parent.width
-    height: units.gu(14)
+    height: units.gu(16)
     border.width: units.dp(1)
     border.color: "#efefef"
     color: "transparent"
 
-    Image {
+    property string twitId: twit_id
+
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
+        onClicked: {
+            main.show_twit(twitId);
+        }
+
+        onEntered: show_buttons();
+        onExited: hide_buttons();
+    }
+
+    UbuntuShape{
         id: picture_id
+        width: units.gu(9)
+        height: units.gu(9)
+        color: "transparent"
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.leftMargin: units.gu(1)
         anchors.topMargin: units.gu(1)
-        source: "../img/gatox_face.png"
-        width: units.gu(9)
-        height: units.gu(9)
-        asynchronous: true
-    }
-    Rectangle {
-        id: imgRounded
-        anchors.fill: picture_id
-        color: "transparent"
-        border.color: main.timeline_background_color // color of background
-        border.width: units.gu(0.8)
-        radius: units.gu(1)
+        image: Image {
+            source: "../img/gatox_face.png"
+            anchors.fill: parent
+            anchors.centerIn: parent
+            asynchronous: true
+        }
     }
 
     Rectangle {
@@ -35,7 +45,7 @@ Rectangle {
         anchors.top: parent.top
         anchors.leftMargin: units.gu(1)
         anchors.topMargin: units.gu(1.5)
-        width: parent.width - imgRounded.width
+        width: parent.width - picture_id.width
         Column {
             id: twit_content
             spacing: units.gu(1)
@@ -51,9 +61,17 @@ Rectangle {
                 id: message_id
                 text: "Esto es un twit para la aplicacion Tori, y deberia tener 140 caracteres, asi que: blah blah blah2 blah2 blah3 blah3 y no termina mas esto..."
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                width: twit.width - imgRounded.width - units.gu(3)
+                width: twit.width - picture_id.width - units.gu(3)
                 fontSize: "medium"
                 color: "#323232"
+            }
+            Label {
+                id: origin_id
+                text: twit_origin
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                width: twit.width - picture_id.width - units.gu(3)
+                fontSize: "small"
+                color: "gray"
             }
         }
 
@@ -70,59 +88,72 @@ Rectangle {
                 color: "gray"
             }
 
-            Rectangle{
+            ButtonImage{
                 id: reply
                 width: units.gu(3)
                 height: units.gu(3)
                 color: "blue"
 //                source: "../img/reply.png"
-//                fillMode: Image.PreserveAspectFit
                 visible: false
+
+                onHoveredChanged: {
+                    if(hovered){
+                        show_buttons();
+                    }else{
+                        hide_buttons();
+                    }
+                }
             }
-            Image{
+            ButtonImage{
                 id: retweet
                 width: units.gu(3)
                 height: units.gu(3)
-                source: "../img/retweet.png"
-                fillMode: Image.PreserveAspectFit
+                image.source: "../img/retweet.png"
                 visible: false
+
+                onHoveredChanged: {
+                    if(hovered){
+                        show_buttons();
+                    }else{
+                        hide_buttons();
+                    }
+                }
             }
-            Rectangle{
+            ButtonImage{
                 id: favorite
                 width: units.gu(3)
                 height: units.gu(3)
                 color: "yellow"
 //                source: "../img/reply.png"
-//                fillMode: Image.PreserveAspectFit
                 visible: false
+
+                onHoveredChanged: {
+                    if(hovered){
+                        show_buttons();
+                    }else{
+                        hide_buttons();
+                    }
+                }
             }
         }
     }
 
-    MouseArea {
-        anchors.fill: parent
-        hoverEnabled: true
-        onClicked: {
+    function show_buttons(){
+        if(!main.showing_dialog){
+            time.visible = false;
+            retweet.visible = true;
+            reply.visible = true;
+            favorite.visible = true;
+            color = "#f0f7f7";
         }
+    }
 
-        onEntered: {
-            if(!main.showing_dialog){
-                time.visible = false;
-                retweet.visible = true;
-                reply.visible = true;
-                favorite.visible = true;
-                color = "#f0f7f7";
-                imgRounded.border.color = "#f0f7f7";
-            }
-        }
-        onExited: {
-            time.visible = true;
-            color = "transparent";
-            imgRounded.border.color = main.timeline_background_color;
-            retweet.visible = false;
-            reply.visible = false;
-            favorite.visible = false;
-        }
+    function hide_buttons(){
+        time.visible = true;
+        color = "transparent";
+        retweet.visible = false;
+        reply.visible = false;
+        favorite.visible = false;
     }
 
 }
