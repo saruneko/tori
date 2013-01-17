@@ -99,6 +99,7 @@ static QByteArray generateNonce()
     return nonce;
 }
 
+
 class OAuthPrivate
 {
     Q_DECLARE_PUBLIC(OAuth)
@@ -224,6 +225,8 @@ QByteArray OAuthPrivate::generateSignatureBase(const QUrl& url, OAuth::HttpMetho
     //OAuth spec. 9.1.3
     return httpm + '&' + normUrl.toPercentEncoding() + '&' + normString;
 }
+
+const QByteArray OAuth::AUTH_HEADER = "Authorization";
 
 OAuth::OAuth(const QByteArray& consumerKey, const QByteArray& consumerSecret,
     const QByteArray& token, const QByteArray& tokenSecret, QObject *parent)

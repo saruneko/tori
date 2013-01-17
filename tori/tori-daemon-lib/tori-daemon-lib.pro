@@ -42,7 +42,8 @@ SOURCES += \
     keyring/keyring_signal_mapper.cpp \
     keyring/keyring.cpp \
     tori_daemon.cpp \ 
-    twitter/oauth.cpp
+    twitter/oauth.cpp \
+    twitter/status_api.cpp
 
 HEADERS +=\
     tori-daemon-lib_global.h \
@@ -64,7 +65,8 @@ HEADERS +=\
     keyring/keyring_signal_mapper.h \
     keyring/keyring.h \
     tori_daemon.h \
-    twitter/oauth.h
+    twitter/oauth.h \
+    twitter/status_api.h
 
 OTHER_FILES += \
     org.freedesktop.secret.session.xml \

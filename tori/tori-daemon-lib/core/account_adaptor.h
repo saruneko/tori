@@ -9,8 +9,8 @@
  * before re-generating it.
  */
 
-#ifndef ACCOUNT_ADAPTOR_H_1358358230
-#define ACCOUNT_ADAPTOR_H_1358358230
+#ifndef ACCOUNT_ADAPTOR_H_1358381262
+#define ACCOUNT_ADAPTOR_H_1358381262
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -33,6 +33,33 @@ class AccountAdaptor: public QDBusAbstractAdaptor
 "    <signal name=\"authenticationError\">\n"
 "      <arg direction=\"out\" type=\"u\" name=\"error\"/>\n"
 "    </signal>\n"
+"    <!-- status API -->\n"
+"    <method name=\"retweets\">\n"
+"      <annotation value=\"QVariantMap\" name=\"org.qtproject.QtDBus.QtTypeName.In1\"/>\n"
+"      <arg direction=\"in\" type=\"u\" name=\"tweet_id\"/>\n"
+"      <arg direction=\"in\" type=\"a{sv}\" name=\"options\"/>\n"
+"    </method>\n"
+"    <method name=\"show\">\n"
+"      <annotation value=\"QVariantMap\" name=\"org.qtproject.QtDBus.QtTypeName.In1\"/>\n"
+"      <arg direction=\"in\" type=\"u\" name=\"tweet_id\"/>\n"
+"      <arg direction=\"in\" type=\"a{sv}\" name=\"options\"/>\n"
+"    </method>\n"
+"    <method name=\"destroy\">\n"
+"      <annotation value=\"QVariantMap\" name=\"org.qtproject.QtDBus.QtTypeName.In1\"/>\n"
+"      <arg direction=\"in\" type=\"u\" name=\"tweet_id\"/>\n"
+"      <arg direction=\"in\" type=\"a{sv}\" name=\"options\"/>\n"
+"    </method>\n"
+"    <method name=\"update\">\n"
+"      <annotation value=\"QVariantMap\" name=\"org.qtproject.QtDBus.QtTypeName.In1\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"status\"/>\n"
+"      <arg direction=\"in\" type=\"a{sv}\" name=\"options\"/>\n"
+"    </method>\n"
+"    <method name=\"retweet\">\n"
+"      <annotation value=\"QVariantMap\" name=\"org.qtproject.QtDBus.QtTypeName.In1\"/>\n"
+"      <arg direction=\"in\" type=\"u\" name=\"tweet_id\"/>\n"
+"      <arg direction=\"in\" type=\"a{sv}\" name=\"options\"/>\n"
+"    </method>\n"
+"    <!-- status API signals -->\n"
 "  </interface>\n"
         "")
 public:
@@ -41,6 +68,11 @@ public:
 
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
+    void destroy(uint tweet_id, const QVariantMap &options);
+    void retweet(uint tweet_id, const QVariantMap &options);
+    void retweets(uint tweet_id, const QVariantMap &options);
+    void show(uint tweet_id, const QVariantMap &options);
+    void update(const QString &status, const QVariantMap &options);
 Q_SIGNALS: // SIGNALS
     void authenticationError(uint error);
 };

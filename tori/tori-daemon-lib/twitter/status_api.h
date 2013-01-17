@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 Manuel de la Pena <mandel@themacaque.com>
+ * Copyright (c) 2013 mandel
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -21,37 +21,43 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef TORI_DAEMON_H
-#define TORI_DAEMON_H
+#ifndef STATUS_API_H
+#define STATUS_API_H
 
 #include <QNetworkAccessManager>
-#include <QtDBus/QDBusConnection>
-#include <QtCore/QObject>
-#include "keyring/keyring.h"
-#include "core/account_manager.h"
-#include "core/account_manager_adaptor.h"
-
+#include <QObject>
+#include <QScopedPointer>
+#include <QVariantMap>
+#include "oauth.h"
 
 namespace tori
 {
 
-class ToriDaemon : public QObject
+namespace twitter
 {
+
+class StatusAPIPrivate;
+class StatusAPI : public QObject
+{
+    Q_DECLARE_PRIVATE(StatusAPI)
     Q_OBJECT
 public:
-    explicit ToriDaemon(QObject *parent = 0);
-
-    void start();
+    StatusAPI(OAuth* oauth, QNetworkAccessManager* man, QObject *parent = 0);
+    ~StatusAPI();
+    
+public:
+   void retweets(uint tweet_id, QVariantMap options);
+   void show(uint tweet_id, QVariantMap options);
+   void destroy(uint tweet_id, QVariantMap options);
+   void update(QString status, QVariantMap options);
+   void retweet(uint tweet_id, QVariantMap options);
 
 private:
-    bool startAccountManagerService();
-private:
-    QDBusConnection _conn;
-    keyring::Keyring* _keyring;
-    tori::core::AccountManager* _accManager;
-    AccountManagerAdaptor* _accAdaptor;
-    QNetworkAccessManager* _man;
+    QScopedPointer<StatusAPIPrivate> d_ptr;
 };
 
+} // twitter
+
 } // tori
-#endif // TORI_DAEMON_H
+
+#endif // STATUS_API_H

@@ -33,3 +33,33 @@ AccountAdaptor::~AccountAdaptor()
     // destructor
 }
 
+void AccountAdaptor::destroy(uint tweet_id, const QVariantMap &options)
+{
+    // handle method call com.saruneko.tori.Account.destroy
+    QMetaObject::invokeMethod(parent(), "destroy", Q_ARG(uint, tweet_id), Q_ARG(QVariantMap, options));
+}
+
+void AccountAdaptor::retweet(uint tweet_id, const QVariantMap &options)
+{
+    // handle method call com.saruneko.tori.Account.retweet
+    QMetaObject::invokeMethod(parent(), "retweet", Q_ARG(uint, tweet_id), Q_ARG(QVariantMap, options));
+}
+
+void AccountAdaptor::retweets(uint tweet_id, const QVariantMap &options)
+{
+    // handle method call com.saruneko.tori.Account.retweets
+    QMetaObject::invokeMethod(parent(), "retweets", Q_ARG(uint, tweet_id), Q_ARG(QVariantMap, options));
+}
+
+void AccountAdaptor::show(uint tweet_id, const QVariantMap &options)
+{
+    // handle method call com.saruneko.tori.Account.show
+    QMetaObject::invokeMethod(parent(), "show", Q_ARG(uint, tweet_id), Q_ARG(QVariantMap, options));
+}
+
+void AccountAdaptor::update(const QString &status, const QVariantMap &options)
+{
+    // handle method call com.saruneko.tori.Account.update
+    QMetaObject::invokeMethod(parent(), "update", Q_ARG(QString, status), Q_ARG(QVariantMap, options));
+}
+

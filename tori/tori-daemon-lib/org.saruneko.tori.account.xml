@@ -3,5 +3,35 @@
     <signal name="authenticationError">
         <arg name="error" type="u" direction="out"/>
     </signal>
+
+    <!-- status API -->
+
+    <method name="retweets">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QVariantMap"/>
+        <arg name="tweet_id" type="u" direction="in" />
+        <arg name="options" type="a{sv}" direction="in"/>
+    </method>
+    <method name="show">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QVariantMap"/>
+        <arg name="tweet_id" type="u" direction="in" />
+        <arg name="options" type="a{sv}" direction="in"/>
+    </method>
+    <method name="destroy">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QVariantMap"/>
+        <arg name="tweet_id" type="u" direction="in" />
+        <arg name="options" type="a{sv}" direction="in"/>
+    </method>
+    <method name="update">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QVariantMap"/>
+        <arg name="status" type="s" direction="in" />
+        <arg name="options" type="a{sv}" direction="in"/>
+    </method>
+    <method name="retweet">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="QVariantMap"/>
+        <arg name="tweet_id" type="u" direction="in" />
+        <arg name="options" type="a{sv}" direction="in"/>
+    </method>
+
+    <!-- status API signals -->
  </interface>
 </node>

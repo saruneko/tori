@@ -41,6 +41,7 @@ class OAuth : public QObject
     Q_OBJECT
 public:
     enum HttpMethod {GET, POST, PUT, DELETE};
+    static const QByteArray AUTH_HEADER;
 
     OAuth(const QByteArray& consumerKey, const QByteArray& consumerSecret,
         const QByteArray& token, const QByteArray& tokenSecret, QObject *parent = 0);
