@@ -15,6 +15,11 @@ INCLUDEPATH += ../accounts-qt
 
 DEFINES += TORIDAEMONLIB_LIBRARY
 
+unix {
+    CONFIG += link_pkgconfig
+    PKGCONFIG += liboauth
+}
+
 unix:!symbian {
     maemo5 {
         target.path = /opt/usr/lib
