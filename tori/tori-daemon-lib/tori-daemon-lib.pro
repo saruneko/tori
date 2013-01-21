@@ -15,11 +15,6 @@ INCLUDEPATH += ../accounts-qt
 
 DEFINES += TORIDAEMONLIB_LIBRARY
 
-unix {
-    CONFIG += link_pkgconfig
-    PKGCONFIG += liboauth
-}
-
 unix:!symbian {
     maemo5 {
         target.path = /opt/usr/lib
@@ -46,8 +41,7 @@ SOURCES += \
     keyring/interface_factory.cpp \
     keyring/keyring_signal_mapper.cpp \
     keyring/keyring.cpp \
-    tori_daemon.cpp \ 
-    twitter/oauth.cpp
+    tori_daemon.cpp  
 
 HEADERS +=\
     tori-daemon-lib_global.h \
@@ -68,8 +62,7 @@ HEADERS +=\
     keyring/async_call_data.h \
     keyring/keyring_signal_mapper.h \
     keyring/keyring.h \
-    tori_daemon.h \
-    twitter/oauth.h
+    tori_daemon.h
 
 OTHER_FILES += \
     org.freedesktop.secret.session.xml \
