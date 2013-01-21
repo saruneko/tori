@@ -45,6 +45,10 @@ public:
     void update(QString status, QVariantMap options);
     void retweet(uint tweet_id, QVariantMap options);
 
+protected:
+    void onUpdateFinished();
+    void onUpdateError(QNetworkReply::NetworkError error);
+
 private:
     static const QString SHOW_URL;
     static const QString RETWEETS_URL;
@@ -145,6 +149,7 @@ void StatusAPIPrivate::destroy(uint tweet_id, QVariantMap options)
 
 void StatusAPIPrivate::update(QString status, QVariantMap options)
 {
+    Q_Q(StatusAPI);
     QUrl url(StatusAPIPrivate::UPDATE_URL);
     qDebug() << "show(" << status << ")";
     url.addQueryItem("status", status);
@@ -178,9 +183,11 @@ void StatusAPIPrivate::update(QString status, QVariantMap options)
     QNetworkRequest req(url);
     req.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
     req.setRawHeader(OAuth::AUTH_HEADER, _oauth->generateAuthorizationHeader(url, OAuth::POST));
-    QNetworkReply *reply = _man->post(req, QByteArray());
+    QNetworkReply* reply = _man->post(req, QByteArray());
 
-    // TODO: connecto to reply signal
+    q->connect(reply, SIGNAL(finished()), q, SLOT(onUpdateFinished()));
+    q->connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+        q, SLOT(onUpdateError(QNetworkReply::NetworkError)));
 }
 
 void StatusAPIPrivate::retweet(uint tweet_id, QVariantMap options)
@@ -199,6 +206,33 @@ void StatusAPIPrivate::retweet(uint tweet_id, QVariantMap options)
     // TODO: connecto to reply signal
 }
 
+
+void StatusAPIPrivate::onUpdateFinished()
+{
+    Q_Q(StatusAPI);
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(q->sender());
+
+    if (reply->error() == QNetworkReply::NoError)
+    {
+        // Reading the data from the response
+        QByteArray bytes = reply->readAll();
+        QString jsonString(bytes); // string
+        qDebug() << jsonString;
+    }
+    else
+    {
+    }
+}
+
+void StatusAPIPrivate::onUpdateError(QNetworkReply::NetworkError error)
+{
+    Q_Q(StatusAPI);
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(q->sender());
+    // Reading the data from the response
+    QByteArray bytes = reply->readAll();
+    QString jsonString(bytes); // string
+    qDebug() << jsonString;
+}
 
 StatusAPI::StatusAPI(OAuth* oauth, QNetworkAccessManager* man, QObject *parent) :
     QObject(parent),
@@ -243,3 +277,5 @@ void StatusAPI::retweet(uint tweet_id, QVariantMap options)
 } // twitter
 
 } // tori
+
+#include "moc_status_api.cpp"

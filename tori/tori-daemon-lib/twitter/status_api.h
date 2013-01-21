@@ -25,6 +25,7 @@
 #define STATUS_API_H
 
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
 #include <QObject>
 #include <QScopedPointer>
 #include <QVariantMap>
@@ -39,8 +40,8 @@ namespace twitter
 class StatusAPIPrivate;
 class StatusAPI : public QObject
 {
-    Q_DECLARE_PRIVATE(StatusAPI)
     Q_OBJECT
+    Q_DECLARE_PRIVATE(StatusAPI)
 public:
     StatusAPI(OAuth* oauth, QNetworkAccessManager* man, QObject *parent = 0);
     ~StatusAPI();
@@ -52,8 +53,16 @@ public:
    void update(QString status, QVariantMap options);
    void retweet(uint tweet_id, QVariantMap options);
 
+Q_SIGNALS:
+    void updateFinished();
+    void updateError();
+
 private:
     QScopedPointer<StatusAPIPrivate> d_ptr;
+
+private:
+    Q_PRIVATE_SLOT(d_func(), void onUpdateError(QNetworkReply::NetworkError))
+    Q_PRIVATE_SLOT(d_func(), void onUpdateFinished())
 };
 
 } // twitter
