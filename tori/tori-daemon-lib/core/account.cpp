@@ -55,8 +55,8 @@ private:
 };
 
 // default values from gwibber
-const QString AccountPrivate::DEFAULT_TOKEN = "IOW164CqEJdlrkXlrQ17GA";
-const QString AccountPrivate::DEFAULT_TOKEN_SECRET = "mJ38xSp6kqUzB2XMOq9USrmTgWAXOqXpS0g6WUEk";
+const QString AccountPrivate::DEFAULT_TOKEN = "qMBra1U4bpNYvDz947M5Q";
+const QString AccountPrivate::DEFAULT_TOKEN_SECRET = "Lzdkhg0WvGYFzD9tnsuwC0zYmpJ4z7HrZl3yOxU1g";
 
 AccountPrivate::AccountPrivate(Accounts::Account* acc, Account* parent) :
     _acc(acc),
