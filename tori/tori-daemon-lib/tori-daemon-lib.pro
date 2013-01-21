@@ -65,7 +65,6 @@ HEADERS +=\
     keyring/keyring_signal_mapper.h \
     keyring/keyring.h \
     tori_daemon.h \
-    twitter/oauth.h \
     twitter/status_api.h
 
 OTHER_FILES += \
