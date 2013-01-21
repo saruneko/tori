@@ -39,11 +39,11 @@ class StatusAPIPrivate
 public:
     StatusAPIPrivate(OAuth* oauth, QNetworkAccessManager* man, StatusAPI* parent);
 
-    void retweets(uint tweet_id, QVariantMap options);
-    void show(uint tweet_id, QVariantMap options);
-    void destroy(uint tweet_id, QVariantMap options);
-    void update(QString status, QVariantMap options);
-    void retweet(uint tweet_id, QVariantMap options);
+    void retweets(QString uuid, uint tweet_id, QVariantMap options);
+    void show(QString uuid, uint tweet_id, QVariantMap options);
+    void destroy(QString uuid, uint tweet_id, QVariantMap options);
+    void update(QString uuid, QString status, QVariantMap options);
+    void retweet(QString uuid, uint tweet_id, QVariantMap options);
 
 protected:
     void onUpdateFinished();
@@ -74,7 +74,7 @@ StatusAPIPrivate::StatusAPIPrivate(OAuth* oauth, QNetworkAccessManager* man, Sta
 {
 }
 
-void StatusAPIPrivate::retweets(uint tweet_id, QVariantMap options)
+void StatusAPIPrivate::retweets(QString uuid, uint tweet_id, QVariantMap options)
 {
     qDebug() << "retweets(" << tweet_id << ")";
 
@@ -97,7 +97,7 @@ void StatusAPIPrivate::retweets(uint tweet_id, QVariantMap options)
     // TODO: connect to reply signal
 }
 
-void StatusAPIPrivate::show(uint tweet_id, QVariantMap options)
+void StatusAPIPrivate::show(QString uuid, uint tweet_id, QVariantMap options)
 {
     qDebug() << "show(" << tweet_id << ")";
 
@@ -128,7 +128,7 @@ void StatusAPIPrivate::show(uint tweet_id, QVariantMap options)
     // TODO: connect to reply signal
 }
 
-void StatusAPIPrivate::destroy(uint tweet_id, QVariantMap options)
+void StatusAPIPrivate::destroy(QString uuid, uint tweet_id, QVariantMap options)
 {
     qDebug() << "destroy(" << tweet_id << ")";
     QUrl url(StatusAPIPrivate::DESTROY_URL.arg(tweet_id));
@@ -147,7 +147,7 @@ void StatusAPIPrivate::destroy(uint tweet_id, QVariantMap options)
     // TODO: connecto to reply signal
 }
 
-void StatusAPIPrivate::update(QString status, QVariantMap options)
+void StatusAPIPrivate::update(QString uuid, QString status, QVariantMap options)
 {
     Q_Q(StatusAPI);
     QUrl url(StatusAPIPrivate::UPDATE_URL);
@@ -190,7 +190,36 @@ void StatusAPIPrivate::update(QString status, QVariantMap options)
         q, SLOT(onUpdateError(QNetworkReply::NetworkError)));
 }
 
-void StatusAPIPrivate::retweet(uint tweet_id, QVariantMap options)
+void StatusAPIPrivate::onUpdateFinished()
+{
+    Q_Q(StatusAPI);
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(q->sender());
+    qDebug() << "onUpdateFinished with error" << reply->error();
+
+    if (reply->error() == QNetworkReply::NoError)
+    {
+        // Reading the data from the response
+        QByteArray bytes = reply->readAll();
+        QString jsonString(bytes); // string
+        qDebug() << jsonString;
+    }
+    else
+    {
+        qDebug() << "Dealing with error.";
+    }
+}
+
+void StatusAPIPrivate::onUpdateError(QNetworkReply::NetworkError error)
+{
+    Q_Q(StatusAPI);
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(q->sender());
+    // Reading the data from the response
+    QByteArray bytes = reply->readAll();
+    QString jsonString(bytes); // string
+    qDebug() << jsonString;
+}
+
+void StatusAPIPrivate::retweet(QString uuid, uint tweet_id, QVariantMap options)
 {
     QUrl url(StatusAPIPrivate::RETWEET_URL.arg(tweet_id));
     if (options.contains("trim_user"))
@@ -206,34 +235,6 @@ void StatusAPIPrivate::retweet(uint tweet_id, QVariantMap options)
     // TODO: connecto to reply signal
 }
 
-
-void StatusAPIPrivate::onUpdateFinished()
-{
-    Q_Q(StatusAPI);
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(q->sender());
-
-    if (reply->error() == QNetworkReply::NoError)
-    {
-        // Reading the data from the response
-        QByteArray bytes = reply->readAll();
-        QString jsonString(bytes); // string
-        qDebug() << jsonString;
-    }
-    else
-    {
-    }
-}
-
-void StatusAPIPrivate::onUpdateError(QNetworkReply::NetworkError error)
-{
-    Q_Q(StatusAPI);
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(q->sender());
-    // Reading the data from the response
-    QByteArray bytes = reply->readAll();
-    QString jsonString(bytes); // string
-    qDebug() << jsonString;
-}
-
 StatusAPI::StatusAPI(OAuth* oauth, QNetworkAccessManager* man, QObject *parent) :
     QObject(parent),
     d_ptr(new StatusAPIPrivate(oauth, man, this))
@@ -244,34 +245,34 @@ StatusAPI::~StatusAPI()
 {
 }
 
-void StatusAPI::retweets(uint tweet_id, QVariantMap options)
+void StatusAPI::retweets(QString uuid, uint tweet_id, QVariantMap options)
 {
     Q_D(StatusAPI);
-    d->retweets(tweet_id, options);
+    d->retweets(uuid, tweet_id, options);
 }
 
-void StatusAPI::show(uint tweet_id, QVariantMap options)
+void StatusAPI::show(QString uuid, uint tweet_id, QVariantMap options)
 {
     Q_D(StatusAPI);
-    d->show(tweet_id, options);
+    d->show(uuid, tweet_id, options);
 }
 
-void StatusAPI::destroy(uint tweet_id, QVariantMap options)
+void StatusAPI::destroy(QString uuid, uint tweet_id, QVariantMap options)
 {
     Q_D(StatusAPI);
-    d->destroy(tweet_id, options);
+    d->destroy(uuid, tweet_id, options);
 }
 
-void StatusAPI::update(QString status, QVariantMap options)
+void StatusAPI::update(QString uuid, QString status, QVariantMap options)
 {
     Q_D(StatusAPI);
-    d->update(status, options);
+    d->update(uuid, status, options);
 }
 
-void StatusAPI::retweet(uint tweet_id, QVariantMap options)
+void StatusAPI::retweet(QString uuid, uint tweet_id, QVariantMap options)
 {
     Q_D(StatusAPI);
-    d->retweet(tweet_id, options);
+    d->retweet(uuid, tweet_id, options);
 }
 
 } // twitter

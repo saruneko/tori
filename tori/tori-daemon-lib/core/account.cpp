@@ -43,11 +43,11 @@ class AccountPrivate
 public:
     AccountPrivate(Accounts::Account* acc, QNetworkAccessManager* man, Account* parent);
 
-    void destroy(uint tweet_id, const QVariantMap &options);
-    void retweet(uint tweet_id, const QVariantMap &options);
-    void retweets(uint tweet_id, const QVariantMap &options);
-    void show(uint tweet_id, const QVariantMap &options);
-    void update(const QString &status, const QVariantMap &options);
+    void destroy(const QString& uuid, uint tweet_id, const QVariantMap &options);
+    void retweet(const QString& uuid, uint tweet_id, const QVariantMap &options);
+    void retweets(const QString& uuid, uint tweet_id, const QVariantMap &options);
+    void show(const QString& uuid, uint tweet_id, const QVariantMap &options);
+    void update(const QString& uuid, const QString &status, const QVariantMap &options);
 
 private:
     static const QString DEFAULT_TOKEN;
@@ -86,29 +86,29 @@ AccountPrivate::AccountPrivate(Accounts::Account* acc, QNetworkAccessManager* ma
     _status = new twitter::StatusAPI(_oauth, _man);
 }
 
-void AccountPrivate::destroy(uint tweet_id, const QVariantMap &options)
+void AccountPrivate::destroy(const QString& uuid, uint tweet_id, const QVariantMap &options)
 {
-    _status->destroy(tweet_id, options);
+    _status->destroy(uuid, tweet_id, options);
 }
 
-void AccountPrivate::retweet(uint tweet_id, const QVariantMap &options)
+void AccountPrivate::retweet(const QString& uuid, uint tweet_id, const QVariantMap &options)
 {
-    _status->retweet(tweet_id, options);
+    _status->retweet(uuid, tweet_id, options);
 }
 
-void AccountPrivate::retweets(uint tweet_id, const QVariantMap &options)
+void AccountPrivate::retweets(const QString& uuid, uint tweet_id, const QVariantMap &options)
 {
-    _status->retweets(tweet_id, options);
+    _status->retweets(uuid, tweet_id, options);
 }
 
-void AccountPrivate::show(uint tweet_id, const QVariantMap &options)
+void AccountPrivate::show(const QString& uuid, uint tweet_id, const QVariantMap &options)
 {
-    _status->show(tweet_id, options);
+    _status->show(uuid, tweet_id, options);
 }
 
-void AccountPrivate::update(const QString &status, const QVariantMap &options)
+void AccountPrivate::update(const QString& uuid, const QString &status, const QVariantMap &options)
 {
-    _status->update(status, options);
+    _status->update(uuid, status, options);
 }
 
 Account::Account(Accounts::Account* acc, QNetworkAccessManager* man, QObject *parent) : QObject(parent),
@@ -120,34 +120,34 @@ Account::~Account()
 {
 }
 
-void Account::destroy(uint tweet_id, const QVariantMap &options)
+void Account::destroy(const QString& uuid, uint tweet_id, const QVariantMap &options)
 {
     Q_D(Account);
-    d->destroy(tweet_id, options);
+    d->destroy(uuid, tweet_id, options);
 }
 
-void Account::retweet(uint tweet_id, const QVariantMap &options)
+void Account::retweet(const QString& uuid, uint tweet_id, const QVariantMap &options)
 {
     Q_D(Account);
-    d->retweet(tweet_id, options);
+    d->retweet(uuid, tweet_id, options);
 }
 
-void Account::retweets(uint tweet_id, const QVariantMap &options)
+void Account::retweets(const QString& uuid, uint tweet_id, const QVariantMap &options)
 {
     Q_D(Account);
-    d->retweets(tweet_id, options);
+    d->retweets(uuid, tweet_id, options);
 }
 
-void Account::show(uint tweet_id, const QVariantMap &options)
+void Account::show(const QString& uuid, uint tweet_id, const QVariantMap &options)
 {
     Q_D(Account);
-    d->show(tweet_id, options);
+    d->show(uuid, tweet_id, options);
 }
 
-void Account::update(const QString &status, const QVariantMap &options)
+void Account::update(const QString& uuid, const QString &status, const QVariantMap &options)
 {
     Q_D(Account);
-    d->update(status, options);
+    d->update(uuid, status, options);
 }
 
 } // core

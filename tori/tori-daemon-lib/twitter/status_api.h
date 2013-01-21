@@ -47,15 +47,15 @@ public:
     ~StatusAPI();
     
 public:
-   void retweets(uint tweet_id, QVariantMap options);
-   void show(uint tweet_id, QVariantMap options);
-   void destroy(uint tweet_id, QVariantMap options);
-   void update(QString status, QVariantMap options);
-   void retweet(uint tweet_id, QVariantMap options);
+   void retweets(QString uuid, uint tweet_id, QVariantMap options);
+   void show(QString uuid, uint tweet_id, QVariantMap options);
+   void destroy(QString uuid, uint tweet_id, QVariantMap options);
+   void update(QString uuid, QString status, QVariantMap options);
+   void retweet(QString uuid, uint tweet_id, QVariantMap options);
 
 Q_SIGNALS:
-    void updateFinished();
-    void updateError();
+    void updateFinished(QString uuid);
+    void updateError(QString uuid, int errorCode, QString errorMessage);
 
 private:
     QScopedPointer<StatusAPIPrivate> d_ptr;
