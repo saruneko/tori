@@ -24,12 +24,12 @@
 #ifndef STATUS_API_H
 #define STATUS_API_H
 
-#include <QNetworkAccessManager>
+#include <QtKOAuth>
 #include <QNetworkReply>
 #include <QObject>
 #include <QScopedPointer>
 #include <QVariantMap>
-#include "oauth.h"
+#include "core/account.h"
 
 namespace tori
 {
@@ -43,7 +43,7 @@ class StatusAPI : public QObject
     Q_OBJECT
     Q_DECLARE_PRIVATE(StatusAPI)
 public:
-    StatusAPI(OAuth* oauth, QNetworkAccessManager* man, QObject *parent = 0);
+    StatusAPI(tori::core::Account* account, KQOAuthManager* man, QObject *parent = 0);
     ~StatusAPI();
     
 public:
@@ -62,7 +62,9 @@ private:
 
 private:
     Q_PRIVATE_SLOT(d_func(), void onUpdateError(QNetworkReply::NetworkError))
-    Q_PRIVATE_SLOT(d_func(), void onUpdateFinished())
+    Q_PRIVATE_SLOT(d_func(), void onUpdateFinished(QByteArray ))
+    Q_PRIVATE_SLOT(d_func(), void onAuthorizedRequestDone())
+
 };
 
 } // twitter

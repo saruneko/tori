@@ -11,7 +11,9 @@ QT       -= gui
 TARGET = tori-daemon-lib
 QMAKE_CXXFLAGS += -std=c++0x
 TEMPLATE = lib
+CONFIG += kqoauth
 INCLUDEPATH += ../accounts-qt
+INCLUDEPATH += ../kqoauth
 
 DEFINES += TORIDAEMONLIB_LIBRARY
 
@@ -42,7 +44,6 @@ SOURCES += \
     keyring/keyring_signal_mapper.cpp \
     keyring/keyring.cpp \
     tori_daemon.cpp \ 
-    twitter/oauth.cpp \
     twitter/status_api.cpp
 
 HEADERS +=\
@@ -78,10 +79,13 @@ OTHER_FILES += \
     generate-dbus-secrets-client.sh \
     org.saruneko.tori.account_manager.xml
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../accounts-qt/Accounts/release/ -laccounts-qt
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../accounts-qt/Accounts/debug/ -laccounts-qt
-else:unix: LIBS += -L$$OUT_PWD/../accounts-qt/Accounts/ -laccounts-qt
+LIBS += -L$$OUT_PWD/../accounts-qt/Accounts/ -laccounts-qt
 
 INCLUDEPATH += $$PWD/../accounts-qt/Accounts
 DEPENDPATH += $$PWD/../accounts-qt/Accounts
 
+
+LIBS += -L$$OUT_PWD/../kqoauth/lib/ -lkqoauth
+
+INCLUDEPATH += $$PWD/../kqoauth/include $$PWD/../kqoauth/src
+DEPENDPATH += $$PWD/../kqoauth/lib

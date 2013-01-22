@@ -27,7 +27,6 @@
 #include <QDebug>
 #include <QMutex>
 
-#include "twitter/oauth.h"
 #include "twitter/status_api.h"
 
 
@@ -41,7 +40,7 @@ class AccountPrivate
 {
     Q_DECLARE_PUBLIC(Account)
 public:
-    AccountPrivate(Accounts::Account* acc, QNetworkAccessManager* man, Account* parent);
+    AccountPrivate(Accounts::Account* acc, KQOAuthManager* man, Account* parent);
 
     void destroy(const QString& uuid, uint tweet_id, const QVariantMap &options);
     void retweet(const QString& uuid, uint tweet_id, const QVariantMap &options);
@@ -56,9 +55,12 @@ private:
     Accounts::Account* _acc;
     Account* q_ptr;
     Accounts::AccountService* _serv;
-    QNetworkAccessManager* _man;
-    twitter::OAuth* _oauth;
+    KQOAuthManager* _man;
     twitter::StatusAPI* _status;
+    QString _consumerKey;
+    QString _consumerSecret;
+    QString _tokenKey;
+    QString _tokenSecret;
 
 };
 
@@ -66,7 +68,7 @@ private:
 const QString AccountPrivate::DEFAULT_TOKEN = "qMBra1U4bpNYvDz947M5Q";
 const QString AccountPrivate::DEFAULT_TOKEN_SECRET = "Lzdkhg0WvGYFzD9tnsuwC0zYmpJ4z7HrZl3yOxU1g";
 
-AccountPrivate::AccountPrivate(Accounts::Account* acc, QNetworkAccessManager* man, Account* parent) :
+AccountPrivate::AccountPrivate(Accounts::Account* acc, KQOAuthManager* man, Account* parent) :
     _acc(acc),
     _man(man),
     q_ptr(parent)
@@ -79,11 +81,12 @@ AccountPrivate::AccountPrivate(Accounts::Account* acc, QNetworkAccessManager* ma
     Accounts::AuthData data = _serv->authData();
     QVariantMap params = data.parameters();
 
-    _oauth = new twitter::OAuth(params["ConsumerKey"].toString().toUtf8(),
-        params["ConsumerSecret"].toString().toUtf8(),
-        AccountPrivate::DEFAULT_TOKEN.toUtf8(),
-        AccountPrivate::DEFAULT_TOKEN_SECRET.toUtf8());
-    _status = new twitter::StatusAPI(_oauth, _man);
+    _consumerKey = params["ConsumerKey"].toString();
+    _consumerSecret = params["ConsumerSecret"].toString();
+    _tokenKey = AccountPrivate::DEFAULT_TOKEN;
+    _tokenSecret = AccountPrivate::DEFAULT_TOKEN_SECRET;
+
+    _status = new twitter::StatusAPI(q_ptr, _man);
 }
 
 void AccountPrivate::destroy(const QString& uuid, uint tweet_id, const QVariantMap &options)
@@ -111,13 +114,37 @@ void AccountPrivate::update(const QString& uuid, const QString &status, const QV
     _status->update(uuid, status, options);
 }
 
-Account::Account(Accounts::Account* acc, QNetworkAccessManager* man, QObject *parent) : QObject(parent),
+Account::Account(Accounts::Account* acc, KQOAuthManager* man, QObject *parent) : QObject(parent),
     d_ptr(new AccountPrivate(acc, man, this))
 {
 }
 
 Account::~Account()
 {
+}
+
+QString Account::consumerKey()
+{
+    Q_D(Account);
+    return d->_consumerKey;
+}
+
+QString Account::consumerSecret()
+{
+    Q_D(Account);
+    return d->_consumerSecret;
+}
+
+QString Account::tokenKey()
+{
+    Q_D(Account);
+    return d->_tokenKey;
+}
+
+QString Account::tokenSecret()
+{
+    Q_D(Account);
+    return d->_tokenSecret;
 }
 
 void Account::destroy(const QString& uuid, uint tweet_id, const QVariantMap &options)

@@ -42,7 +42,7 @@ class AccountManagerPrivate
     Q_DECLARE_PUBLIC(AccountManager)
 
 public:
-    AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key, QNetworkAccessManager* man, AccountManager* parent);
+    AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key, KQOAuthManager* man, AccountManager* parent);
 
     QHash<QString, QDBusObjectPath> getAccounts();
 
@@ -58,7 +58,7 @@ private:
 private:
     AccountManager* q_ptr;
     Accounts::Manager* _accMan;
-    QNetworkAccessManager* _netMan;
+    KQOAuthManager* _netMan;
     QHash<Accounts::AccountId, QPair<Account*, AccountAdaptor*> > _accounts;
     tori::keyring::Keyring* _key;
     QDBusConnection _conn;
@@ -66,7 +66,7 @@ private:
 
 QString AccountManagerPrivate::BASE_ACCOUNT_URL = "/org/saruneko/tori/account/%1";
 
-AccountManagerPrivate::AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key, QNetworkAccessManager* man,
+AccountManagerPrivate::AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key, KQOAuthManager* man,
     AccountManager* parent) :
     q_ptr(parent),
     _conn(connection),
@@ -175,7 +175,7 @@ void AccountManagerPrivate::onAccountUpdated(Accounts::AccountId acc_id)
     }
 }
 
-AccountManager::AccountManager(QDBusConnection connection, tori::keyring::Keyring* key, QNetworkAccessManager* man,
+AccountManager::AccountManager(QDBusConnection connection, tori::keyring::Keyring* key, KQOAuthManager* man,
     QObject *parent) :
     QObject(parent),
     d_ptr(new AccountManagerPrivate(connection, key, man, this))

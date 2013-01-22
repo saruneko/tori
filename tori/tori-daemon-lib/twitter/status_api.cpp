@@ -37,7 +37,7 @@ class StatusAPIPrivate
 {
     Q_DECLARE_PUBLIC(StatusAPI)
 public:
-    StatusAPIPrivate(OAuth* oauth, QNetworkAccessManager* man, StatusAPI* parent);
+    StatusAPIPrivate(tori::core::Account* acc, KQOAuthManager* man, StatusAPI* parent);
 
     void retweets(QString uuid, uint tweet_id, QVariantMap options);
     void show(QString uuid, uint tweet_id, QVariantMap options);
@@ -46,8 +46,9 @@ public:
     void retweet(QString uuid, uint tweet_id, QVariantMap options);
 
 protected:
-    void onUpdateFinished();
+    void onUpdateFinished(QByteArray response);
     void onUpdateError(QNetworkReply::NetworkError error);
+    void onAuthorizedRequestDone();
 
 private:
     static const QString SHOW_URL;
@@ -57,8 +58,8 @@ private:
     static const QString RETWEET_URL;
 
     StatusAPI* q_ptr;
-    QSharedPointer<OAuth> _oauth;
-    QSharedPointer<QNetworkAccessManager> _man;
+    QSharedPointer<tori::core::Account> _acc;
+    QSharedPointer<KQOAuthManager> _man;
 };
 
 const QString StatusAPIPrivate::SHOW_URL = "https://api.twitter.com/1.1/statuses/show.json";
@@ -67,16 +68,16 @@ const QString StatusAPIPrivate::DESTROY_URL = "https://api.twitter.com/1.1/statu
 const QString StatusAPIPrivate::UPDATE_URL = "https://api.twitter.com/1.1/statuses/update.json";
 const QString StatusAPIPrivate::RETWEET_URL = "https://api.twitter.com/1.1/statuses/retweet/%1.json";
 
-StatusAPIPrivate::StatusAPIPrivate(OAuth* oauth, QNetworkAccessManager* man, StatusAPI* parent) :
+StatusAPIPrivate::StatusAPIPrivate(tori::core::Account* acc, KQOAuthManager* man, StatusAPI* parent) :
     q_ptr(parent),
-    _oauth(oauth),
+    _acc(acc),
     _man(man)
 {
 }
 
 void StatusAPIPrivate::retweets(QString uuid, uint tweet_id, QVariantMap options)
 {
-    qDebug() << "retweets(" << tweet_id << ")";
+/*    qDebug() << "retweets(" << tweet_id << ")";
 
     QUrl url(StatusAPIPrivate::RETWEETS_URL.arg(tweet_id));
     if (options.contains("trim_user"))
@@ -95,10 +96,12 @@ void StatusAPIPrivate::retweets(QString uuid, uint tweet_id, QVariantMap options
     QNetworkReply *reply = _man->get(req);
 
     // TODO: connect to reply signal
+*/
 }
 
 void StatusAPIPrivate::show(QString uuid, uint tweet_id, QVariantMap options)
 {
+/*
     qDebug() << "show(" << tweet_id << ")";
 
     QUrl url(StatusAPIPrivate::SHOW_URL);
@@ -126,10 +129,12 @@ void StatusAPIPrivate::show(QString uuid, uint tweet_id, QVariantMap options)
     QNetworkReply *reply = _man->get(req);
 
     // TODO: connect to reply signal
+*/
 }
 
 void StatusAPIPrivate::destroy(QString uuid, uint tweet_id, QVariantMap options)
 {
+/*
     qDebug() << "destroy(" << tweet_id << ")";
     QUrl url(StatusAPIPrivate::DESTROY_URL.arg(tweet_id));
 
@@ -145,16 +150,32 @@ void StatusAPIPrivate::destroy(QString uuid, uint tweet_id, QVariantMap options)
     QNetworkReply *reply = _man->post(req, QByteArray());
 
     // TODO: connecto to reply signal
+*/
 }
 
 void StatusAPIPrivate::update(QString uuid, QString status, QVariantMap options)
 {
     Q_Q(StatusAPI);
-    QUrl url(StatusAPIPrivate::UPDATE_URL);
-    qDebug() << "show(" << status << ")";
-    url.addQueryItem("status", status);
+    KQOAuthRequest* oauthRequest = new KQOAuthRequest();
 
-    if (options.contains("in_reply_to_status_id"))
+    oauthRequest->initRequest(KQOAuthRequest::AuthorizedRequest, QUrl(StatusAPIPrivate::UPDATE_URL));
+    oauthRequest->setConsumerKey(_acc->consumerKey());
+    oauthRequest->setConsumerSecretKey(_acc->consumerSecret());
+    oauthRequest->setToken(_acc->tokenKey());
+    oauthRequest->setTokenSecret(_acc->tokenSecret());
+
+    KQOAuthParameters params;
+    params.insert("status", status);
+    oauthRequest->setAdditionalParameters(params);
+    _man->executeRequest(oauthRequest);
+
+    q->connect(_man.data(), SIGNAL(requestReady(QByteArray)),
+        q, SLOT(onUpdateFinished(QByteArray)));
+
+    q->connect(_man.data(), SIGNAL(authorizedRequestDone()),
+        q, SLOT(onAuthorizedRequestDone()));
+
+   /* if (options.contains("in_reply_to_status_id"))
     {
         qDebug() << "in_reply_to_status_id" << options["in_reply_to_status_id"];
         url.addQueryItem("in_reply_to_status_id", QString::number(options["in_reply_to_status_id"].toInt()));
@@ -178,49 +199,37 @@ void StatusAPIPrivate::update(QString uuid, QString status, QVariantMap options)
     {
         qDebug() << "display_coordinates" << options["display_coordinates"];
         url.addQueryItem("display_coordinates", options["display_coordinates"].toBool()? "true" : "false");
-    }
+    }*/
 
-    QNetworkRequest req(url);
-    req.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
-    req.setRawHeader(OAuth::AUTH_HEADER, _oauth->generateAuthorizationHeader(url, OAuth::POST));
-    QNetworkReply* reply = _man->post(req, QByteArray());
-
-    q->connect(reply, SIGNAL(finished()), q, SLOT(onUpdateFinished()));
-    q->connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-        q, SLOT(onUpdateError(QNetworkReply::NetworkError)));
 }
 
-void StatusAPIPrivate::onUpdateFinished()
+void StatusAPIPrivate::onUpdateFinished(QByteArray response)
 {
     Q_Q(StatusAPI);
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(q->sender());
-    qDebug() << "onUpdateFinished with error" << reply->error();
+    QString jsonString(response);
+    qDebug() << jsonString;
+}
 
-    if (reply->error() == QNetworkReply::NoError)
-    {
-        // Reading the data from the response
-        QByteArray bytes = reply->readAll();
-        QString jsonString(bytes); // string
-        qDebug() << jsonString;
-    }
-    else
-    {
-        qDebug() << "Dealing with error.";
-    }
+void StatusAPIPrivate::onAuthorizedRequestDone()
+{
+    qDebug() << "Request sent to Twitter!";
 }
 
 void StatusAPIPrivate::onUpdateError(QNetworkReply::NetworkError error)
 {
+/*
     Q_Q(StatusAPI);
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(q->sender());
     // Reading the data from the response
     QByteArray bytes = reply->readAll();
     QString jsonString(bytes); // string
     qDebug() << jsonString;
+*/
 }
 
 void StatusAPIPrivate::retweet(QString uuid, uint tweet_id, QVariantMap options)
 {
+/*
     QUrl url(StatusAPIPrivate::RETWEET_URL.arg(tweet_id));
     if (options.contains("trim_user"))
     {
@@ -233,11 +242,12 @@ void StatusAPIPrivate::retweet(QString uuid, uint tweet_id, QVariantMap options)
     QNetworkReply *reply = _man->post(req, QByteArray());
 
     // TODO: connecto to reply signal
+*/
 }
 
-StatusAPI::StatusAPI(OAuth* oauth, QNetworkAccessManager* man, QObject *parent) :
+StatusAPI::StatusAPI(tori::core::Account* acc, KQOAuthManager* man, QObject *parent) :
     QObject(parent),
-    d_ptr(new StatusAPIPrivate(oauth, man, this))
+    d_ptr(new StatusAPIPrivate(acc, man, this))
 {
 }
 

@@ -26,6 +26,7 @@
 
 
 #include <Accounts/Manager>
+#include <QtKOAuth>
 #include <QNetworkAccessManager>
 #include <QScopedPointer>
 #include <QDBusConnection>
@@ -48,7 +49,7 @@ class AccountManager : public QObject
     Q_OBJECT
 public:
     explicit AccountManager(QDBusConnection connection,
-        tori::keyring::Keyring* key, QNetworkAccessManager* man, QObject *parent = 0);
+        tori::keyring::Keyring* key, KQOAuthManager* man, QObject *parent = 0);
     ~AccountManager();
 
 public slots:

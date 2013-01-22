@@ -22,6 +22,7 @@
  */
 
 #include <QDebug>
+#include <QtKOAuth>
 #include "./dbus/dbus_helper.h"
 #include "tori_daemon.h"
 
@@ -38,7 +39,7 @@ ToriDaemon::ToriDaemon(QObject *parent) :
     // create the keyring that will be used to store and retrieve the different
     // tokens
     _keyring = new keyring::Keyring(_conn);
-    _man = new QNetworkAccessManager();
+    _man = new KQOAuthManager();
     _accManager = new AccountManager(_conn, _keyring, _man);
 }
 
