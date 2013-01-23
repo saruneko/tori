@@ -44,6 +44,12 @@ public:
     explicit Account(Accounts::Account* acc, QObject *parent = 0);
     ~Account();
 
+public:
+    QString tokenKey();
+    QString tokenSecret();
+    QString consumerKey();
+    QString consumerSecret();
+
 public slots:
     void authenticate();
 

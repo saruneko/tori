@@ -92,7 +92,7 @@ private:
 
     QString _consumerKey;
     QString _consumerSecret;
-    QString _token;
+    QString _tokenKey;
     QString _tokenSecret;
 
     // mutex to ensure that we do not try to auth to many times
@@ -131,7 +131,7 @@ void AccountPrivate::authenticate()
 
     if (_consumerKey.isEmpty()
         || _consumerSecret.isEmpty()
-        || _token.isEmpty()
+        || _tokenKey.isEmpty()
         || _tokenSecret.isEmpty()) // we are not auth already
     {
         // TODO: look into keyring
@@ -173,7 +173,7 @@ void AccountPrivate::onResponse(const SignOn::SessionData& sessionData)
     Q_Q(Account);
     qDebug() << "Authentication done";
     OAuthTokenData response = sessionData.data<OAuthTokenData>();
-    _token = response.AccessToken();
+    _tokenKey = response.AccessToken();
     _tokenSecret = response.TokenSecret();
 
     // TODO: store in keyring
@@ -204,6 +204,30 @@ void Account::authenticate()
 
 Account::~Account()
 {
+}
+
+QString Account::tokenKey()
+{
+    Q_D(Account);
+    return d->_tokenKey;
+}
+
+QString Account::tokenSecret()
+{
+    Q_D(Account);
+    return d->_tokenSecret;
+}
+
+QString Account::consumerKey()
+{
+    Q_D(Account);
+    return d->_consumerKey;
+}
+
+QString Account::consumerSecret()
+{
+    Q_D(Account);
+    return d->_consumerSecret;
 }
 
 } // core
