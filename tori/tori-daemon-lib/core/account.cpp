@@ -75,8 +75,13 @@ public:
     void onError(const SignOn::Error& error);
 
 private:
-    static const QString DEFAULT_TOKEN;
-    static const QString DEFAULT_TOKEN_SECRET;
+
+    static QString CONSUMER_KEY;
+    static QString CONSUMER_SECRET;
+    static QString REQUEST_ENDPOINT;
+    static QString TOKEN_ENDPOINT;
+    static QString AUTHERIZATION_ENDPOINT;
+    static QString CALLBACK_ENDPOINT;
 
     Accounts::Account* _acc;
     Account* q_ptr;
@@ -90,11 +95,17 @@ private:
     QString _token;
     QString _tokenSecret;
 
+    // mutex to ensure that we do not try to auth to many times
+    QMutex _mutex;
+
 };
 
-// default values from gwibber
-const QString AccountPrivate::DEFAULT_TOKEN = "IOW164CqEJdlrkXlrQ17GA";
-const QString AccountPrivate::DEFAULT_TOKEN_SECRET = "mJ38xSp6kqUzB2XMOq9USrmTgWAXOqXpS0g6WUEk";
+QString AccountPrivate::CONSUMER_KEY = "ConsumerKey";
+QString AccountPrivate::CONSUMER_SECRET = "ConsumerSecret";
+QString AccountPrivate::REQUEST_ENDPOINT = "RequestEndpoint";
+QString AccountPrivate::TOKEN_ENDPOINT = "TokenEndpoint";
+QString AccountPrivate::AUTHERIZATION_ENDPOINT = "AuthorizationEndpoint";
+QString AccountPrivate::CALLBACK_ENDPOINT = "Callback";
 
 AccountPrivate::AccountPrivate(Accounts::Account* acc, Account* parent) :
     _acc(acc),
@@ -108,51 +119,76 @@ AccountPrivate::AccountPrivate(Accounts::Account* acc, Account* parent) :
     // TODO: what happens when we have more than one service??
     _serv = new Accounts::AccountService(_acc, services.at(0));
 
-    Accounts::AuthData data = _serv->authData();
-    QVariantMap params = data.parameters();
-    foreach(QString key, params.keys())
-    {
-        qDebug() << key << " with data " << params[key];
-    }
-
-    _consumerKey = params["ConsumerKey"].toString().toUtf8();
-    _consumerSecret = params["ConsumerSecret"].toString().toUtf8();
-
 }
 
 void AccountPrivate::authenticate()
 {
     Q_Q(Account);
-    SignOn::AuthSession *_session = _identity->createSession("oauth2");
-    q->connect(_session, SIGNAL(response(const SignOn::SessionData &)),
-        q, SLOT(onResponse(const SignOn::SessionData &)));
-    q->connect(_session, SIGNAL(error(const SignOn::Error &)),
-        q, SLOT(onError(const SignOn::Error &)));
 
-    OAuthData data;
-    data.setRequestEndpoint("https://api.twitter.com/oauth/request_token");
-    data.setTokenEndpoint("https://api.twitter.com/oauth/access_token");
-    data.setAuthorizationEndpoint("https://api.twitter.com/oauth/authorize");
-    data.setConsumerKey(_consumerKey);
-    data.setConsumerSecret(_consumerSecret);
-    data.setCallback("https://wiki.ubuntu.com/");
-    data.setRealm("");
-    data.setUserName(_acc->displayName());
+    // lock and either unlock because we already have the data or in the call backs
 
-    _session->process(data, "user_agent");
+    _mutex.lock();
 
+    if (_consumerKey.isEmpty()
+        || _consumerSecret.isEmpty()
+        || _token.isEmpty()
+        || _tokenSecret.isEmpty()) // we are not auth already
+    {
+        // TODO: look into keyring
+        Accounts::AuthData authData = _serv->authData();
+        QVariantMap params = authData.parameters();
+
+        // store them to simplify the retrieval for the oauth header signature
+        _consumerKey = params[AccountPrivate::CONSUMER_KEY].toString().toUtf8();
+        _consumerSecret = params[AccountPrivate::CONSUMER_SECRET].toString().toUtf8();
+
+        SignOn::AuthSession *_session = _identity->createSession(authData.method());
+        q->connect(_session, SIGNAL(response(const SignOn::SessionData &)),
+            q, SLOT(onResponse(const SignOn::SessionData &)));
+        q->connect(_session, SIGNAL(error(const SignOn::Error &)),
+            q, SLOT(onError(const SignOn::Error &)));
+
+        OAuthData data;
+        data.setRequestEndpoint(params[AccountPrivate::REQUEST_ENDPOINT].toString());
+        data.setTokenEndpoint(params[AccountPrivate::TOKEN_ENDPOINT].toString());
+        data.setAuthorizationEndpoint(params[AccountPrivate::AUTHERIZATION_ENDPOINT].toString());
+        data.setConsumerKey(_consumerKey);
+        data.setConsumerSecret(_consumerSecret);
+        data.setCallback(params[AccountPrivate::CALLBACK_ENDPOINT].toString());
+        data.setRealm("");
+        data.setUserName(_acc->displayName());
+
+        _session->process(data, authData.mechanism());
+    }
+    else
+    {
+        // emit signal we already have the data :)
+        q->authenticated();
+        _mutex.unlock();
+    }
 }
 
 void AccountPrivate::onResponse(const SignOn::SessionData& sessionData)
 {
+    Q_Q(Account);
+    qDebug() << "Authentication done";
     OAuthTokenData response = sessionData.data<OAuthTokenData>();
-    qDebug() << "Access token:" << response.AccessToken();
-    qDebug() << "Access secret:" << response.TokenSecret();
+    _token = response.AccessToken();
+    _tokenSecret = response.TokenSecret();
+
+    // TODO: store in keyring
+
+    // emit signal and unlock
+    q->authenticated();
+    _mutex.unlock();
 }
 
 void AccountPrivate::onError(const SignOn::Error& error)
 {
+    Q_Q(Account);
     qDebug() << "Got error:" << error.message();
+    q->authenticationError(0, error.message());
+    _mutex.unlock();
 }
 
 Account::Account(Accounts::Account* acc, QObject *parent) : QObject(parent),

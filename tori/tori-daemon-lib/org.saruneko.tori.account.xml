@@ -2,8 +2,11 @@
   <interface name="com.saruneko.tori.Account">
 
     <method name="authenticate" />
+
+    <signal name="authenticated" />
     <signal name="authenticationError">
-        <arg name="error" type="u" direction="out"/>
+        <arg name="errorCode" type="u" direction="out"/>
+        <arg name="error" type="s" direction="out"/>
     </signal>
 
  </interface>

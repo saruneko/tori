@@ -48,7 +48,8 @@ public slots:
     void authenticate();
 
 signals:
-    void authenticationError(uint error);
+    void authenticated();
+    void authenticationError(uint errorCode, QString error);
 
 private:
     Q_PRIVATE_SLOT(d_func(), void onResponse(const SignOn::SessionData&))

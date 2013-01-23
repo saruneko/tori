@@ -31,6 +31,7 @@ class AccountAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Introspection", ""
 "  <interface name=\"com.saruneko.tori.Account\">\n"
 "    <method name=\"authenticate\"/>\n"
+"    <signal name=\"authenticated\" />\n"
 "    <signal name=\"authenticationError\">\n"
 "      <arg direction=\"out\" type=\"u\" name=\"error\"/>\n"
 "    </signal>\n"
@@ -44,6 +45,7 @@ public: // PROPERTIES
 public Q_SLOTS: // METHODS
     void authenticate();
 Q_SIGNALS: // SIGNALS
+    void authenticated();
     void authenticationError(uint error);
 };
 

@@ -18,7 +18,7 @@ INCLUDEPATH += ../accounts-qt
 SOURCES += main.cpp
 
 # accounts-qt dependency
-LIBS += -L$$OUT_PWD/../accounts-qt/Accounts/ -laccounts-qt
+LIBS += -L$$OUT_PWD/../accounts-qt/Accounts/ -laccounts-qt5
 
 INCLUDEPATH += $$PWD/../accounts-qt/Accounts
 DEPENDPATH += $$PWD/../accounts-qt/Accounts
