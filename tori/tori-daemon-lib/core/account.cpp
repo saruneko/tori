@@ -21,11 +21,15 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "account.h"
 #include <Accounts/AccountService>
 #include <Accounts/AuthData>
+#include <SignOn/AuthSession>
+#include <SignOn//Identity>
+#include <SignOn//Error>
+#include <SignOn/SessionData>
 #include <QDebug>
 #include <QMutex>
+#include "account.h"
 
 
 namespace tori
@@ -34,11 +38,41 @@ namespace tori
 namespace core
 {
 
+class OAuthData : public SignOn::SessionData
+{
+public:
+    SIGNON_SESSION_DECLARE_PROPERTY(QString, RequestEndpoint)
+    SIGNON_SESSION_DECLARE_PROPERTY(QString, TokenEndpoint)
+    SIGNON_SESSION_DECLARE_PROPERTY(QString, AuthorizationEndpoint)
+    SIGNON_SESSION_DECLARE_PROPERTY(QString, ConsumerKey)
+    SIGNON_SESSION_DECLARE_PROPERTY(QString, ConsumerSecret)
+    SIGNON_SESSION_DECLARE_PROPERTY(QString, Callback)
+    SIGNON_SESSION_DECLARE_PROPERTY(QString, Realm)
+    SIGNON_SESSION_DECLARE_PROPERTY(QString, UserName)
+};
+
+class OAuthTokenData : public SignOn::SessionData
+{
+public:
+    OAuthTokenData(const QVariantMap &data = QVariantMap()):
+        SignOn::SessionData(data) {}
+
+    SIGNON_SESSION_DECLARE_PROPERTY(QString, AccessToken)
+    SIGNON_SESSION_DECLARE_PROPERTY(QString, TokenSecret)
+    SIGNON_SESSION_DECLARE_PROPERTY(QString, UserId)
+    SIGNON_SESSION_DECLARE_PROPERTY(QString, ScreenName)
+};
+
+
 class AccountPrivate
 {
     Q_DECLARE_PUBLIC(Account)
 public:
     AccountPrivate(Accounts::Account* acc, Account* parent);
+
+    void authenticate();
+    void onResponse(const SignOn::SessionData& sessionData);
+    void onError(const SignOn::Error& error);
 
 private:
     static const QString DEFAULT_TOKEN;
@@ -47,11 +81,15 @@ private:
     Accounts::Account* _acc;
     Account* q_ptr;
     Accounts::AccountService* _serv;
+
+    SignOn::Identity* _identity;
+    SignOn::AuthSession* _session;
+
     QString _consumerKey;
     QString _consumerSecret;
     QString _token;
     QString _tokenSecret;
-    QMutex _mutex;
+
 };
 
 // default values from gwibber
@@ -60,8 +98,11 @@ const QString AccountPrivate::DEFAULT_TOKEN_SECRET = "mJ38xSp6kqUzB2XMOq9USrmTgW
 
 AccountPrivate::AccountPrivate(Accounts::Account* acc, Account* parent) :
     _acc(acc),
-    q_ptr(parent)
+    q_ptr(parent),
+    _session(0)
 {
+    _identity = SignOn::Identity::newIdentity(SignOn::IdentityInfo(), q_ptr);
+
     QList<Accounts::Service> services = _acc->services();
 
     // TODO: what happens when we have more than one service??
@@ -69,18 +110,60 @@ AccountPrivate::AccountPrivate(Accounts::Account* acc, Account* parent) :
 
     Accounts::AuthData data = _serv->authData();
     QVariantMap params = data.parameters();
+    foreach(QString key, params.keys())
+    {
+        qDebug() << key << " with data " << params[key];
+    }
 
     _consumerKey = params["ConsumerKey"].toString().toUtf8();
     _consumerSecret = params["ConsumerSecret"].toString().toUtf8();
 
-    qDebug() << "Using default token and token secret.";
-    _token = AccountPrivate::DEFAULT_TOKEN.toUtf8();
-    _tokenSecret = AccountPrivate::DEFAULT_TOKEN_SECRET.toUtf8();
+}
+
+void AccountPrivate::authenticate()
+{
+    Q_Q(Account);
+    SignOn::AuthSession *_session = _identity->createSession("oauth2");
+    q->connect(_session, SIGNAL(response(const SignOn::SessionData &)),
+        q, SLOT(onResponse(const SignOn::SessionData &)));
+    q->connect(_session, SIGNAL(error(const SignOn::Error &)),
+        q, SLOT(onError(const SignOn::Error &)));
+
+    OAuthData data;
+    data.setRequestEndpoint("https://api.twitter.com/oauth/request_token");
+    data.setTokenEndpoint("https://api.twitter.com/oauth/access_token");
+    data.setAuthorizationEndpoint("https://api.twitter.com/oauth/authorize");
+    data.setConsumerKey(_consumerKey);
+    data.setConsumerSecret(_consumerSecret);
+    data.setCallback("https://wiki.ubuntu.com/");
+    data.setRealm("");
+    data.setUserName(_acc->displayName());
+
+    _session->process(data, "user_agent");
+
+}
+
+void AccountPrivate::onResponse(const SignOn::SessionData& sessionData)
+{
+    OAuthTokenData response = sessionData.data<OAuthTokenData>();
+    qDebug() << "Access token:" << response.AccessToken();
+    qDebug() << "Access secret:" << response.TokenSecret();
+}
+
+void AccountPrivate::onError(const SignOn::Error& error)
+{
+    qDebug() << "Got error:" << error.message();
 }
 
 Account::Account(Accounts::Account* acc, QObject *parent) : QObject(parent),
     d_ptr(new AccountPrivate(acc, this))
 {
+}
+
+void Account::authenticate()
+{
+    Q_D(Account);
+    d->authenticate();
 }
 
 Account::~Account()

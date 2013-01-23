@@ -7,6 +7,3 @@
 [submodule "tori/signon"]
 	path = tori/signon
 	url = https://code.google.com/p/accounts-sso.signond/
-[submodule "tori/signon-oauth2"]
-	path = tori/signon-oauth2
-	url = https://code.google.com/p/accounts-sso.signon-plugin-oauth2/

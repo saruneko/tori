@@ -44,9 +44,15 @@ public:
     explicit Account(Accounts::Account* acc, QObject *parent = 0);
     ~Account();
 
-signals:
+public slots:
+    void authenticate();
 
+signals:
     void authenticationError(uint error);
+
+private:
+    Q_PRIVATE_SLOT(d_func(), void onResponse(const SignOn::SessionData&))
+    Q_PRIVATE_SLOT(d_func(), void onError(const SignOn::Error&))
 
 private:
     QScopedPointer<AccountPrivate> d_ptr;

@@ -33,3 +33,9 @@ AccountAdaptor::~AccountAdaptor()
     // destructor
 }
 
+void AccountAdaptor::authenticate()
+{
+    // handle method call com.saruneko.tori.Account.authenticate
+    QMetaObject::invokeMethod(parent(), "authenticate");
+}
+

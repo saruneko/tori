@@ -9,8 +9,8 @@
  * before re-generating it.
  */
 
-#ifndef ACCOUNT_ADAPTOR_H_1358358230
-#define ACCOUNT_ADAPTOR_H_1358358230
+#ifndef ACCOUNT_ADAPTOR_H_1358887333
+#define ACCOUNT_ADAPTOR_H_1358887333
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -30,6 +30,7 @@ class AccountAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "com.saruneko.tori.Account")
     Q_CLASSINFO("D-Bus Introspection", ""
 "  <interface name=\"com.saruneko.tori.Account\">\n"
+"    <method name=\"authenticate\"/>\n"
 "    <signal name=\"authenticationError\">\n"
 "      <arg direction=\"out\" type=\"u\" name=\"error\"/>\n"
 "    </signal>\n"
@@ -41,6 +42,7 @@ public:
 
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
+    void authenticate();
 Q_SIGNALS: // SIGNALS
     void authenticationError(uint error);
 };

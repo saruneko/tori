@@ -1,7 +1,10 @@
 <node>
   <interface name="com.saruneko.tori.Account">
+
+    <method name="authenticate" />
     <signal name="authenticationError">
         <arg name="error" type="u" direction="out"/>
     </signal>
+
  </interface>
 </node>
