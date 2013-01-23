@@ -24,9 +24,8 @@
 #ifndef TORI_DAEMON_H
 #define TORI_DAEMON_H
 
-#include <QDBusConnection>
-#include <QObject>
-#include <Accounts/Account>
+#include <QtDBus/QDBusConnection>
+#include <QtCore/QObject>
 #include "keyring/keyring.h"
 #include "core/account_manager.h"
 #include "core/account_manager_adaptor.h"
