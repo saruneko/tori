@@ -28,6 +28,7 @@
 #include <QObject>
 #include <QScopedPointer>
 #include <keyring/keyring.h>
+#include "keyring/keyring.h"
 
 namespace tori
 {
@@ -41,12 +42,26 @@ class Account : public QObject
     Q_DECLARE_PRIVATE(Account)
     Q_OBJECT
 public:
-    explicit Account(Accounts::Account* acc, QObject *parent = 0);
+    explicit Account(Accounts::Account* acc, keyring::Keyring* key, QObject *parent = 0);
     ~Account();
 
-signals:
+public:
+    QString tokenKey();
+    QString tokenSecret();
+    QString consumerKey();
+    QString consumerSecret();
 
-    void authenticationError(uint error);
+public slots:
+    void authenticate();
+
+signals:
+    void authenticated();
+    void authenticationError(uint errorCode, QString error);
+
+private:
+    Q_PRIVATE_SLOT(d_func(), void onResponse(const SignOn::SessionData&))
+    Q_PRIVATE_SLOT(d_func(), void onError(const SignOn::Error&))
+    Q_PRIVATE_SLOT(d_func(), void onCredentialsFound(Accounts::AccountId, QString, QString, bool))
 
 private:
     QScopedPointer<AccountPrivate> d_ptr;

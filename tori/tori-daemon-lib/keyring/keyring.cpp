@@ -686,8 +686,8 @@ void KeyringPrivate::onGetSecret(QDBusPendingCallWatcher* call, QObject* obj)
     ASSERT_DBUS_REPLY_IS_ERROR(call, reply, q->credentialsError(data->accId))
 
     Secret secret =  reply.argumentAt<0>();
-    QJsonDocument jsonData = QJsonDocument::fromBinaryData(secret.getValue());
-    QVariantMap result = jsonData.toVariant().toMap();
+    QJsonDocument jsonData = QJsonDocument::fromJson(secret.getValue());
+    QJsonObject result = jsonData.object();
 
     // assert that the info is present
     if (!result.contains(KeyringPrivate::TOKEN_KEY) || !result.contains(KeyringPrivate::TOKEN_SECRET_KEY))
