@@ -114,7 +114,7 @@ QHash<QString, QDBusObjectPath> AccountManagerPrivate::getAccounts()
 
             if (!_accounts.contains(acc->id()))
             {
-                Account* account = new Account(acc, _netMan, q);
+                Account* account = new Account(acc, _key, _netMan, q);
                 AccountAdaptor* adaptor = new AccountAdaptor(account);
 
                 QPair<Account*, AccountAdaptor*> pair;
@@ -136,7 +136,7 @@ void AccountManagerPrivate::onAccountCreated(Accounts::AccountId acc_id)
     if(isTwitterAccount(acc_id))
     {
         Accounts::Account* acc = _accMan->account(acc_id);
-        Account* account = new Account(acc, _netMan, q);
+        Account* account = new Account(acc, _key, _netMan, q);
         AccountAdaptor* adaptor = new AccountAdaptor(acc);
         QPair<Account*, AccountAdaptor*> pair;
         pair.first = account;

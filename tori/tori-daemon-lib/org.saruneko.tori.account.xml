@@ -1,7 +1,13 @@
 <node>
   <interface name="com.saruneko.tori.Account">
+
+    <!-- Auth methods -->
+    <method name="authenticate" />
+
+    <signal name="authenticated" />
     <signal name="authenticationError">
-        <arg name="error" type="u" direction="out"/>
+        <arg name="errorCode" type="u" direction="out"/>
+        <arg name="error" type="s" direction="out"/>
     </signal>
 
     <!-- status API -->
@@ -37,6 +43,5 @@
         <arg name="options" type="a{sv}" direction="in"/>
     </method>
 
-    <!-- status API signals -->
  </interface>
 </node>

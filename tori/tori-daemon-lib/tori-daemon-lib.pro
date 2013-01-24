@@ -79,13 +79,22 @@ OTHER_FILES += \
     generate-dbus-secrets-client.sh \
     org.saruneko.tori.account_manager.xml
 
-LIBS += -L$$OUT_PWD/../accounts-qt/Accounts/ -laccounts-qt
+# accounts-qt dependency
+
+LIBS += -L$$OUT_PWD/../accounts-qt/Accounts/ -laccounts-qt5
 
 INCLUDEPATH += $$PWD/../accounts-qt/Accounts
 DEPENDPATH += $$PWD/../accounts-qt/Accounts
 
+# kqouath dependecy
 
 LIBS += -L$$OUT_PWD/../kqoauth/lib/ -lkqoauth
 
 INCLUDEPATH += $$PWD/../kqoauth/include $$PWD/../kqoauth/src
 DEPENDPATH += $$PWD/../kqoauth/lib
+
+# libsignon-qt dependency
+LIBS += -L$$OUT_PWD/../signon/lib/SignOn -lsignon-qt5
+
+INCLUDEPATH += $$PWD/../signon/lib
+DEPENDPATH += $$PWD/../signon/lib

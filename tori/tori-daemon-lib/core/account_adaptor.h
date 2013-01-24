@@ -9,8 +9,8 @@
  * before re-generating it.
  */
 
-#ifndef ACCOUNT_ADAPTOR_H_1358804038
-#define ACCOUNT_ADAPTOR_H_1358804038
+#ifndef ACCOUNT_ADAPTOR_H_1358887333
+#define ACCOUNT_ADAPTOR_H_1358887333
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -30,6 +30,8 @@ class AccountAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "com.saruneko.tori.Account")
     Q_CLASSINFO("D-Bus Introspection", ""
 "  <interface name=\"com.saruneko.tori.Account\">\n"
+"    <method name=\"authenticate\"/>\n"
+"    <signal name=\"authenticated\" />\n"
 "    <signal name=\"authenticationError\">\n"
 "      <arg direction=\"out\" type=\"u\" name=\"error\"/>\n"
 "    </signal>\n"
@@ -73,12 +75,14 @@ public:
 
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
+    void authenticate();
     void destroy(const QString &uuid, uint tweet_id, const QVariantMap &options);
     void retweet(const QString &uuid, uint tweet_id, const QVariantMap &options);
     void retweets(const QString &uuid, uint tweet_id, const QVariantMap &options);
     void show(const QString &uuid, uint tweet_id, const QVariantMap &options);
     void update(const QString &uuid, const QString &status, const QVariantMap &options);
 Q_SIGNALS: // SIGNALS
+    void authenticated();
     void authenticationError(uint error);
 };
 

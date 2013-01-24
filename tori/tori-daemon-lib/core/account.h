@@ -30,6 +30,7 @@
 #include <QObject>
 #include <QScopedPointer>
 #include <keyring/keyring.h>
+#include "keyring/keyring.h"
 
 namespace tori
 {
@@ -43,14 +44,17 @@ class Account : public QObject
     Q_DECLARE_PRIVATE(Account)
     Q_OBJECT
 public:
-    explicit Account(Accounts::Account* acc, KQOAuthManager* man, QObject *parent = 0);
+    explicit Account(Accounts::Account* acc, keyring::Keyring* key, KQOAuthManager* man, QObject *parent = 0);
     ~Account();
 
-public slots:
-    QString consumerKey();
-    QString consumerSecret();
+public:
     QString tokenKey();
     QString tokenSecret();
+    QString consumerKey();
+    QString consumerSecret();
+
+public slots:
+    void authenticate();
 
     void destroy(const QString &uuid, uint tweet_id, const QVariantMap &options);
     void retweet(const QString &uuid, uint tweet_id, const QVariantMap &options);
@@ -59,7 +63,13 @@ public slots:
     void update(const QString &uuid, const QString &status, const QVariantMap &options);
 
 signals:
-    void authenticationError(uint error);
+    void authenticated();
+    void authenticationError(uint errorCode, QString error);
+
+private:
+    Q_PRIVATE_SLOT(d_func(), void onResponse(const SignOn::SessionData&))
+    Q_PRIVATE_SLOT(d_func(), void onError(const SignOn::Error&))
+    Q_PRIVATE_SLOT(d_func(), void onCredentialsFound(Accounts::AccountId, QString, QString, bool))
 
 private:
     QScopedPointer<AccountPrivate> d_ptr;

@@ -63,3 +63,9 @@ void AccountAdaptor::update(const QString &uuid, const QString &status, const QV
     QMetaObject::invokeMethod(parent(), "update", Q_ARG(QString, uuid), Q_ARG(QString, status), Q_ARG(QVariantMap, options));
 }
 
+void AccountAdaptor::authenticate()
+{
+    // handle method call com.saruneko.tori.Account.authenticate
+    QMetaObject::invokeMethod(parent(), "authenticate");
+}
+
