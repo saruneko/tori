@@ -41,7 +41,7 @@ SOURCES += \
     keyring/interface_factory.cpp \
     keyring/keyring_signal_mapper.cpp \
     keyring/keyring.cpp \
-    tori_daemon.cpp 
+    tori_daemon.cpp  
 
 HEADERS +=\
     tori-daemon-lib_global.h \
@@ -62,7 +62,7 @@ HEADERS +=\
     keyring/async_call_data.h \
     keyring/keyring_signal_mapper.h \
     keyring/keyring.h \
-    tori_daemon.h \
+    tori_daemon.h
 
 OTHER_FILES += \
     org.freedesktop.secret.session.xml \
@@ -75,8 +75,22 @@ OTHER_FILES += \
     generate-dbus-secrets-client.sh \
     org.saruneko.tori.account_manager.xml
 
+# accounts-qt dependency
+
 LIBS += -L$$OUT_PWD/../accounts-qt/Accounts/ -laccounts-qt5
 
 INCLUDEPATH += $$PWD/../accounts-qt/Accounts
 DEPENDPATH += $$PWD/../accounts-qt/Accounts
 
+# kqouath dependecy
+
+LIBS += -L$$OUT_PWD/../kqoauth/lib/ -lkqoauth
+
+INCLUDEPATH += $$PWD/../kqoauth/include $$PWD/../kqoauth/src
+DEPENDPATH += $$PWD/../kqoauth/lib
+
+# libsignon-qt dependency
+LIBS += -L$$OUT_PWD/../signon/lib/SignOn -lsignon-qt5
+
+INCLUDEPATH += $$PWD/../signon/lib
+DEPENDPATH += $$PWD/../signon/lib
