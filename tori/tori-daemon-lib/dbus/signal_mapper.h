@@ -25,9 +25,8 @@
 #ifndef SIGNAL_MAPPER_H
 #define SIGNAL_MAPPER_H
 
-#include <QDBusPendingCallWatcher>
-#include <QList>
-#include <QObject>
+#include <QtDBus/QDBusPendingCallWatcher>
+#include <QtCore/QList>
 
 namespace tori
 {

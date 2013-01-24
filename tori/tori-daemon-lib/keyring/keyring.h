@@ -26,6 +26,7 @@
 
 #include <Accounts/Account>
 #include <QObject>
+#include <QDBusConnection>
 #include "secret.h"
 
 namespace tori

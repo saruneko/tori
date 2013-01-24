@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += network testlib dbus gui
+QT       += gui xml network testlib dbus
 
 TARGET = tori-daemon-tests
 QMAKE_CXXFLAGS += -std=c++0x
@@ -12,7 +12,7 @@ CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
-
+INCLUDEPATH += ../accounts-qt
 
 SOURCES += \
     main.cpp \
@@ -21,28 +21,6 @@ SOURCES += \
     keyring/test_keyring_signal_mapper.cpp \
     core/test_xdg_basedir.cpp \
     keyring/test_secret.cpp
-DEFINES += SRCDIR=\\\"$$PWD/\\\"
-
-unix {
-    CONFIG += link_pkgconfig
-    PKGCONFIG += accounts-qt libsignon-qt qoauth
-}
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../tori-daemon-lib/release/ -ltori-daemon-lib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../tori-daemon-lib/debug/ -ltori-daemon-lib
-else:symbian: LIBS += -ltori-daemon-lib
-else:unix: LIBS += -L$$OUT_PWD/../tori-daemon-lib/ -ltori-daemon-lib
-
-INCLUDEPATH += $$PWD/../tori-daemon-lib
-DEPENDPATH += $$PWD/../tori-daemon-lib
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../tori-daemon-lib/release/ -ltori-daemon-lib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../tori-daemon-lib/debug/ -ltori-daemon-lib
-else:symbian: LIBS += -ltori-daemon-lib
-else:unix: LIBS += -L$$OUT_PWD/../tori-daemon-lib/ -ltori-daemon-lib
-
-INCLUDEPATH += $$PWD/../tori-daemon-lib
-DEPENDPATH += $$PWD/../tori-daemon-lib
 
 HEADERS += \
     test_runner.h \
@@ -51,3 +29,13 @@ HEADERS += \
     keyring/test_keyring_signal_mapper.h \
     core/test_xdg_basedir.h \
     keyring/test_secret.h
+
+LIBS += -L$$OUT_PWD/../accounts-qt/Accounts/ -laccounts-qt5
+
+INCLUDEPATH += $$PWD/../accounts-qt/Accounts
+DEPENDPATH += $$PWD/../accounts-qt/Accounts
+
+LIBS += -L$$OUT_PWD/../tori-daemon-lib/ -ltori-daemon-lib
+
+INCLUDEPATH += $$PWD/../tori-daemon-lib
+DEPENDPATH += $$PWD/../tori-daemon-lib

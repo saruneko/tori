@@ -1,0 +1,3 @@
+[submodule "tori/accounts-qt"]
+	path = tori/accounts-qt
+	url = https://code.google.com/p/accounts-sso.libaccounts-qt/

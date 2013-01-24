@@ -21,10 +21,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <Accounts/Manager>
+#include <QDebug>
 #include <QHash>
 #include <QVariant>
-#include <QxtLogger>
+#include <Accounts/Manager>
 #include "core/account.h"
 #include "core/account_adaptor.h"
 #include "account_manager.h"
@@ -83,6 +83,7 @@ AccountManagerPrivate::AccountManagerPrivate(QDBusConnection connection, tori::k
         q, SLOT(onAccountUpdated(Accounts::AccountId)));
     q->connect(_man, SIGNAL(accountRemoved(Accounts::AccountId)),
         q, SLOT(onAccountDeleted(Accounts::AccountId)));
+
 }
 
 bool AccountManagerPrivate::isTwitterAccount(Accounts::AccountId acc_id)
@@ -93,17 +94,18 @@ bool AccountManagerPrivate::isTwitterAccount(Accounts::AccountId acc_id)
 
 QHash<QString, QDBusObjectPath> AccountManagerPrivate::getAccounts()
 {
+    Q_Q(AccountManager);
     QHash<QString, QDBusObjectPath> accounts;
 
     // loop and just add those accounts from twitter
     Accounts::AccountIdList allAccounts = _man->accountList();
 
-    qxtLog->debug() << "Number of accounts found:" << allAccounts.length();
+    qDebug() << "Number of accounts found:" << allAccounts.length();
 
     for(int pos = 0; pos < allAccounts.length(); ++pos)
     {
         Accounts::Account* acc = _man->account(allAccounts.at(pos));
-        qxtLog->debug() << "Account id:" << acc->id() << "Account provider:" << acc->providerName();
+        qDebug() << "Account id:" << acc->id() << "Account provider:" << acc->providerName();
 
         if(acc->providerName() == "twitter")
         {
@@ -112,7 +114,7 @@ QHash<QString, QDBusObjectPath> AccountManagerPrivate::getAccounts()
 
             if (!_accounts.contains(acc->id()))
             {
-                Account* account = new Account(acc, _key, _useDefault);
+                Account* account = new Account(acc, q);
                 AccountAdaptor* adaptor = new AccountAdaptor(account);
 
                 QPair<Account*, AccountAdaptor*> pair;
@@ -134,7 +136,7 @@ void AccountManagerPrivate::onAccountCreated(Accounts::AccountId acc_id)
     if(isTwitterAccount(acc_id))
     {
         Accounts::Account* acc = _man->account(acc_id);
-        Account* account = new Account(acc, _key, _useDefault);
+        Account* account = new Account(acc, q);
         AccountAdaptor* adaptor = new AccountAdaptor(acc);
         QPair<Account*, AccountAdaptor*> pair;
         pair.first = account;
@@ -187,7 +189,7 @@ AccountManager::~AccountManager()
 DBusObjectPathHash AccountManager::getAccounts()
 {
     Q_D(AccountManager);
-    qxtLog->debug() << "AccountManager::getAccounts()";
+    qDebug() << "AccountManager::getAccounts()";
     return d->getAccounts();
 }
 

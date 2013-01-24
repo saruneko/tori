@@ -23,9 +23,9 @@
 
 
 #include "xdg_basedir.h"
+#include <QDebug>
 #include <QDir>
 #include <QFile>
-#include <QxtLogger>
 #include <stdlib.h>
 
 namespace tori
@@ -47,12 +47,12 @@ std::string XDGBasedir::XDG_DATA_DIRS = "XDG_DATA_DIRS";
 
 QString XDGBasedir::cacheHome()
 {
-    qxtLog->debug() << "XDGBasedir::cacheHome()";
+    qDebug() << "XDGBasedir::cacheHome()";
     QString env_path = QString::fromUtf8(getenv(XDG_CACHE_HOME.c_str())).trimmed();
     if (env_path.isEmpty())
     {
         QString defaultValue = QDir(QDir::homePath()).filePath(DEFAULT_CACHE_HOME);
-        qxtLog->debug() << "NULL" << QString::fromStdString(XDGBasedir::XDG_CACHE_HOME) << "Returning default" << defaultValue;
+        qDebug() << "NULL" << QString::fromStdString(XDGBasedir::XDG_CACHE_HOME) << "Returning default" << defaultValue;
         return defaultValue;
     }
     return env_path;
@@ -60,12 +60,12 @@ QString XDGBasedir::cacheHome()
 
 QString XDGBasedir::configHome()
 {
-    qxtLog->debug() << "XDGBasedir::configHome()";
+    qDebug() << "XDGBasedir::configHome()";
     QString env_path = QString::fromUtf8(getenv(XDG_CONFIG_HOME.c_str())).trimmed();
     if (env_path.isEmpty())
     {
         QString defaultValue = QDir(QDir::homePath()).filePath(DEFAULT_CONFIG_HOME);
-        qxtLog->debug() << "NULL" << QString::fromStdString(XDGBasedir::XDG_CONFIG_HOME) << "Returning default" << defaultValue;
+        qDebug() << "NULL" << QString::fromStdString(XDGBasedir::XDG_CONFIG_HOME) << "Returning default" << defaultValue;
         return defaultValue;
     }
     return env_path;
@@ -73,12 +73,12 @@ QString XDGBasedir::configHome()
 
 QString XDGBasedir::dataHome()
 {
-    qxtLog->debug() << "XDGBasedir::dataHome()";
+    qDebug() << "XDGBasedir::dataHome()";
     QString env_path = QString::fromUtf8(getenv(XDG_DATA_HOME.c_str())).trimmed();
     if (env_path.isEmpty())
     {
         QString defaultValue = QDir(QDir::homePath()).filePath(DEFAULT_DATA_HOME);
-        qxtLog->debug() << "NULL" << QString::fromStdString(XDGBasedir::XDG_DATA_HOME) << "Returning default" << defaultValue;
+        qDebug() << "NULL" << QString::fromStdString(XDGBasedir::XDG_DATA_HOME) << "Returning default" << defaultValue;
         return defaultValue;
     }
     return env_path;
@@ -86,14 +86,14 @@ QString XDGBasedir::dataHome()
 
 QList<QString> XDGBasedir::configDirs()
 {
-    qxtLog->debug() << "XDGBasedir::configDirs()";
+    qDebug() << "XDGBasedir::configDirs()";
     QList<QString> result;
     result.append(XDGBasedir::configHome());
 
     QString env_path = QString::fromUtf8(getenv(XDG_CONFIG_DIRS.c_str())).trimmed();
     if (env_path.isEmpty())
     {
-        qxtLog->debug() << "NULL" << QString::fromStdString(XDGBasedir::XDG_CONFIG_DIRS);
+        qDebug() << "NULL" << QString::fromStdString(XDGBasedir::XDG_CONFIG_DIRS);
         return result;
     }
 
@@ -105,14 +105,14 @@ QList<QString> XDGBasedir::configDirs()
 
 QList<QString> XDGBasedir::dataDirs()
 {
-    qxtLog->debug() << "XDGBasedir::dataDirs()";
+    qDebug() << "XDGBasedir::dataDirs()";
     QList<QString> result;
     result.append(XDGBasedir::dataHome());
 
     QString env_path = QString::fromUtf8(getenv(XDG_DATA_DIRS.c_str())).trimmed();
     if (env_path.isEmpty())
     {
-        qxtLog->debug() << "NULL" << QString::fromStdString(XDGBasedir::XDG_DATA_DIRS);
+        qDebug() << "NULL" << QString::fromStdString(XDGBasedir::XDG_DATA_DIRS);
         return result;
     }
 
@@ -123,7 +123,7 @@ QList<QString> XDGBasedir::dataDirs()
 
 QList<QString> XDGBasedir::configPaths(QList<QString> resources)
 {
-    qxtLog->debug() << "XDGBasedir::configPaths";
+    qDebug() << "XDGBasedir::configPaths";
     QList<QString> result;
     QList<QString> configDirs = XDGBasedir::configDirs();
     foreach (QString configDir, configDirs)
@@ -134,7 +134,7 @@ QList<QString> XDGBasedir::configPaths(QList<QString> resources)
         QString path = pathComponents.join(QDir::separator());
         if (QFile::exists(path))
         {
-            qxtLog->debug() << "Adding new path:" << path;
+            qDebug() << "Adding new path:" << path;
             result.append(path);
         }
     }
@@ -144,7 +144,7 @@ QList<QString> XDGBasedir::configPaths(QList<QString> resources)
 
 QList<QString> XDGBasedir::dataPaths(QList<QString> resources)
 {
-    qxtLog->debug() << "XDGBasedir::dataPaths";
+    qDebug() << "XDGBasedir::dataPaths";
     QList<QString> result;
     QList<QString> dataDirs = XDGBasedir::dataDirs();
     foreach (QString dataDir, dataDirs)
@@ -155,7 +155,7 @@ QList<QString> XDGBasedir::dataPaths(QList<QString> resources)
         QString path = pathComponents.join(QDir::separator());
         if (QFile::exists(path))
         {
-            qxtLog->debug() << "Adding new path:" << path;
+            qDebug() << "Adding new path:" << path;
             result.append(path);
         }
     }
@@ -164,15 +164,15 @@ QList<QString> XDGBasedir::dataPaths(QList<QString> resources)
 
 QString XDGBasedir::loadFirstConfig(QList<QString> resource)
 {
-    qxtLog->debug() << "XDGBasedir::loadFirstConfig()";
+    qDebug() << "XDGBasedir::loadFirstConfig()";
     QList<QString> configPaths = XDGBasedir::configPaths(resource);
-    qxtLog->debug() << "Config paths length" << configPaths.length();
+    qDebug() << "Config paths length" << configPaths.length();
     return configPaths.at(0);
 }
 
 QString XDGBasedir::saveConfigPath(QList<QString> resources)
 {
-    qxtLog->debug() << "XDGBasedir::saveConfigPath()";
+    qDebug() << "XDGBasedir::saveConfigPath()";
     QString home = XDGBasedir::configHome();
     QStringList pathComponents;
     pathComponents.append(home);
@@ -187,17 +187,17 @@ QString XDGBasedir::saveConfigPath(QList<QString> resources)
         bool created = dir.mkdir(child.join(QDir::separator()));
         if (!created)
         {
-            qxtLog->critical() << "Could not create path:" << child.join(QDir::separator());
+            qCritical() << "Could not create path:" << child.join(QDir::separator());
             return QString("");
         }
     }
-    qxtLog->debug() << "Path returned" << path;
+    qDebug() << "Path returned" << path;
     return path;
 }
 
 QString XDGBasedir::saveDataPath(QList<QString> resources)
 {
-    qxtLog->debug() << "XDGBasedir::saveDataPath()";
+    qDebug() << "XDGBasedir::saveDataPath()";
     QString home = XDGBasedir::dataHome();
     QStringList pathComponents;
     pathComponents.append(home);
@@ -212,11 +212,11 @@ QString XDGBasedir::saveDataPath(QList<QString> resources)
         bool created = dir.mkdir(child.join(QDir::separator()));
         if (!created)
         {
-            qxtLog->critical() << "Could not create path:" << child.join(QDir::separator());
+            qCritical() << "Could not create path:" << child.join(QDir::separator());
             return QString("");
         }
     }
-    qxtLog->debug() << "Path returned" << path;
+    qDebug() << "Path returned" << path;
     return path;
 }
 

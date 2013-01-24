@@ -4,22 +4,16 @@
 #
 #-------------------------------------------------
 
-QT       += network dbus
+QT       += core xml network dbus
 
 QT       -= gui
-CONFIG  += qxt
-QXT     += core
 
 TARGET = tori-daemon-lib
 QMAKE_CXXFLAGS += -std=c++0x
 TEMPLATE = lib
+INCLUDEPATH += ../accounts-qt
 
 DEFINES += TORIDAEMONLIB_LIBRARY
-
-unix {
-    CONFIG += link_pkgconfig
-    PKGCONFIG += accounts-qt libsignon-qt qoauth
-}
 
 unix:!symbian {
     maemo5 {
@@ -80,3 +74,9 @@ OTHER_FILES += \
     generate-dbus-server.sh \
     generate-dbus-secrets-client.sh \
     org.saruneko.tori.account_manager.xml
+
+LIBS += -L$$OUT_PWD/../accounts-qt/Accounts/ -laccounts-qt5
+
+INCLUDEPATH += $$PWD/../accounts-qt/Accounts
+DEPENDPATH += $$PWD/../accounts-qt/Accounts
+

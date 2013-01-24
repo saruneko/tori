@@ -24,13 +24,15 @@
 #ifndef ACCOUNT_MANAGER_H
 #define ACCOUNT_MANAGER_H
 
+
+#include <Accounts/Manager>
 #include <QScopedPointer>
 #include <QDBusConnection>
 #include <QDBusObjectPath>
 #include <QObject>
 #include <QVariantMap>
-#include "dbus/dbus_helper.h"
-#include "keyring/keyring.h"
+#include "../dbus/dbus_helper.h"
+#include "../keyring/keyring.h"
 
 namespace tori
 {
@@ -60,9 +62,9 @@ private:
     QScopedPointer<AccountManagerPrivate> d_ptr;
 
 private:
-    Q_PRIVATE_SLOT(d_func(), void onAccountCreated(quint32))
-    Q_PRIVATE_SLOT(d_func(), void onAccountDeleted(quint32))
-    Q_PRIVATE_SLOT(d_func(), void onAccountUpdated(quint32))
+    Q_PRIVATE_SLOT(d_func(), void onAccountCreated(Accounts::AccountId))
+    Q_PRIVATE_SLOT(d_func(), void onAccountDeleted(Accounts::AccountId))
+    Q_PRIVATE_SLOT(d_func(), void onAccountUpdated(Accounts::AccountId))
 
 };
 
