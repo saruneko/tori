@@ -24,8 +24,8 @@
 #include <Accounts/AccountService>
 #include <Accounts/AuthData>
 #include <SignOn/AuthSession>
-#include <SignOn//Identity>
-#include <SignOn//Error>
+#include <SignOn/Identity>
+#include <SignOn/Error>
 #include <SignOn/SessionData>
 #include <QDebug>
 #include <QMutex>
@@ -68,11 +68,12 @@ class AccountPrivate
 {
     Q_DECLARE_PUBLIC(Account)
 public:
-    AccountPrivate(Accounts::Account* acc, Account* parent);
+    AccountPrivate(Accounts::Account* acc, keyring::Keyring* key, Account* parent);
 
     void authenticate();
     void onResponse(const SignOn::SessionData& sessionData);
     void onError(const SignOn::Error& error);
+    void onCredentialsFound(Accounts::AccountId accId, QString token, QString tokenSecret, bool found);
 
 private:
 
@@ -97,6 +98,7 @@ private:
 
     // mutex to ensure that we do not try to auth to many times
     QMutex _mutex;
+    keyring::Keyring* _key;
 
 };
 
@@ -107,11 +109,13 @@ QString AccountPrivate::TOKEN_ENDPOINT = "TokenEndpoint";
 QString AccountPrivate::AUTHERIZATION_ENDPOINT = "AuthorizationEndpoint";
 QString AccountPrivate::CALLBACK_ENDPOINT = "Callback";
 
-AccountPrivate::AccountPrivate(Accounts::Account* acc, Account* parent) :
+AccountPrivate::AccountPrivate(Accounts::Account* acc, keyring::Keyring* key, Account* parent) :
     _acc(acc),
     q_ptr(parent),
-    _session(0)
+    _session(0),
+    _key(key)
 {
+    Q_Q(Account);
     _identity = SignOn::Identity::newIdentity(SignOn::IdentityInfo(), q_ptr);
 
     QList<Accounts::Service> services = _acc->services();
@@ -119,6 +123,8 @@ AccountPrivate::AccountPrivate(Accounts::Account* acc, Account* parent) :
     // TODO: what happens when we have more than one service??
     _serv = new Accounts::AccountService(_acc, services.at(0));
 
+    q->connect(_key, SIGNAL(credentialsFound(Accounts::AccountId, QString, QString, bool)),
+        q, SLOT(onCredentialsFound(Accounts::AccountId, QString, QString, bool)));
 }
 
 void AccountPrivate::authenticate()
@@ -134,31 +140,9 @@ void AccountPrivate::authenticate()
         || _tokenKey.isEmpty()
         || _tokenSecret.isEmpty()) // we are not auth already
     {
-        // TODO: look into keyring
-        Accounts::AuthData authData = _serv->authData();
-        QVariantMap params = authData.parameters();
-
-        // store them to simplify the retrieval for the oauth header signature
-        _consumerKey = params[AccountPrivate::CONSUMER_KEY].toString().toUtf8();
-        _consumerSecret = params[AccountPrivate::CONSUMER_SECRET].toString().toUtf8();
-
-        SignOn::AuthSession *_session = _identity->createSession(authData.method());
-        q->connect(_session, SIGNAL(response(const SignOn::SessionData &)),
-            q, SLOT(onResponse(const SignOn::SessionData &)));
-        q->connect(_session, SIGNAL(error(const SignOn::Error &)),
-            q, SLOT(onError(const SignOn::Error &)));
-
-        OAuthData data;
-        data.setRequestEndpoint(params[AccountPrivate::REQUEST_ENDPOINT].toString());
-        data.setTokenEndpoint(params[AccountPrivate::TOKEN_ENDPOINT].toString());
-        data.setAuthorizationEndpoint(params[AccountPrivate::AUTHERIZATION_ENDPOINT].toString());
-        data.setConsumerKey(_consumerKey);
-        data.setConsumerSecret(_consumerSecret);
-        data.setCallback(params[AccountPrivate::CALLBACK_ENDPOINT].toString());
-        data.setRealm("");
-        data.setUserName(_acc->displayName());
-
-        _session->process(data, authData.mechanism());
+        // try to get the credentials form the keyring, if the are not found the onCredentialsFound callback will
+        // take care of retrieving the creds from twitter
+        _key->getCredentials(_acc->id());
     }
     else
     {
@@ -176,7 +160,9 @@ void AccountPrivate::onResponse(const SignOn::SessionData& sessionData)
     _tokenKey = response.AccessToken();
     _tokenSecret = response.TokenSecret();
 
-    // TODO: store in keyring
+    // store the creds in the keyring, lets ignore the signal because we already
+    // have the token and token secret
+    _key->setCredentials(_acc->id(), _tokenKey, _tokenSecret);
 
     // emit signal and unlock
     q->authenticated();
@@ -191,8 +177,58 @@ void AccountPrivate::onError(const SignOn::Error& error)
     _mutex.unlock();
 }
 
-Account::Account(Accounts::Account* acc, QObject *parent) : QObject(parent),
-    d_ptr(new AccountPrivate(acc, this))
+void AccountPrivate::onCredentialsFound(Accounts::AccountId accId, QString token, QString tokenSecret, bool found)
+{
+    Q_Q(Account);
+    if (accId == _acc->id())
+    {
+        Accounts::AuthData authData = _serv->authData();
+        QVariantMap params = authData.parameters();
+
+        // store them to simplify the retrieval for the oauth header signature
+        _consumerKey = params[AccountPrivate::CONSUMER_KEY].toString().toUtf8();
+        _consumerSecret = params[AccountPrivate::CONSUMER_SECRET].toString().toUtf8();
+
+        if (found)
+        {
+            qDebug() << "Token and token secret were found in the keyring.";
+            _tokenKey = token;
+            _tokenSecret = tokenSecret;
+
+            // emit and unlock mutex
+            q->authenticated();
+            _mutex.unlock();
+        }
+        else
+        {
+            qDebug() << "Token and token secret were not found in the keyring.";
+            SignOn::AuthSession *_session = _identity->createSession(authData.method());
+            q->connect(_session, SIGNAL(response(const SignOn::SessionData &)),
+                q, SLOT(onResponse(const SignOn::SessionData &)));
+            q->connect(_session, SIGNAL(error(const SignOn::Error &)),
+                q, SLOT(onError(const SignOn::Error &)));
+
+            OAuthData data;
+            data.setRequestEndpoint(params[AccountPrivate::REQUEST_ENDPOINT].toString());
+            data.setTokenEndpoint(params[AccountPrivate::TOKEN_ENDPOINT].toString());
+            data.setAuthorizationEndpoint(params[AccountPrivate::AUTHERIZATION_ENDPOINT].toString());
+            data.setConsumerKey(_consumerKey);
+            data.setConsumerSecret(_consumerSecret);
+            data.setCallback(params[AccountPrivate::CALLBACK_ENDPOINT].toString());
+            data.setRealm("");
+            data.setUserName(_acc->displayName());
+
+            _session->process(data, authData.mechanism());
+        }
+    }
+}
+
+Account::Account(Accounts::Account* acc, keyring::Keyring* key, QObject *parent) : QObject(parent),
+    d_ptr(new AccountPrivate(acc, key, this))
+{
+}
+
+Account::~Account()
 {
 }
 
@@ -202,9 +238,6 @@ void Account::authenticate()
     d->authenticate();
 }
 
-Account::~Account()
-{
-}
 
 QString Account::tokenKey()
 {
