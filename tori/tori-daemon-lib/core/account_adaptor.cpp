@@ -33,39 +33,39 @@ AccountAdaptor::~AccountAdaptor()
     // destructor
 }
 
-void AccountAdaptor::destroy(const QString &uuid, uint tweet_id, const QVariantMap &options)
+void AccountAdaptor::authenticate()
+{
+    // handle method call com.saruneko.tori.Account.authenticate
+    QMetaObject::invokeMethod(parent(), "authenticate");
+}
+
+void AccountAdaptor::destroy(const QString &uuid, qlonglong tweet_id, const QVariantMap &options)
 {
     // handle method call com.saruneko.tori.Account.destroy
-    QMetaObject::invokeMethod(parent(), "destroy", Q_ARG(QString, uuid), Q_ARG(uint, tweet_id), Q_ARG(QVariantMap, options));
+    QMetaObject::invokeMethod(parent(), "destroy", Q_ARG(QString, uuid), Q_ARG(qlonglong, tweet_id), Q_ARG(QVariantMap, options));
 }
 
-void AccountAdaptor::retweet(const QString &uuid, uint tweet_id, const QVariantMap &options)
+void AccountAdaptor::retweet(const QString &uuid, qlonglong tweet_id, const QVariantMap &options)
 {
     // handle method call com.saruneko.tori.Account.retweet
-    QMetaObject::invokeMethod(parent(), "retweet", Q_ARG(QString, uuid), Q_ARG(uint, tweet_id), Q_ARG(QVariantMap, options));
+    QMetaObject::invokeMethod(parent(), "retweet", Q_ARG(QString, uuid), Q_ARG(qlonglong, tweet_id), Q_ARG(QVariantMap, options));
 }
 
-void AccountAdaptor::retweets(const QString &uuid, uint tweet_id, const QVariantMap &options)
+void AccountAdaptor::retweets(const QString &uuid, qlonglong tweet_id, const QVariantMap &options)
 {
     // handle method call com.saruneko.tori.Account.retweets
-    QMetaObject::invokeMethod(parent(), "retweets", Q_ARG(QString, uuid), Q_ARG(uint, tweet_id), Q_ARG(QVariantMap, options));
+    QMetaObject::invokeMethod(parent(), "retweets", Q_ARG(QString, uuid), Q_ARG(qlonglong, tweet_id), Q_ARG(QVariantMap, options));
 }
 
-void AccountAdaptor::show(const QString &uuid, uint tweet_id, const QVariantMap &options)
+void AccountAdaptor::show(const QString &uuid, qlonglong tweet_id, const QVariantMap &options)
 {
     // handle method call com.saruneko.tori.Account.show
-    QMetaObject::invokeMethod(parent(), "show", Q_ARG(QString, uuid), Q_ARG(uint, tweet_id), Q_ARG(QVariantMap, options));
+    QMetaObject::invokeMethod(parent(), "show", Q_ARG(QString, uuid), Q_ARG(qlonglong, tweet_id), Q_ARG(QVariantMap, options));
 }
 
 void AccountAdaptor::update(const QString &uuid, const QString &status, const QVariantMap &options)
 {
     // handle method call com.saruneko.tori.Account.update
     QMetaObject::invokeMethod(parent(), "update", Q_ARG(QString, uuid), Q_ARG(QString, status), Q_ARG(QVariantMap, options));
-}
-
-void AccountAdaptor::authenticate()
-{
-    // handle method call com.saruneko.tori.Account.authenticate
-    QMetaObject::invokeMethod(parent(), "authenticate");
 }
 

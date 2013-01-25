@@ -15,19 +15,19 @@
     <method name="retweets">
         <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QVariantMap"/>
         <arg name="uuid" type="s" direction="in" />
-        <arg name="tweet_id" type="u" direction="in" />
+        <arg name="tweet_id" type="x" direction="in" />
         <arg name="options" type="a{sv}" direction="in"/>
     </method>
     <method name="show">
         <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QVariantMap"/>
         <arg name="uuid" type="s" direction="in" />
-        <arg name="tweet_id" type="u" direction="in" />
+        <arg name="tweet_id" type="x" direction="in" />
         <arg name="options" type="a{sv}" direction="in"/>
     </method>
     <method name="destroy">
         <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QVariantMap"/>
         <arg name="uuid" type="s" direction="in" />
-        <arg name="tweet_id" type="u" direction="in" />
+        <arg name="tweet_id" type="x" direction="in" />
         <arg name="options" type="a{sv}" direction="in"/>
     </method>
     <method name="update">
@@ -39,7 +39,7 @@
     <method name="retweet">
         <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QVariantMap"/>
         <arg name="uuid" type="s" direction="in" />
-        <arg name="tweet_id" type="u" direction="in" />
+        <arg name="tweet_id" type="x" direction="in" />
         <arg name="options" type="a{sv}" direction="in"/>
     </method>
 

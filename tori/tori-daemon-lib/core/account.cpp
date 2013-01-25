@@ -74,10 +74,10 @@ public:
 
     void authenticate();
 
-    void destroy(const QString& uuid, uint tweet_id, const QVariantMap &options);
-    void retweet(const QString& uuid, uint tweet_id, const QVariantMap &options);
-    void retweets(const QString& uuid, uint tweet_id, const QVariantMap &options);
-    void show(const QString& uuid, uint tweet_id, const QVariantMap &options);
+    void destroy(const QString& uuid, qlonglong tweet_id, const QVariantMap &options);
+    void retweet(const QString& uuid, qlonglong tweet_id, const QVariantMap &options);
+    void retweets(const QString& uuid, qlonglong tweet_id, const QVariantMap &options);
+    void show(const QString& uuid, qlonglong tweet_id, const QVariantMap &options);
     void update(const QString& uuid, const QString &status, const QVariantMap &options);
 
     void onResponse(const SignOn::SessionData& sessionData);
@@ -237,22 +237,22 @@ void AccountPrivate::onCredentialsFound(Accounts::AccountId accId, QString token
     }
 }
 
-void AccountPrivate::destroy(const QString& uuid, uint tweet_id, const QVariantMap &options)
+void AccountPrivate::destroy(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
 {
     _status->destroy(uuid, tweet_id, options);
 }
 
-void AccountPrivate::retweet(const QString& uuid, uint tweet_id, const QVariantMap &options)
+void AccountPrivate::retweet(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
 {
     _status->retweet(uuid, tweet_id, options);
 }
 
-void AccountPrivate::retweets(const QString& uuid, uint tweet_id, const QVariantMap &options)
+void AccountPrivate::retweets(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
 {
     _status->retweets(uuid, tweet_id, options);
 }
 
-void AccountPrivate::show(const QString& uuid, uint tweet_id, const QVariantMap &options)
+void AccountPrivate::show(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
 {
     _status->show(uuid, tweet_id, options);
 }
@@ -302,25 +302,25 @@ QString Account::consumerSecret()
     return d->_consumerSecret;
 }
 
-void Account::destroy(const QString& uuid, uint tweet_id, const QVariantMap &options)
+void Account::destroy(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
 {
     Q_D(Account);
     d->destroy(uuid, tweet_id, options);
 }
 
-void Account::retweet(const QString& uuid, uint tweet_id, const QVariantMap &options)
+void Account::retweet(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
 {
     Q_D(Account);
     d->retweet(uuid, tweet_id, options);
 }
 
-void Account::retweets(const QString& uuid, uint tweet_id, const QVariantMap &options)
+void Account::retweets(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
 {
     Q_D(Account);
     d->retweets(uuid, tweet_id, options);
 }
 
-void Account::show(const QString& uuid, uint tweet_id, const QVariantMap &options)
+void Account::show(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
 {
     Q_D(Account);
     d->show(uuid, tweet_id, options);

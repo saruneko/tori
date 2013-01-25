@@ -56,10 +56,10 @@ public:
 public slots:
     void authenticate();
 
-    void destroy(const QString &uuid, uint tweet_id, const QVariantMap &options);
-    void retweet(const QString &uuid, uint tweet_id, const QVariantMap &options);
-    void retweets(const QString &uuid, uint tweet_id, const QVariantMap &options);
-    void show(const QString &uuid, uint tweet_id, const QVariantMap &options);
+    void destroy(const QString &uuid, qlonglong tweet_id, const QVariantMap &options);
+    void retweet(const QString &uuid, qlonglong tweet_id, const QVariantMap &options);
+    void retweets(const QString &uuid, qlonglong tweet_id, const QVariantMap &options);
+    void show(const QString &uuid, qlonglong tweet_id, const QVariantMap &options);
     void update(const QString &uuid, const QString &status, const QVariantMap &options);
 
 signals:
