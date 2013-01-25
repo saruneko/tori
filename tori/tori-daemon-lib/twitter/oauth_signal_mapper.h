@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 mandel
+ * Copyright (c) 2013 mandel
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -21,28 +21,26 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#ifndef OAUTH_SIGNAL_MAPPER_H
+#define OAUTH_SIGNAL_MAPPER_H
 
-#ifndef SIGNAL_MAPPER_H
-#define SIGNAL_MAPPER_H
-
-#include <QtDBus/QDBusPendingCallWatcher>
-#include <QtCore/QList>
+#include <QObject>
 
 namespace tori
 {
 
-namespace dbus
+namespace twitter
 {
 
 // this is inspired by the QSignalMapper class
-class DBusSignalMapperPrivate;
-class DBusSignalMapper : public QObject
+class OAuthSignalMapperPrivate;
+class OAuthSignalMapper : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(DBusSignalMapper)
+    Q_DECLARE_PRIVATE(OAuthSignalMapper)
 public:
-    explicit DBusSignalMapper(QObject* parent = 0);
-    ~DBusSignalMapper();
+    explicit OAuthSignalMapper(QObject* parent = 0);
+    ~OAuthSignalMapper();
 
     void setMapping(QObject* sender, int id);
     void setMapping(QObject* sender, const QString& text);
@@ -55,39 +53,30 @@ public:
     QObject* mapping(QWidget* widget) const;
     QObject* mapping(QObject* object) const;
 
-    static class _init
-    {
-        public:
-            _init()
-            {
-                qRegisterMetaType<QDBusPendingCallWatcher*>("QDBusPendingCallWatcher*");
-            }
-    } _initializer;
-
 Q_SIGNALS:
-    void mapped(QDBusPendingCallWatcher* watcher, int id);
-    void mapped(QDBusPendingCallWatcher* watcher, const QString& text);
-    void mapped(QDBusPendingCallWatcher* watcher, QWidget* widget);
-    void mapped(QDBusPendingCallWatcher* watcher, QObject* object);
+    void mapped(QByteArray data, int id);
+    void mapped(QByteArray data, const QString& text);
+    void mapped(QByteArray data, QWidget* widget);
+    void mapped(QByteArray data, QObject* object);
 
 public Q_SLOTS:
-    void map(QDBusPendingCallWatcher* watcher);
-    void map(QDBusPendingCallWatcher* watcher, QObject* sender);
+    void map(QByteArray data);
+    void map(QByteArray data, QObject* sender);
 
 protected:
-    QScopedPointer<DBusSignalMapperPrivate> d_ptr;
+    QScopedPointer<OAuthSignalMapperPrivate> d_ptr;
     QList<QObject*> intMaps();
     QList<QObject*> stringMaps();
     QList<QObject*> widgetMaps();
     QList<QObject*> objectMaps();
 
 private:
-    Q_DISABLE_COPY(DBusSignalMapper)
+    Q_DISABLE_COPY(OAuthSignalMapper)
     Q_PRIVATE_SLOT(d_func(), void _q_senderDestroyed())
 };
 
-} // dbus
+} // twitter
 
-} //tori
+} // tori
 
-#endif // SIGNAL_MAPPER_H
+#endif // OAUTH_SIGNAL_MAPPER_H

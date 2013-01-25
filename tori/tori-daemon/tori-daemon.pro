@@ -4,28 +4,39 @@
 #
 #-------------------------------------------------
 
-QT       += core network dbus
+QT       += core xml network dbus
 
 QT       -= gui
 
 TARGET = tori-daemon
-CONFIG += console link_pkgconfig oauth
-PKGCONFIG += accounts-qt libsignon-qt qoauth
+CONFIG += console 
 QMAKE_CXXFLAGS += -std=c++0x
 CONFIG   -= app_bundle
 TEMPLATE = app
-
+INCLUDEPATH += ../accounts-qt
 
 SOURCES += main.cpp
 
-HEADERS +=
+# accounts-qt dependency
+LIBS += -L$$OUT_PWD/../accounts-qt/Accounts/ -laccounts-qt5
 
-OTHER_FILES +=
+INCLUDEPATH += $$PWD/../accounts-qt/Accounts
+DEPENDPATH += $$PWD/../accounts-qt/Accounts
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../tori-daemon-lib/release/ -ltori-daemon-lib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../tori-daemon-lib/debug/ -ltori-daemon-lib
-else:symbian: LIBS += -ltori-daemon-lib
-else:unix: LIBS += -L$$OUT_PWD/../tori-daemon-lib/ -ltori-daemon-lib
+# kqoauth dependency
+LIBS += -L$$OUT_PWD/../kqoauth/lib/ -lkqoauth
+
+INCLUDEPATH += $$PWD/../kqoauth/include $$PWD/../kqoauth/src
+DEPENDPATH += $$PWD/../kqoauth/lib
+
+# signon dependency
+LIBS += -L$$OUT_PWD/../signon/lib/SignOn -lsignon-qt5
+
+INCLUDEPATH += $$PWD/../signon/lib
+DEPENDPATH += $$PWD/../signon/lib
+
+# tori-daemon-dependecy
+LIBS += -L$$OUT_PWD/../tori-daemon-lib/ -ltori-daemon-lib
 
 INCLUDEPATH += $$PWD/../tori-daemon-lib
 DEPENDPATH += $$PWD/../tori-daemon-lib

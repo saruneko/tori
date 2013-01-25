@@ -39,15 +39,33 @@ void AccountAdaptor::authenticate()
     QMetaObject::invokeMethod(parent(), "authenticate");
 }
 
-void AccountAdaptor::isAuthenticated()
+void AccountAdaptor::destroy(const QString &uuid, qlonglong tweet_id, const QVariantMap &options)
 {
-    // handle method call com.saruneko.tori.Account.isAuthenticated
-    QMetaObject::invokeMethod(parent(), "isAuthenticated");
+    // handle method call com.saruneko.tori.Account.destroy
+    QMetaObject::invokeMethod(parent(), "destroy", Q_ARG(QString, uuid), Q_ARG(qlonglong, tweet_id), Q_ARG(QVariantMap, options));
 }
 
-void AccountAdaptor::setPin(const QString &pin)
+void AccountAdaptor::retweet(const QString &uuid, qlonglong tweet_id, const QVariantMap &options)
 {
-    // handle method call com.saruneko.tori.Account.setPin
-    QMetaObject::invokeMethod(parent(), "setPin", Q_ARG(QString, pin));
+    // handle method call com.saruneko.tori.Account.retweet
+    QMetaObject::invokeMethod(parent(), "retweet", Q_ARG(QString, uuid), Q_ARG(qlonglong, tweet_id), Q_ARG(QVariantMap, options));
+}
+
+void AccountAdaptor::retweets(const QString &uuid, qlonglong tweet_id, const QVariantMap &options)
+{
+    // handle method call com.saruneko.tori.Account.retweets
+    QMetaObject::invokeMethod(parent(), "retweets", Q_ARG(QString, uuid), Q_ARG(qlonglong, tweet_id), Q_ARG(QVariantMap, options));
+}
+
+void AccountAdaptor::show(const QString &uuid, qlonglong tweet_id, const QVariantMap &options)
+{
+    // handle method call com.saruneko.tori.Account.show
+    QMetaObject::invokeMethod(parent(), "show", Q_ARG(QString, uuid), Q_ARG(qlonglong, tweet_id), Q_ARG(QVariantMap, options));
+}
+
+void AccountAdaptor::update(const QString &uuid, const QString &status, const QVariantMap &options)
+{
+    // handle method call com.saruneko.tori.Account.update
+    QMetaObject::invokeMethod(parent(), "update", Q_ARG(QString, uuid), Q_ARG(QString, status), Q_ARG(QVariantMap, options));
 }
 

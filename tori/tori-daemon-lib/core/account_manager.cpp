@@ -21,10 +21,10 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <Accounts/Manager>
+#include <QDebug>
 #include <QHash>
 #include <QVariant>
-#include <QxtLogger>
+#include <Accounts/Manager>
 #include "core/account.h"
 #include "core/account_adaptor.h"
 #include "account_manager.h"
@@ -42,7 +42,7 @@ class AccountManagerPrivate
     Q_DECLARE_PUBLIC(AccountManager)
 
 public:
-    AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key, AccountManager* parent, bool useDefault=false);
+    AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key, KQOAuthManager* man, AccountManager* parent);
 
     QHash<QString, QDBusObjectPath> getAccounts();
 
@@ -57,53 +57,55 @@ private:
     static QString BASE_ACCOUNT_URL;
 private:
     AccountManager* q_ptr;
-    Accounts::Manager* _man;
+    Accounts::Manager* _accMan;
+    KQOAuthManager* _netMan;
     QHash<Accounts::AccountId, QPair<Account*, AccountAdaptor*> > _accounts;
     tori::keyring::Keyring* _key;
     QDBusConnection _conn;
-    bool _useDefault;
 };
 
 QString AccountManagerPrivate::BASE_ACCOUNT_URL = "/org/saruneko/tori/account/%1";
 
-AccountManagerPrivate::AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key,
-    AccountManager* parent, bool useDefault) :
+AccountManagerPrivate::AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key, KQOAuthManager* man,
+    AccountManager* parent) :
     q_ptr(parent),
     _conn(connection),
-    _useDefault(useDefault)
+    _netMan(man)
 {
     Q_Q(AccountManager);
-    _man = new Accounts::Manager("microblogging");
+    _accMan = new Accounts::Manager("microblogging");
     _key = key;
 
     // do connect the signals so that we can let people know changes happened
-    q->connect(_man, SIGNAL(accountCreated(Accounts::AccountId)),
+    q->connect(_accMan, SIGNAL(accountCreated(Accounts::AccountId)),
         q, SLOT(onAccountCreated(Accounts::AccountId)));
-    q->connect(_man, SIGNAL(accountUpdated(Accounts::AccountId)),
+    q->connect(_accMan, SIGNAL(accountUpdated(Accounts::AccountId)),
         q, SLOT(onAccountUpdated(Accounts::AccountId)));
-    q->connect(_man, SIGNAL(accountRemoved(Accounts::AccountId)),
+    q->connect(_accMan, SIGNAL(accountRemoved(Accounts::AccountId)),
         q, SLOT(onAccountDeleted(Accounts::AccountId)));
+
 }
 
 bool AccountManagerPrivate::isTwitterAccount(Accounts::AccountId acc_id)
 {
-    Accounts::Account* acc = _man->account(acc_id);
+    Accounts::Account* acc = _accMan->account(acc_id);
     return acc->providerName() == "twitter";
 }
 
 QHash<QString, QDBusObjectPath> AccountManagerPrivate::getAccounts()
 {
+    Q_Q(AccountManager);
     QHash<QString, QDBusObjectPath> accounts;
 
     // loop and just add those accounts from twitter
-    Accounts::AccountIdList allAccounts = _man->accountList();
+    Accounts::AccountIdList allAccounts = _accMan->accountList();
 
-    qxtLog->debug() << "Number of accounts found:" << allAccounts.length();
+    qDebug() << "Number of accounts found:" << allAccounts.length();
 
     for(int pos = 0; pos < allAccounts.length(); ++pos)
     {
-        Accounts::Account* acc = _man->account(allAccounts.at(pos));
-        qxtLog->debug() << "Account id:" << acc->id() << "Account provider:" << acc->providerName();
+        Accounts::Account* acc = _accMan->account(allAccounts.at(pos));
+        qDebug() << "Account id:" << acc->id() << "Account provider:" << acc->providerName();
 
         if(acc->providerName() == "twitter")
         {
@@ -112,7 +114,7 @@ QHash<QString, QDBusObjectPath> AccountManagerPrivate::getAccounts()
 
             if (!_accounts.contains(acc->id()))
             {
-                Account* account = new Account(acc, _key, _useDefault);
+                Account* account = new Account(acc, _key, _netMan, q);
                 AccountAdaptor* adaptor = new AccountAdaptor(account);
 
                 QPair<Account*, AccountAdaptor*> pair;
@@ -133,8 +135,8 @@ void AccountManagerPrivate::onAccountCreated(Accounts::AccountId acc_id)
     Q_Q(AccountManager);
     if(isTwitterAccount(acc_id))
     {
-        Accounts::Account* acc = _man->account(acc_id);
-        Account* account = new Account(acc, _key, _useDefault);
+        Accounts::Account* acc = _accMan->account(acc_id);
+        Account* account = new Account(acc, _key, _netMan, q);
         AccountAdaptor* adaptor = new AccountAdaptor(acc);
         QPair<Account*, AccountAdaptor*> pair;
         pair.first = account;
@@ -153,7 +155,7 @@ void AccountManagerPrivate::onAccountDeleted(Accounts::AccountId acc_id)
     Q_Q(AccountManager);
     if(isTwitterAccount(acc_id))
     {
-        Accounts::Account* acc = _man->account(acc_id);
+        Accounts::Account* acc = _accMan->account(acc_id);
         QString path = AccountManagerPrivate::BASE_ACCOUNT_URL.arg(QString::number(acc->id()));
         _accounts.remove(acc_id);
 
@@ -168,15 +170,15 @@ void AccountManagerPrivate::onAccountUpdated(Accounts::AccountId acc_id)
     Q_Q(AccountManager);
     if(isTwitterAccount(acc_id))
     {
-        Accounts::Account* acc = _man->account(acc_id);
+        Accounts::Account* acc = _accMan->account(acc_id);
         emit q->accountUpdated(acc->id(), acc->displayName());
     }
 }
 
-AccountManager::AccountManager(QDBusConnection connection, tori::keyring::Keyring* key, bool useDefault,
+AccountManager::AccountManager(QDBusConnection connection, tori::keyring::Keyring* key, KQOAuthManager* man,
     QObject *parent) :
     QObject(parent),
-    d_ptr(new AccountManagerPrivate(connection, key, this, useDefault))
+    d_ptr(new AccountManagerPrivate(connection, key, man, this))
 {
 }
 
@@ -187,7 +189,7 @@ AccountManager::~AccountManager()
 DBusObjectPathHash AccountManager::getAccounts()
 {
     Q_D(AccountManager);
-    qxtLog->debug() << "AccountManager::getAccounts()";
+    qDebug() << "AccountManager::getAccounts()";
     return d->getAccounts();
 }
 

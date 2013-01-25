@@ -21,8 +21,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <QxtLogger>
-#include "dbus/dbus_helper.h"
+#include <QDebug>
+#include <QtKOAuth>
+#include "./dbus/dbus_helper.h"
 #include "tori_daemon.h"
 
 
@@ -38,23 +39,25 @@ ToriDaemon::ToriDaemon(QObject *parent) :
     // create the keyring that will be used to store and retrieve the different
     // tokens
     _keyring = new keyring::Keyring(_conn);
-    _accManager = new AccountManager(_conn, _keyring);
+    _man = new KQOAuthManager();
+    _accManager = new AccountManager(_conn, _keyring, _man);
 }
 
 void ToriDaemon::start()
 {
-     qxtLog->enableAllLogLevels();
+    qDebug() << "Starting daemon...";
     _keyring->openSession();
     bool started = startAccountManagerService();
 }
 
 bool ToriDaemon::startAccountManagerService()
 {
-    qxtLog->debug("Starting dbus services");
+    qDebug("Starting dbus services");
     _accAdaptor = new AccountManagerAdaptor(_accManager);
     bool ret = _conn.registerService("org.saruneko.tori.AccountManager");
     if (ret)
     {
+        qDebug("Account manager registered.");
         ret = _conn.registerObject("/", _accManager);
         return ret;
     }

@@ -1,0 +1,9 @@
+[submodule "tori/accounts-qt"]
+	path = tori/accounts-qt
+	url = https://code.google.com/p/accounts-sso.libaccounts-qt/
+[submodule "tori/kqoauth"]
+	path = tori/kqoauth
+	url = git://gitorious.org/kqoauth/kqoauth.git
+[submodule "tori/signon"]
+	path = tori/signon
+	url = https://code.google.com/p/accounts-sso.signond/

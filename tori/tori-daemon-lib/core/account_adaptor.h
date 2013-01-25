@@ -9,8 +9,8 @@
  * before re-generating it.
  */
 
-#ifndef ACCOUNT_ADAPTOR_H_1357565404
-#define ACCOUNT_ADAPTOR_H_1357565404
+#ifndef ACCOUNT_ADAPTOR_H_1359133112
+#define ACCOUNT_ADAPTOR_H_1359133112
 
 #include <QtCore/QObject>
 #include <QtDBus/QtDBus>
@@ -30,22 +30,44 @@ class AccountAdaptor: public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "com.saruneko.tori.Account")
     Q_CLASSINFO("D-Bus Introspection", ""
 "  <interface name=\"com.saruneko.tori.Account\">\n"
-"    <method name=\"setPin\">\n"
-"      <arg direction=\"in\" type=\"s\" name=\"pin\"/>\n"
-"    </method>\n"
+"    <!-- Auth methods -->\n"
 "    <method name=\"authenticate\"/>\n"
-"    <method name=\"isAuthenticated\"/>\n"
-"    <signal name=\"oauthPinUrl\">\n"
-"      <arg direction=\"out\" type=\"s\" name=\"pinUrl\"/>\n"
-"      <arg direction=\"out\" type=\"s\" name=\"username\"/>\n"
-"    </signal>\n"
-"    <signal name=\"authenticated\">\n"
-"      <arg direction=\"out\" type=\"b\" name=\"authenticated\"/>\n"
-"      <arg direction=\"out\" type=\"s\" name=\"username\"/>\n"
-"    </signal>\n"
+"    <signal name=\"authenticated\"/>\n"
 "    <signal name=\"authenticationError\">\n"
-"      <arg direction=\"out\" type=\"u\" name=\"error\"/>\n"
+"      <arg direction=\"out\" type=\"u\" name=\"errorCode\"/>\n"
+"      <arg direction=\"out\" type=\"s\" name=\"error\"/>\n"
 "    </signal>\n"
+"    <!-- status API -->\n"
+"    <method name=\"retweets\">\n"
+"      <annotation value=\"QVariantMap\" name=\"org.qtproject.QtDBus.QtTypeName.In2\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"uuid\"/>\n"
+"      <arg direction=\"in\" type=\"x\" name=\"tweet_id\"/>\n"
+"      <arg direction=\"in\" type=\"a{sv}\" name=\"options\"/>\n"
+"    </method>\n"
+"    <method name=\"show\">\n"
+"      <annotation value=\"QVariantMap\" name=\"org.qtproject.QtDBus.QtTypeName.In2\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"uuid\"/>\n"
+"      <arg direction=\"in\" type=\"x\" name=\"tweet_id\"/>\n"
+"      <arg direction=\"in\" type=\"a{sv}\" name=\"options\"/>\n"
+"    </method>\n"
+"    <method name=\"destroy\">\n"
+"      <annotation value=\"QVariantMap\" name=\"org.qtproject.QtDBus.QtTypeName.In2\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"uuid\"/>\n"
+"      <arg direction=\"in\" type=\"x\" name=\"tweet_id\"/>\n"
+"      <arg direction=\"in\" type=\"a{sv}\" name=\"options\"/>\n"
+"    </method>\n"
+"    <method name=\"update\">\n"
+"      <annotation value=\"QVariantMap\" name=\"org.qtproject.QtDBus.QtTypeName.In2\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"uuid\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"status\"/>\n"
+"      <arg direction=\"in\" type=\"a{sv}\" name=\"options\"/>\n"
+"    </method>\n"
+"    <method name=\"retweet\">\n"
+"      <annotation value=\"QVariantMap\" name=\"org.qtproject.QtDBus.QtTypeName.In2\"/>\n"
+"      <arg direction=\"in\" type=\"s\" name=\"uuid\"/>\n"
+"      <arg direction=\"in\" type=\"x\" name=\"tweet_id\"/>\n"
+"      <arg direction=\"in\" type=\"a{sv}\" name=\"options\"/>\n"
+"    </method>\n"
 "  </interface>\n"
         "")
 public:
@@ -55,12 +77,14 @@ public:
 public: // PROPERTIES
 public Q_SLOTS: // METHODS
     void authenticate();
-    void isAuthenticated();
-    void setPin(const QString &pin);
+    void destroy(const QString &uuid, qlonglong tweet_id, const QVariantMap &options);
+    void retweet(const QString &uuid, qlonglong tweet_id, const QVariantMap &options);
+    void retweets(const QString &uuid, qlonglong tweet_id, const QVariantMap &options);
+    void show(const QString &uuid, qlonglong tweet_id, const QVariantMap &options);
+    void update(const QString &uuid, const QString &status, const QVariantMap &options);
 Q_SIGNALS: // SIGNALS
-    void authenticated(bool authenticated, const QString &username);
-    void authenticationError(uint error);
-    void oauthPinUrl(const QString &pinUrl, const QString &username);
+    void authenticated();
+    void authenticationError(uint errorCode, const QString &error);
 };
 
 #endif

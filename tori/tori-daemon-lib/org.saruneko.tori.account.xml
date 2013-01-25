@@ -1,20 +1,47 @@
 <node>
   <interface name="com.saruneko.tori.Account">
-    <method name="setPin">
-        <arg name="pin" type="s" direction="in" />
-    </method>
-    <method name="authenticate"/>
-    <method name="isAuthenticated"/>
-    <signal name="oauthPinUrl">
-        <arg name="pinUrl" type="s" direction="out"/>
-        <arg name="username" type="s" direction="out"/>
-    </signal>
-    <signal name="authenticated">
-        <arg name="authenticated" type="b" direction="out"/>
-        <arg name="username" type="s" direction="out"/>
-    </signal>
+
+    <!-- Auth methods -->
+    <method name="authenticate" />
+
+    <signal name="authenticated" />
     <signal name="authenticationError">
-        <arg name="error" type="u" direction="out"/>
+        <arg name="errorCode" type="u" direction="out"/>
+        <arg name="error" type="s" direction="out"/>
     </signal>
+
+    <!-- status API -->
+
+    <method name="retweets">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QVariantMap"/>
+        <arg name="uuid" type="s" direction="in" />
+        <arg name="tweet_id" type="x" direction="in" />
+        <arg name="options" type="a{sv}" direction="in"/>
+    </method>
+    <method name="show">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QVariantMap"/>
+        <arg name="uuid" type="s" direction="in" />
+        <arg name="tweet_id" type="x" direction="in" />
+        <arg name="options" type="a{sv}" direction="in"/>
+    </method>
+    <method name="destroy">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QVariantMap"/>
+        <arg name="uuid" type="s" direction="in" />
+        <arg name="tweet_id" type="x" direction="in" />
+        <arg name="options" type="a{sv}" direction="in"/>
+    </method>
+    <method name="update">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QVariantMap"/>
+        <arg name="uuid" type="s" direction="in" />
+        <arg name="status" type="s" direction="in" />
+        <arg name="options" type="a{sv}" direction="in"/>
+    </method>
+    <method name="retweet">
+        <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QVariantMap"/>
+        <arg name="uuid" type="s" direction="in" />
+        <arg name="tweet_id" type="x" direction="in" />
+        <arg name="options" type="a{sv}" direction="in"/>
+    </method>
+
  </interface>
 </node>

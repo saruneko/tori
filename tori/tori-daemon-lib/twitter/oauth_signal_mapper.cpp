@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 mandel
+ * Copyright (c) 2013 mandel
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -21,26 +21,24 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <QtCore/QHash>
-#include "signal_mapper.h"
+#include <QHash>
+#include "oauth_signal_mapper.h"
 
 namespace tori
 {
 
-namespace dbus
+namespace twitter
 {
 
-DBusSignalMapper::_init DBusSignalMapper::_initializer;
-
-class DBusSignalMapperPrivate
+class OAuthSignalMapperPrivate
 {
-    Q_DECLARE_PUBLIC(DBusSignalMapper)
+    Q_DECLARE_PUBLIC(OAuthSignalMapper)
  public:
-    DBusSignalMapperPrivate(DBusSignalMapper* parent) :
+    OAuthSignalMapperPrivate(OAuthSignalMapper* parent) :
         q_ptr(parent) {}
 
     void _q_senderDestroyed() {
-        Q_Q(DBusSignalMapper);
+        Q_Q(OAuthSignalMapper);
         q->removeMappings(q->sender());
     }
     QHash<QObject*, int> intHash;
@@ -49,74 +47,74 @@ class DBusSignalMapperPrivate
     QHash<QObject*, QObject*> objectHash;
 
 private:
-    DBusSignalMapper* q_ptr;
+    OAuthSignalMapper* q_ptr;
 };
 
-DBusSignalMapper::DBusSignalMapper(QObject *parent) :
+OAuthSignalMapper::OAuthSignalMapper(QObject *parent) :
     QObject(parent),
-    d_ptr(new DBusSignalMapperPrivate(this))
+    d_ptr(new OAuthSignalMapperPrivate(this))
 {
 }
 
-DBusSignalMapper::~DBusSignalMapper()
+OAuthSignalMapper::~OAuthSignalMapper()
 {
 }
 
-void DBusSignalMapper::setMapping(QObject* sender, int id)
+void OAuthSignalMapper::setMapping(QObject* sender, int id)
 {
-    Q_D(DBusSignalMapper);
+    Q_D(OAuthSignalMapper);
     d->intHash.insert(sender, id);
     connect(sender, SIGNAL(destroyed()), this, SLOT(_q_senderDestroyed()));
 }
 
-void DBusSignalMapper::setMapping(QObject* sender, const QString &text)
+void OAuthSignalMapper::setMapping(QObject* sender, const QString &text)
 {
-    Q_D(DBusSignalMapper);
+    Q_D(OAuthSignalMapper);
     d->stringHash.insert(sender, text);
     connect(sender, SIGNAL(destroyed()), this, SLOT(_q_senderDestroyed()));
 }
 
-void DBusSignalMapper::setMapping(QObject* sender, QWidget *widget)
+void OAuthSignalMapper::setMapping(QObject* sender, QWidget *widget)
 {
-    Q_D(DBusSignalMapper);
+    Q_D(OAuthSignalMapper);
     d->widgetHash.insert(sender, widget);
     connect(sender, SIGNAL(destroyed()), this, SLOT(_q_senderDestroyed()));
 }
 
-void DBusSignalMapper::setMapping(QObject* sender, QObject *object)
+void OAuthSignalMapper::setMapping(QObject* sender, QObject *object)
 {
-    Q_D(DBusSignalMapper);
+    Q_D(OAuthSignalMapper);
     d->objectHash.insert(sender, object);
     connect(sender, SIGNAL(destroyed()), this, SLOT(_q_senderDestroyed()));
 }
 
-QObject* DBusSignalMapper::mapping(int id) const
+QObject* OAuthSignalMapper::mapping(int id) const
 {
-    Q_D(const DBusSignalMapper);
+    Q_D(const OAuthSignalMapper);
     return d->intHash.key(id);
 }
 
-QObject* DBusSignalMapper::mapping(const QString& id) const
+QObject* OAuthSignalMapper::mapping(const QString& id) const
 {
-    Q_D(const DBusSignalMapper);
+    Q_D(const OAuthSignalMapper);
     return d->stringHash.key(id);
 }
 
-QObject* DBusSignalMapper::mapping(QWidget* widget) const
+QObject* OAuthSignalMapper::mapping(QWidget* widget) const
 {
-    Q_D(const DBusSignalMapper);
+    Q_D(const OAuthSignalMapper);
     return d->widgetHash.key(widget);
 }
 
-QObject* DBusSignalMapper::mapping(QObject* object) const
+QObject* OAuthSignalMapper::mapping(QObject* object) const
 {
-    Q_D(const DBusSignalMapper);
+    Q_D(const OAuthSignalMapper);
     return d->objectHash.key(object);
 }
 
-void DBusSignalMapper::removeMappings(QObject* sender)
+void OAuthSignalMapper::removeMappings(QObject* sender)
 {
-    Q_D(DBusSignalMapper);
+    Q_D(OAuthSignalMapper);
 
     d->intHash.remove(sender);
     d->stringHash.remove(sender);
@@ -124,14 +122,14 @@ void DBusSignalMapper::removeMappings(QObject* sender)
     d->objectHash.remove(sender);
 }
 
-void DBusSignalMapper::map(QDBusPendingCallWatcher* watcher)
+void OAuthSignalMapper::map(QByteArray watcher)
 {
     map(watcher, sender());
 }
 
-void DBusSignalMapper::map(QDBusPendingCallWatcher* watcher, QObject* sender)
+void OAuthSignalMapper::map(QByteArray watcher, QObject* sender)
 {
-    Q_D(DBusSignalMapper);
+    Q_D(OAuthSignalMapper);
     if (d->intHash.contains(sender))
         emit mapped(watcher, d->intHash.value(sender));
     if (d->stringHash.contains(sender))
@@ -142,33 +140,31 @@ void DBusSignalMapper::map(QDBusPendingCallWatcher* watcher, QObject* sender)
         emit mapped(watcher, d->objectHash.value(sender));
 }
 
-QList<QObject*> DBusSignalMapper::intMaps()
+QList<QObject*> OAuthSignalMapper::intMaps()
 {
-    Q_D(DBusSignalMapper);
+    Q_D(OAuthSignalMapper);
     return d->intHash.keys();
 }
 
-QList<QObject*> DBusSignalMapper::stringMaps()
+QList<QObject*> OAuthSignalMapper::stringMaps()
 {
-    Q_D(DBusSignalMapper);
+    Q_D(OAuthSignalMapper);
     return d->stringHash.keys();
 }
 
-QList<QObject*> DBusSignalMapper::widgetMaps()
+QList<QObject*> OAuthSignalMapper::widgetMaps()
 {
-    Q_D(DBusSignalMapper);
+    Q_D(OAuthSignalMapper);
     return d->widgetHash.keys();
 }
 
-QList<QObject*> DBusSignalMapper::objectMaps()
+QList<QObject*> OAuthSignalMapper::objectMaps()
 {
-    Q_D(DBusSignalMapper);
+    Q_D(OAuthSignalMapper);
     return d->objectHash.keys();
 }
-
-
-} // dbus
+} // twitter
 
 } // tori
 
-#include "moc_signal_mapper.cpp"
+#include "moc_oauth_signal_mapper.cpp"
