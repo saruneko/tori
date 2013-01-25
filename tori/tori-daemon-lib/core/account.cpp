@@ -31,6 +31,8 @@
 #include <QMutex>
 #include "account.h"
 
+#include "twitter/status_api.h"
+
 
 namespace tori
 {
@@ -68,9 +70,16 @@ class AccountPrivate
 {
     Q_DECLARE_PUBLIC(Account)
 public:
-    AccountPrivate(Accounts::Account* acc, keyring::Keyring* key, Account* parent);
+    AccountPrivate(Accounts::Account* acc, keyring::Keyring* key, KQOAuthManager* man, Account* parent);
 
     void authenticate();
+
+    void destroy(const QString& uuid, qlonglong tweet_id, const QVariantMap &options);
+    void retweet(const QString& uuid, qlonglong tweet_id, const QVariantMap &options);
+    void retweets(const QString& uuid, qlonglong tweet_id, const QVariantMap &options);
+    void show(const QString& uuid, qlonglong tweet_id, const QVariantMap &options);
+    void update(const QString& uuid, const QString &status, const QVariantMap &options);
+
     void onResponse(const SignOn::SessionData& sessionData);
     void onError(const SignOn::Error& error);
     void onCredentialsFound(Accounts::AccountId accId, QString token, QString tokenSecret, bool found);
@@ -99,7 +108,8 @@ private:
     // mutex to ensure that we do not try to auth to many times
     QMutex _mutex;
     keyring::Keyring* _key;
-
+    KQOAuthManager* _man;
+    twitter::StatusAPI* _status;
 };
 
 QString AccountPrivate::CONSUMER_KEY = "ConsumerKey";
@@ -109,8 +119,9 @@ QString AccountPrivate::TOKEN_ENDPOINT = "TokenEndpoint";
 QString AccountPrivate::AUTHERIZATION_ENDPOINT = "AuthorizationEndpoint";
 QString AccountPrivate::CALLBACK_ENDPOINT = "Callback";
 
-AccountPrivate::AccountPrivate(Accounts::Account* acc, keyring::Keyring* key, Account* parent) :
+AccountPrivate::AccountPrivate(Accounts::Account* acc, keyring::Keyring* key, KQOAuthManager* man, Account* parent) :
     _acc(acc),
+    _man(man),
     q_ptr(parent),
     _session(0),
     _key(key)
@@ -125,6 +136,8 @@ AccountPrivate::AccountPrivate(Accounts::Account* acc, keyring::Keyring* key, Ac
 
     q->connect(_key, SIGNAL(credentialsFound(Accounts::AccountId, QString, QString, bool)),
         q, SLOT(onCredentialsFound(Accounts::AccountId, QString, QString, bool)));
+
+    _status = new twitter::StatusAPI(q_ptr, _man);
 }
 
 void AccountPrivate::authenticate()
@@ -167,6 +180,7 @@ void AccountPrivate::onResponse(const SignOn::SessionData& sessionData)
     // emit signal and unlock
     q->authenticated();
     _mutex.unlock();
+
 }
 
 void AccountPrivate::onError(const SignOn::Error& error)
@@ -223,8 +237,34 @@ void AccountPrivate::onCredentialsFound(Accounts::AccountId accId, QString token
     }
 }
 
-Account::Account(Accounts::Account* acc, keyring::Keyring* key, QObject *parent) : QObject(parent),
-    d_ptr(new AccountPrivate(acc, key, this))
+void AccountPrivate::destroy(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
+{
+    _status->destroy(uuid, tweet_id, options);
+}
+
+void AccountPrivate::retweet(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
+{
+    _status->retweet(uuid, tweet_id, options);
+}
+
+void AccountPrivate::retweets(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
+{
+    _status->retweets(uuid, tweet_id, options);
+}
+
+void AccountPrivate::show(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
+{
+    _status->show(uuid, tweet_id, options);
+}
+
+void AccountPrivate::update(const QString& uuid, const QString &status, const QVariantMap &options)
+{
+    _status->update(uuid, status, options);
+}
+
+
+Account::Account(Accounts::Account* acc, keyring::Keyring* key, KQOAuthManager* man, QObject *parent) : QObject(parent),
+    d_ptr(new AccountPrivate(acc, key, man, this))
 {
 }
 
@@ -237,7 +277,6 @@ void Account::authenticate()
     Q_D(Account);
     d->authenticate();
 }
-
 
 QString Account::tokenKey()
 {
@@ -261,6 +300,36 @@ QString Account::consumerSecret()
 {
     Q_D(Account);
     return d->_consumerSecret;
+}
+
+void Account::destroy(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
+{
+    Q_D(Account);
+    d->destroy(uuid, tweet_id, options);
+}
+
+void Account::retweet(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
+{
+    Q_D(Account);
+    d->retweet(uuid, tweet_id, options);
+}
+
+void Account::retweets(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
+{
+    Q_D(Account);
+    d->retweets(uuid, tweet_id, options);
+}
+
+void Account::show(const QString& uuid, qlonglong tweet_id, const QVariantMap &options)
+{
+    Q_D(Account);
+    d->show(uuid, tweet_id, options);
+}
+
+void Account::update(const QString& uuid, const QString &status, const QVariantMap &options)
+{
+    Q_D(Account);
+    d->update(uuid, status, options);
 }
 
 } // core

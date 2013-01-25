@@ -11,7 +11,9 @@ QT       -= gui
 TARGET = tori-daemon-lib
 QMAKE_CXXFLAGS += -std=c++0x
 TEMPLATE = lib
+CONFIG += kqoauth
 INCLUDEPATH += ../accounts-qt
+INCLUDEPATH += ../kqoauth
 
 DEFINES += TORIDAEMONLIB_LIBRARY
 
@@ -41,7 +43,9 @@ SOURCES += \
     keyring/interface_factory.cpp \
     keyring/keyring_signal_mapper.cpp \
     keyring/keyring.cpp \
-    tori_daemon.cpp  
+    tori_daemon.cpp \ 
+    twitter/oauth_signal_mapper.cpp \
+    twitter/status_api.cpp
 
 HEADERS +=\
     tori-daemon-lib_global.h \
@@ -62,7 +66,10 @@ HEADERS +=\
     keyring/async_call_data.h \
     keyring/keyring_signal_mapper.h \
     keyring/keyring.h \
-    tori_daemon.h
+    tori_daemon.h \
+    twitter/oauth_signal_mapper.h \
+    twitter/status_api.h \
+    twitter/oauth_utils.h
 
 OTHER_FILES += \
     org.freedesktop.secret.session.xml \

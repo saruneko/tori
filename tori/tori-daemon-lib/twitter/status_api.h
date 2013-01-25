@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 mandel
+ * Copyright (c) 2013 mandel
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -21,57 +21,57 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef ACCOUNT_MANAGER_H
-#define ACCOUNT_MANAGER_H
+#ifndef STATUS_API_H
+#define STATUS_API_H
 
-
-#include <Accounts/Manager>
 #include <QtKOAuth>
-#include <QNetworkAccessManager>
-#include <QScopedPointer>
-#include <QDBusConnection>
-#include <QDBusObjectPath>
+#include <QNetworkReply>
 #include <QObject>
+#include <QScopedPointer>
 #include <QVariantMap>
-#include "../dbus/dbus_helper.h"
-#include "../keyring/keyring.h"
+#include "core/account.h"
 
 namespace tori
 {
 
-namespace core
+namespace twitter
 {
 
-class AccountManagerPrivate;
-class AccountManager : public QObject
+class UpdateData;
+class TweetData;
+class StatusAPIPrivate;
+class StatusAPI : public QObject
 {
-    Q_DECLARE_PRIVATE(AccountManager)
     Q_OBJECT
+    Q_DECLARE_PRIVATE(StatusAPI)
 public:
-    explicit AccountManager(QDBusConnection connection,
-        tori::keyring::Keyring* key, KQOAuthManager* man, QObject *parent = 0);
-    ~AccountManager();
-
-public slots:
-    DBusObjectPathHash getAccounts();
+    StatusAPI(tori::core::Account* account, KQOAuthManager* man, QObject *parent = 0);
+    ~StatusAPI();
+    
+public:
+   void retweets(QString uuid, qlonglong tweet_id, QVariantMap options);
+   void show(QString uuid, qlonglong tweet_id, QVariantMap options);
+   void destroy(QString uuid, qlonglong tweet_id, QVariantMap options);
+   void update(QString uuid, QString status, QVariantMap options);
+   void retweet(QString uuid, qlonglong tweet_id, QVariantMap options);
 
 Q_SIGNALS:
-    void accountCreated(quint32 acc_id, QString accountName);
-    void accountDeleted(quint32 acc_id, QString accountName);
-    void accountUpdated(quint32 acc_id, QString accountName);
+    void updateFinished(QString uuid);
+    void updateError(QString uuid, int errorCode, QString errorMessage);
 
 private:
-    QScopedPointer<AccountManagerPrivate> d_ptr;
+    QScopedPointer<StatusAPIPrivate> d_ptr;
 
 private:
-    Q_PRIVATE_SLOT(d_func(), void onAccountCreated(Accounts::AccountId))
-    Q_PRIVATE_SLOT(d_func(), void onAccountDeleted(Accounts::AccountId))
-    Q_PRIVATE_SLOT(d_func(), void onAccountUpdated(Accounts::AccountId))
+    Q_PRIVATE_SLOT(d_func(), void onUpdateFinished(QByteArray, UpdateData*))
+    Q_PRIVATE_SLOT(d_func(), void onDestroyFinished(QByteArray response, TweetData* data))
+    Q_PRIVATE_SLOT(d_func(), void onShowFinished(QByteArray response, TweetData* data))
 
 };
 
-} // core
+} // twitter
 
 } // tori
 
-#endif // ACCOUNT_MANAGER_H
+
+#endif // STATUS_API_H

@@ -24,7 +24,6 @@ INCLUDEPATH += $$PWD/../accounts-qt/Accounts
 DEPENDPATH += $$PWD/../accounts-qt/Accounts
 
 # kqoauth dependency
-
 LIBS += -L$$OUT_PWD/../kqoauth/lib/ -lkqoauth
 
 INCLUDEPATH += $$PWD/../kqoauth/include $$PWD/../kqoauth/src

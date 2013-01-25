@@ -3,7 +3,16 @@ tori
 
 A Twitter Client
 
-## Dependecies
+## Compilation
 
-- sudo add-apt-repository ppa:canonical-qt5-edgers/qt5-beta1 && sudo apt-get update && sudo apt-get install qt5-meta-full && echo 'export PATH=/opt/qt5/bin:$PATH' >> ~/.bashrc
-- sudo add-apt-repository ppa:ui-toolkit/ppa && sudo apt-get update && sudo apt-get install qt-components-ubuntu qt-components-ubuntu-doc 
+In order to compile using the Qt 5 SDK for Ubuntu do:
+
+- /opt/qt5/bin/qmake tori/tori.pro
+- make
+
+You can execute the daemon doing the following:
+
+- cd tori/tori-daemon
+- LD_LIBRARY_PATH=../accounts-qt/Accounts/:../tori-daemon-lib/:../kqoauth/lib/:../signon/lib/SignOn/ ./tori-daemon
+
+The project does not yet install the software in the correct locaitons so DO NOT do make install.
