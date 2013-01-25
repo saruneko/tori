@@ -24,6 +24,7 @@
 #ifndef TORI_DAEMON_H
 #define TORI_DAEMON_H
 
+#include <QtKOAuth>
 #include <QtDBus/QDBusConnection>
 #include <QtCore/QObject>
 #include "keyring/keyring.h"
@@ -49,6 +50,7 @@ private:
     keyring::Keyring* _keyring;
     tori::core::AccountManager* _accManager;
     AccountManagerAdaptor* _accAdaptor;
+    KQOAuthManager* _man;
 };
 
 } // tori

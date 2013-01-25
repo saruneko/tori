@@ -25,6 +25,8 @@
 #define ACCOUNT_H
 
 #include <Accounts/Account>
+#include <QtKOAuth>
+#include <QNetworkAccessManager>
 #include <QObject>
 #include <QScopedPointer>
 #include <keyring/keyring.h>
@@ -42,7 +44,7 @@ class Account : public QObject
     Q_DECLARE_PRIVATE(Account)
     Q_OBJECT
 public:
-    explicit Account(Accounts::Account* acc, keyring::Keyring* key, QObject *parent = 0);
+    explicit Account(Accounts::Account* acc, keyring::Keyring* key, KQOAuthManager* man, QObject *parent = 0);
     ~Account();
 
 public:
@@ -53,6 +55,12 @@ public:
 
 public slots:
     void authenticate();
+
+    void destroy(const QString &uuid, qlonglong tweet_id, const QVariantMap &options);
+    void retweet(const QString &uuid, qlonglong tweet_id, const QVariantMap &options);
+    void retweets(const QString &uuid, qlonglong tweet_id, const QVariantMap &options);
+    void show(const QString &uuid, qlonglong tweet_id, const QVariantMap &options);
+    void update(const QString &uuid, const QString &status, const QVariantMap &options);
 
 signals:
     void authenticated();
