@@ -17,7 +17,6 @@ HEADERS  +=
 OTHER_FILES += \
     qml/main.qml \
     qml/MenuBar.qml \
-    qml/ScrollBar.qml \
     qml/Header.qml \
     qml/AccountsList.qml \
     qml/ButtonImage.qml \
@@ -31,7 +30,7 @@ OTHER_FILES += \
     qml/BusyIndicator.qml \
     qml/ReadTwit.qml \
     qml/SelectUser.qml \
-    qml/CustomUbuntuTextArea.qml
+    qml/CustomScrollBar.qml
 
 RESOURCES += \
     resources.qrc

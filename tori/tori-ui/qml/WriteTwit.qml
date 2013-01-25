@@ -24,13 +24,13 @@ BaseMainContainer {
             children: users
         }
 
-        CustomUbuntuTextArea {
+        TextArea {
             id: twitWrite
             width: parent.width
             contentWidth: parent.width - units.gu(1)
-            height: units.gu(36)
+            height: units.gu(26)
             wrapMode: TextEdit.Wrap
-            fontSize: "x-large"
+            font.pixelSize: 24
 
 
             onLengthChanged: {

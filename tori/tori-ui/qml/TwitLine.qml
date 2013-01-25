@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import Ubuntu.Components 0.1
 
 BaseMainContainer {
     Component {
@@ -27,7 +28,7 @@ BaseMainContainer {
     }
 
     // Attach scrollbars to the right and bottom edges of the view.
-    ScrollBar {
+    CustomScrollBar {
         id: verticalScrollBar
         width: 12; height: view.height-12
         anchors.right: view.right
