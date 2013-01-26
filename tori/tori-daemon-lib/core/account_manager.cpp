@@ -42,7 +42,7 @@ class AccountManagerPrivate
     Q_DECLARE_PUBLIC(AccountManager)
 
 public:
-    AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key, KQOAuthManager* man, AccountManager* parent);
+    AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key, AccountManager* parent);
 
     QHash<QString, QDBusObjectPath> getAccounts();
 
@@ -58,7 +58,6 @@ private:
 private:
     AccountManager* q_ptr;
     Accounts::Manager* _accMan;
-    KQOAuthManager* _netMan;
     QHash<Accounts::AccountId, QPair<Account*, AccountAdaptor*> > _accounts;
     tori::keyring::Keyring* _key;
     QDBusConnection _conn;
@@ -66,11 +65,10 @@ private:
 
 QString AccountManagerPrivate::BASE_ACCOUNT_URL = "/org/saruneko/tori/account/%1";
 
-AccountManagerPrivate::AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key, KQOAuthManager* man,
+AccountManagerPrivate::AccountManagerPrivate(QDBusConnection connection, tori::keyring::Keyring* key,
     AccountManager* parent) :
     q_ptr(parent),
-    _conn(connection),
-    _netMan(man)
+    _conn(connection)
 {
     Q_Q(AccountManager);
     _accMan = new Accounts::Manager("microblogging");
@@ -114,7 +112,7 @@ QHash<QString, QDBusObjectPath> AccountManagerPrivate::getAccounts()
 
             if (!_accounts.contains(acc->id()))
             {
-                Account* account = new Account(acc, _key, _netMan, q);
+                Account* account = new Account(acc, _key, q);
                 AccountAdaptor* adaptor = new AccountAdaptor(account);
 
                 QPair<Account*, AccountAdaptor*> pair;
@@ -136,7 +134,7 @@ void AccountManagerPrivate::onAccountCreated(Accounts::AccountId acc_id)
     if(isTwitterAccount(acc_id))
     {
         Accounts::Account* acc = _accMan->account(acc_id);
-        Account* account = new Account(acc, _key, _netMan, q);
+        Account* account = new Account(acc, _key, q);
         AccountAdaptor* adaptor = new AccountAdaptor(acc);
         QPair<Account*, AccountAdaptor*> pair;
         pair.first = account;
@@ -175,10 +173,10 @@ void AccountManagerPrivate::onAccountUpdated(Accounts::AccountId acc_id)
     }
 }
 
-AccountManager::AccountManager(QDBusConnection connection, tori::keyring::Keyring* key, KQOAuthManager* man,
+AccountManager::AccountManager(QDBusConnection connection, tori::keyring::Keyring* key,
     QObject *parent) :
     QObject(parent),
-    d_ptr(new AccountManagerPrivate(connection, key, man, this))
+    d_ptr(new AccountManagerPrivate(connection, key, this))
 {
 }
 
