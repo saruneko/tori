@@ -21,15 +21,19 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include <QGuiApplication>
 #include "main_window.h"
 
-int main(int argc, char *argv[])
+#include <QGuiApplication>
+#include <QScreen>
+
+MainWindow::MainWindow(QGuiApplication& app, QWindow *parent) :
+    QQuickView(parent)
 {
-    QGuiApplication app(argc, argv);
+    this->setSource(QUrl::fromLocalFile("qml/main.qml"));
+    this->setWindowTitle("Tori");
+    this->setResizeMode(QQuickView::SizeRootObjectToView);
 
-    MainWindow view(app);
-    view.show();
-
-    return app.exec();
+    QScreen* screen = app.primaryScreen();
+    this->setX(screen->availableGeometry().width() - this->width() - 20);
+    this->setY(70);
 }

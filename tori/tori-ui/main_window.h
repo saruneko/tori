@@ -21,15 +21,22 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#ifndef MAIN_WINDOW_H
+#define MAIN_WINDOW_H
+
+#include <QQuickView>
 #include <QGuiApplication>
-#include "main_window.h"
 
-int main(int argc, char *argv[])
+class MainWindow : public QQuickView
 {
-    QGuiApplication app(argc, argv);
+    Q_OBJECT
+public:
+    explicit MainWindow(QGuiApplication& app, QWindow *parent = 0);
 
-    MainWindow view(app);
-    view.show();
+signals:
 
-    return app.exec();
-}
+public slots:
+
+};
+
+#endif // MAIN_WINDOW_H

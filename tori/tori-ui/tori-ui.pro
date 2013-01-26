@@ -4,15 +4,19 @@
 #
 #-------------------------------------------------
 
-QT       += quick
+QT       += quick core gui
 
 TARGET = tori-ui
 TEMPLATE = app
 
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    tori_twitter_api.cpp \
+    main_window.cpp
 
-HEADERS  +=
+HEADERS  += \
+    tori_twitter_api.h \
+    main_window.h
 
 OTHER_FILES += \
     qml/main.qml \
