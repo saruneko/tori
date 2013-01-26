@@ -43,9 +43,13 @@ SOURCES += \
     keyring/interface_factory.cpp \
     keyring/keyring_signal_mapper.cpp \
     keyring/keyring.cpp \
-    tori_daemon.cpp \ 
+    tori_daemon.cpp \
     twitter/oauth_signal_mapper.cpp \
-    twitter/status_api.cpp
+    twitter/status_api.cpp \
+    client/account_client.cpp \
+    client/account_manager_client.cpp \
+    client/account_manager_proxy.cpp \
+    client/account_proxy.cpp
 
 HEADERS +=\
     tori-daemon-lib_global.h \
@@ -69,7 +73,11 @@ HEADERS +=\
     tori_daemon.h \
     twitter/oauth_signal_mapper.h \
     twitter/status_api.h \
-    twitter/oauth_utils.h
+    twitter/oauth_utils.h \
+    client/account_client.h \
+    client/account_manager_client.h \
+    client/account_manager_proxy.h \
+    client/account_proxy.h
 
 OTHER_FILES += \
     org.freedesktop.secret.session.xml \

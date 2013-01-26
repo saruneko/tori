@@ -26,6 +26,7 @@
 
 #include <QQuickView>
 #include <QGuiApplication>
+#include "tori_twitter_api.h"
 
 class MainWindow : public QQuickView
 {
@@ -36,6 +37,9 @@ public:
 signals:
 
 public slots:
+
+private:
+    ToriTwitterAPI toriApi;
 
 };
 

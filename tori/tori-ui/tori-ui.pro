@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += quick core gui
+QT       += quick core gui dbus
 
 TARGET = tori-ui
 TEMPLATE = app
@@ -38,3 +38,27 @@ OTHER_FILES += \
 
 RESOURCES += \
     resources.qrc
+
+# accounts-qt dependency
+LIBS += -L$$OUT_PWD/../accounts-qt/Accounts/ -laccounts-qt5
+
+INCLUDEPATH += $$PWD/../accounts-qt/Accounts
+DEPENDPATH += $$PWD/../accounts-qt/Accounts
+
+# kqoauth dependency
+LIBS += -L$$OUT_PWD/../kqoauth/lib/ -lkqoauth
+
+INCLUDEPATH += $$PWD/../kqoauth/include $$PWD/../kqoauth/src
+DEPENDPATH += $$PWD/../kqoauth/lib
+
+# signon dependency
+LIBS += -L$$OUT_PWD/../signon/lib/SignOn -lsignon-qt5
+
+INCLUDEPATH += $$PWD/../signon/lib
+DEPENDPATH += $$PWD/../signon/lib
+
+# tori-daemon-dependecy
+LIBS += -L$$OUT_PWD/../tori-daemon-lib/ -ltori-daemon-lib
+
+INCLUDEPATH += $$PWD/../tori-daemon-lib
+DEPENDPATH += $$PWD/../tori-daemon-lib

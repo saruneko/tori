@@ -36,4 +36,6 @@ MainWindow::MainWindow(QGuiApplication& app, QWindow *parent) :
     QScreen* screen = app.primaryScreen();
     this->setX(screen->availableGeometry().width() - this->width() - 20);
     this->setY(70);
+
+
 }
