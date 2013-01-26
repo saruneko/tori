@@ -106,7 +106,7 @@ class StatusAPIPrivate
 {
     Q_DECLARE_PUBLIC(StatusAPI)
 public:
-    StatusAPIPrivate(tori::core::Account* acc, KQOAuthManager* man, StatusAPI* parent);
+    StatusAPIPrivate(tori::core::Account* acc, StatusAPI* parent);
 
     void retweets(QString uuid, qlonglong tweet_id, QVariantMap options);
     void show(QString uuid, qlonglong tweet_id, QVariantMap options);
@@ -137,9 +137,6 @@ private:
     OAuthSignalMapper* _showMapper;
     OAuthSignalMapper* _retweetsMapper;
     OAuthSignalMapper* _retweetMapper;
-
-    // TODO: delete this
-    QSharedPointer<KQOAuthManager> _man;
 };
 
 const QString StatusAPIPrivate::SHOW_URL = "https://api.twitter.com/1.1/statuses/show.json";
@@ -148,10 +145,9 @@ const QString StatusAPIPrivate::DESTROY_URL = "https://api.twitter.com/1.1/statu
 const QString StatusAPIPrivate::UPDATE_URL = "https://api.twitter.com/1.1/statuses/update.json";
 const QString StatusAPIPrivate::RETWEET_URL = "https://api.twitter.com/1.1/statuses/retweet/%1.json";
 
-StatusAPIPrivate::StatusAPIPrivate(tori::core::Account* acc, KQOAuthManager* man, StatusAPI* parent) :
+StatusAPIPrivate::StatusAPIPrivate(tori::core::Account* acc, StatusAPI* parent) :
     q_ptr(parent),
-    _acc(acc),
-    _man(man)
+    _acc(acc)
 {
     Q_Q(StatusAPI);
     qRegisterMetaType<UpdateData*>("UpdateData*");
@@ -312,9 +308,9 @@ void StatusAPIPrivate::onRetweetFinished(QByteArray response, TweetData* data)
     qDebug() << jsonString;
 }
 
-StatusAPI::StatusAPI(tori::core::Account* acc, KQOAuthManager* man, QObject *parent) :
+StatusAPI::StatusAPI(tori::core::Account* acc, QObject *parent) :
     QObject(parent),
-    d_ptr(new StatusAPIPrivate(acc, man, this))
+    d_ptr(new StatusAPIPrivate(acc, this))
 {
 }
 

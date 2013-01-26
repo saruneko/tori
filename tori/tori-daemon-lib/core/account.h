@@ -44,7 +44,7 @@ class Account : public QObject
     Q_DECLARE_PRIVATE(Account)
     Q_OBJECT
 public:
-    explicit Account(Accounts::Account* acc, keyring::Keyring* key, KQOAuthManager* man, QObject *parent = 0);
+    explicit Account(Accounts::Account* acc, keyring::Keyring* key, QObject *parent = 0);
     ~Account();
 
 public:

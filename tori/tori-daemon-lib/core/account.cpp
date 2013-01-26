@@ -70,7 +70,7 @@ class AccountPrivate
 {
     Q_DECLARE_PUBLIC(Account)
 public:
-    AccountPrivate(Accounts::Account* acc, keyring::Keyring* key, KQOAuthManager* man, Account* parent);
+    AccountPrivate(Accounts::Account* acc, keyring::Keyring* key, Account* parent);
 
     void authenticate();
 
@@ -108,7 +108,6 @@ private:
     // mutex to ensure that we do not try to auth to many times
     QMutex _mutex;
     keyring::Keyring* _key;
-    KQOAuthManager* _man;
     twitter::StatusAPI* _status;
 };
 
@@ -119,9 +118,8 @@ QString AccountPrivate::TOKEN_ENDPOINT = "TokenEndpoint";
 QString AccountPrivate::AUTHERIZATION_ENDPOINT = "AuthorizationEndpoint";
 QString AccountPrivate::CALLBACK_ENDPOINT = "Callback";
 
-AccountPrivate::AccountPrivate(Accounts::Account* acc, keyring::Keyring* key, KQOAuthManager* man, Account* parent) :
+AccountPrivate::AccountPrivate(Accounts::Account* acc, keyring::Keyring* key, Account* parent) :
     _acc(acc),
-    _man(man),
     q_ptr(parent),
     _session(0),
     _key(key)
@@ -137,7 +135,7 @@ AccountPrivate::AccountPrivate(Accounts::Account* acc, keyring::Keyring* key, KQ
     q->connect(_key, SIGNAL(credentialsFound(Accounts::AccountId, QString, QString, bool)),
         q, SLOT(onCredentialsFound(Accounts::AccountId, QString, QString, bool)));
 
-    _status = new twitter::StatusAPI(q_ptr, _man);
+    _status = new twitter::StatusAPI(q_ptr);
 }
 
 void AccountPrivate::authenticate()
@@ -263,8 +261,8 @@ void AccountPrivate::update(const QString& uuid, const QString &status, const QV
 }
 
 
-Account::Account(Accounts::Account* acc, keyring::Keyring* key, KQOAuthManager* man, QObject *parent) : QObject(parent),
-    d_ptr(new AccountPrivate(acc, key, man, this))
+Account::Account(Accounts::Account* acc, keyring::Keyring* key, QObject *parent) : QObject(parent),
+    d_ptr(new AccountPrivate(acc, key, this))
 {
 }
 

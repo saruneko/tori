@@ -45,7 +45,7 @@ class StatusAPI : public QObject
     Q_OBJECT
     Q_DECLARE_PRIVATE(StatusAPI)
 public:
-    StatusAPI(tori::core::Account* account, KQOAuthManager* man, QObject *parent = 0);
+    StatusAPI(tori::core::Account* account, QObject *parent = 0);
     ~StatusAPI();
     
 public:
