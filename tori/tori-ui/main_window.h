@@ -21,15 +21,26 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#ifndef MAIN_WINDOW_H
+#define MAIN_WINDOW_H
+
+#include <QQuickView>
 #include <QGuiApplication>
-#include "main_window.h"
+#include "tori_twitter_api.h"
 
-int main(int argc, char *argv[])
+class MainWindow : public QQuickView
 {
-    QGuiApplication app(argc, argv);
+    Q_OBJECT
+public:
+    explicit MainWindow(QGuiApplication& app, QWindow *parent = 0);
 
-    MainWindow view(app);
-    view.show();
+signals:
 
-    return app.exec();
-}
+public slots:
+
+private:
+    ToriTwitterAPI _toriApi;
+
+};
+
+#endif // MAIN_WINDOW_H
