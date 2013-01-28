@@ -11,9 +11,19 @@ class AccountClient : public QObject
 public:
     explicit AccountClient(QString service, QObject *parent = 0);
 
+    void authenticate();
+    void update(QString& status);
+    void destroy(qlonglong twit_id);
+    void retweet(qlonglong twit_id);
+    void retweets(qlonglong twit_id);
+    void show(qlonglong twit_id);
+
+
 signals:
 
-public slots:
+private slots:
+    void userAuthenticated();
+    void authenticationError(uint, QString);
 
 private:
     AccountProxy* proxy;

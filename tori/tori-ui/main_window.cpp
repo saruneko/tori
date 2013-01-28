@@ -37,5 +37,14 @@ MainWindow::MainWindow(QGuiApplication& app, QWindow *parent) :
     this->setX(screen->availableGeometry().width() - this->width() - 20);
     this->setY(70);
 
+    this->initializeTwitterAccess();
+}
 
+void MainWindow::initializeTwitterAccess()
+{
+    this->toriApi = new ToriTwitterAPI();
+    toriApi->getAccounts();
+
+    this->root = this->rootObject();
+    QObject::connect(this->root, SIGNAL(send_twit(QString, QString)), this->toriApi, SLOT(update(QString, QString)));
 }

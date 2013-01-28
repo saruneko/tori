@@ -25,6 +25,7 @@
 #define MAIN_WINDOW_H
 
 #include <QQuickView>
+#include <QQuickItem>
 #include <QGuiApplication>
 #include "tori_twitter_api.h"
 
@@ -39,8 +40,10 @@ signals:
 public slots:
 
 private:
-    ToriTwitterAPI toriApi;
+    QQuickItem *root;
+    ToriTwitterAPI* toriApi;
 
+    void initializeTwitterAccess();
 };
 
 #endif // MAIN_WINDOW_H

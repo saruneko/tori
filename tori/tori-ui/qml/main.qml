@@ -43,6 +43,8 @@ Rectangle {
 
     color: timeline_background_color
 
+    signal send_twit(string user, string status)
+
     Component {
          id: dialog
          Dialog {

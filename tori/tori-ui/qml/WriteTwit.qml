@@ -83,6 +83,8 @@ BaseMainContainer {
             width: units.gu(16)
             text: "Send"
             color: "orange"
+
+            onClicked: main.send_twit("diegosarmentero", twitWrite.text);
         }
     }
 

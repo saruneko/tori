@@ -18,6 +18,11 @@ public:
 signals:
 
 public slots:
+    void update(QString user, QString status);
+    void destroy(qlonglong twit_id);
+    void retweet(qlonglong twit_id);
+    void retweets(qlonglong twit_id);
+    void show(qlonglong twit_id);
 
 private:
     AccountManagerClient client;
