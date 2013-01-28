@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
+ * Copyright (c) 2012-2013 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -115,8 +115,7 @@ Rectangle {
                 id: reply
                 width: units.gu(3)
                 height: units.gu(3)
-                color: "blue"
-//                source: "../img/reply.png"
+                image.source: "../img/icons/reply_small.png"
                 visible: false
 
                 onHoveredChanged: {
@@ -131,7 +130,7 @@ Rectangle {
                 id: retweet
                 width: units.gu(3)
                 height: units.gu(3)
-                image.source: "../img/retweet.png"
+                image.source: "../img/icons/retweet_small.png"
                 visible: false
 
                 onHoveredChanged: {
@@ -146,8 +145,7 @@ Rectangle {
                 id: favorite
                 width: units.gu(3)
                 height: units.gu(3)
-                color: "yellow"
-//                source: "../img/reply.png"
+                image.source: "../img/icons/favorites_small.png"
                 visible: false
 
                 onHoveredChanged: {

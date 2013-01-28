@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
+ * Copyright (c) 2012-2013 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -114,10 +114,14 @@ BaseMainContainer {
                 Button {
                     width: (details.width / 2) - units.gu(3)
                     text: "Followers"
+                    height: units.gu(5)
+                    iconSource: "../img/icons/followers.png"
                 }
                 Button {
                     width: (details.width / 2) - units.gu(3)
+                    height: units.gu(5)
                     text: "Following"
+                    iconSource: "../img/icons/following.png"
                 }
             }
         }

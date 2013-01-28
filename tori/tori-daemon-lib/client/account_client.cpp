@@ -1,6 +1,78 @@
+/**
+ *
+ * Copyright (c) 2013 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+ * sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
 #include "account_client.h"
 
-AccountClient::AccountClient(QObject *parent) :
+AccountClient::AccountClient(QString service, QObject *parent) :
     QObject(parent)
 {
+    this->_proxy = new AccountProxy("org.saruneko.tori.AccountManager", service, QDBusConnection::sessionBus());
+
+    QObject::connect(this->_proxy, SIGNAL(authenticated()), this, SLOT(userAuthenticated()));
+    QObject::connect(this->_proxy, SIGNAL(authenticationError(uint,QString)), this, SLOT(authenticationError(uint,QString)));
+}
+
+void AccountClient::authenticate()
+{
+    this->_proxy->authenticate();
+}
+
+void AccountClient::update(QString& status)
+{
+    QVariantMap vmap;
+    this->_proxy->update("", status, vmap);
+}
+
+void AccountClient::destroy(qlonglong twit_id)
+{
+    QVariantMap vmap;
+    this->_proxy->destroy("", twit_id, vmap);
+}
+
+void AccountClient::retweet(qlonglong twit_id)
+{
+    QVariantMap vmap;
+    this->_proxy->retweet("", twit_id, vmap);
+}
+
+void AccountClient::retweets(qlonglong twit_id)
+{
+    QVariantMap vmap;
+    this->_proxy->retweets("", twit_id, vmap);
+}
+
+void AccountClient::show(qlonglong twit_id)
+{
+    QVariantMap vmap;
+    this->_proxy->show("", twit_id, vmap);
+}
+
+void AccountClient::userAuthenticated()
+{
+    qDebug() << "AUTHENTICATED";
+}
+
+void AccountClient::authenticationError(uint a, QString b)
+{
+    qDebug() << a << b;
 }

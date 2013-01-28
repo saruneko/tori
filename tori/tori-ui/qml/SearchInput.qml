@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
+ * Copyright (c) 2012-2013 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -54,7 +54,7 @@ Rectangle {
             y: -2
             anchors.leftMargin: 0
             anchors.left: txt_search.right
-            source: "../img/search_icon.png"
+            source: "../img/icons/search_small.png"
 
             MouseArea {
                 anchors.fill: parent
