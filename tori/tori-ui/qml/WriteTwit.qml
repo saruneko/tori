@@ -129,8 +129,7 @@ BaseMainContainer {
     function add_account(user_name, avatar){
         var component = Qt.createComponent("SelectUser.qml");
         if (component.status == Component.Ready)
-            component.createObject(usersRow, {"user_name": user_name, "avatar": avatar});
-        if(usersRow.children.count == 1)
-            usersRow.children[1].selected = true;
+            component.createObject(usersRow, {"user_name": user_name,
+                                       "avatar": avatar, "selected": (usersRow.children.length == 0)});
     }
 }
