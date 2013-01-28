@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 mandel
+ * Copyright (c) 2013 mandel
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -47,7 +47,7 @@ class StatusAPI : public QObject
 public:
     StatusAPI(tori::core::Account* account, QObject *parent = 0);
     ~StatusAPI();
-    
+
 public:
    void retweets(QString uuid, qlonglong tweet_id, QVariantMap options);
    void show(QString uuid, qlonglong tweet_id, QVariantMap options);

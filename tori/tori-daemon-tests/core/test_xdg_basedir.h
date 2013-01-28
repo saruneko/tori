@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 mandel
+ * Copyright (c) 2013 mandel
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -43,7 +43,7 @@ class TestXDGBasedir : public QObject
     Q_OBJECT
 public:
     explicit TestXDGBasedir(QObject *parent = 0);
-    
+
 private slots:
 
     void init();
