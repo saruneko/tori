@@ -17,7 +17,7 @@ signals:
 public slots:
 
 private:
-    AccountManagerProxy* client;
+    AccountManagerProxy* _client;
 
 };
 

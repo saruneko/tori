@@ -5,11 +5,11 @@
 AccountManagerClient::AccountManagerClient(QObject *parent) :
     QObject(parent)
 {
-    this->client = new AccountManagerProxy("org.saruneko.tori.AccountManager",
+    this->_client = new AccountManagerProxy("org.saruneko.tori.AccountManager",
                                                         "/", QDBusConnection::sessionBus());
 }
 
 QHash<QString, QDBusObjectPath> AccountManagerClient::getAccounts()
 {
-    return this->client->getAccounts().value();
+    return this->_client->getAccounts().value();
 }
