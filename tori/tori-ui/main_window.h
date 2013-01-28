@@ -39,7 +39,7 @@ signals:
 public slots:
 
 private:
-    ToriTwitterAPI toriApi;
+    ToriTwitterAPI _toriApi;
 
 };
 

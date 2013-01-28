@@ -23,3 +23,8 @@ tori-daemon-tests.depends = signon
 tori-daemon-tests.depends = kqoauth
 tori-daemon-tests.depends = accounts-qt
 tori-daemon-tests.depends = tori-daemon-lib
+
+tori-ui.depends = signon
+tori-ui.depends = kqoauth
+tori-ui.depends = accounts-qt
+tori-ui.depends = tori-daemon-lib
