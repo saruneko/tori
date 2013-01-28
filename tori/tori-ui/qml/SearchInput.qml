@@ -54,7 +54,7 @@ Rectangle {
             y: -2
             anchors.leftMargin: 0
             anchors.left: txt_search.right
-            source: "../img/search_icon.png"
+            source: "../img/icons/search_small.png"
 
             MouseArea {
                 anchors.fill: parent

@@ -28,11 +28,13 @@ Rectangle {
     width: units.gu(6)
     height: units.gu(6)
 
+    property string user_name: ""
+    property alias avatar: img.source
     property bool selected: false
 
     Image {
         id: img
-        source: "../img/gatox_face.png"
+        source: ""
         width: units.gu(6)
         height: units.gu(6)
         asynchronous: true

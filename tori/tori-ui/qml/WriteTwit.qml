@@ -27,8 +27,6 @@ import Ubuntu.Components 0.1
 BaseMainContainer {
     id: writeTwit
 
-    property list<SelectUser> users: [SelectUser{selected: true}, SelectUser{}]
-
     property int __size_children: (row_add.width / row_add.children.length) - row_add.spacing - units.gu(1)
 
     Column {
@@ -44,7 +42,6 @@ BaseMainContainer {
             id: usersRow
             height: units.gu(6)
             spacing: units.gu(1)
-            children: users
         }
 
         TextArea {
@@ -103,12 +100,14 @@ BaseMainContainer {
             width: __size_children
             text: "Add Picture"
             color: "lightblue"
+            iconSource: "../img/icons/add_picture.png"
         }
         Button {
             height: row_send.height
             width: __size_children
             text: "Add Contact"
             color: "lightblue"
+            iconSource: "../img/icons/add_contact.png"
         }
 
         function get_child_size(){
@@ -127,7 +126,11 @@ BaseMainContainer {
         counter.text = toWrite;
     }
 
-    Component.onCompleted: {
-//        users = [];
+    function add_account(user_name, avatar){
+        var component = Qt.createComponent("SelectUser.qml");
+        if (component.status == Component.Ready)
+            component.createObject(usersRow, {"user_name": user_name, "avatar": avatar});
+        if(usersRow.children.count == 1)
+            usersRow.children[1].selected = true;
     }
 }

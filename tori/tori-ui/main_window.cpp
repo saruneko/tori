@@ -42,9 +42,7 @@ MainWindow::MainWindow(QGuiApplication& app, QWindow *parent) :
 
 void MainWindow::initializeTwitterAccess()
 {
-    this->toriApi = new ToriTwitterAPI();
-    toriApi->getAccounts();
-
-    this->root = this->rootObject();
-    QObject::connect(this->root, SIGNAL(send_twit(QString, QString)), this->toriApi, SLOT(update(QString, QString)));
+    this->_root = this->rootObject();
+    this->_toriApi = new ToriTwitterAPI(this->_root);
+    this->_toriApi->getAccounts();
 }

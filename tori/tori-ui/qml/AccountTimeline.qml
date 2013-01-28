@@ -114,10 +114,14 @@ BaseMainContainer {
                 Button {
                     width: (details.width / 2) - units.gu(3)
                     text: "Followers"
+                    height: units.gu(5)
+                    iconSource: "../img/icons/followers.png"
                 }
                 Button {
                     width: (details.width / 2) - units.gu(3)
+                    height: units.gu(5)
                     text: "Following"
+                    iconSource: "../img/icons/following.png"
                 }
             }
         }

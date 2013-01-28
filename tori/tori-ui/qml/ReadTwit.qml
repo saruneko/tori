@@ -91,24 +91,19 @@ BaseMainContainer {
                         id: reply
                         width: units.gu(6)
                         height: units.gu(6)
-                        color: "blue"
-        //                source: "../img/reply.png"
-        //                fillMode: Image.PreserveAspectFit
+                        image.source: "../img/icons/reply.png"
                     }
                     ButtonImage{
                         id: retweet
                         width: units.gu(6)
                         height: units.gu(6)
-                        image.source: "../img/retweet.png"
-        //                fillMode: Image.PreserveAspectFit
+                        image.source: "../img/icons/retweet.png"
                     }
                     ButtonImage{
                         id: favorite
                         width: units.gu(6)
                         height: units.gu(6)
-                        color: "yellow"
-        //                source: "../img/reply.png"
-        //                fillMode: Image.PreserveAspectFit
+                        image.source: "../img/icons/favorites.png"
                     }
                 }
             }

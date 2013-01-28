@@ -40,12 +40,8 @@ signals:
 public slots:
 
 private:
-<<<<<<< HEAD
-    QQuickItem *root;
-    ToriTwitterAPI* toriApi;
-=======
-    ToriTwitterAPI _toriApi;
->>>>>>> master
+    QQuickItem *_root;
+    ToriTwitterAPI* _toriApi;
 
     void initializeTwitterAccess();
 };

@@ -144,4 +144,8 @@ Rectangle {
         read_twit.x = menuBar.width;
         current_line = read_twit;
     }
+
+    function add_account(username, avatar){
+        write_twit.add_account(username, avatar);
+    }
 }
