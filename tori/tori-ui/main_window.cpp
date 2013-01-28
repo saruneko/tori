@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
+ * Copyright (c) 2013 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -37,5 +37,12 @@ MainWindow::MainWindow(QGuiApplication& app, QWindow *parent) :
     this->setX(screen->availableGeometry().width() - this->width() - 20);
     this->setY(70);
 
+    this->initializeTwitterAccess();
+}
 
+void MainWindow::initializeTwitterAccess()
+{
+    this->_root = this->rootObject();
+    this->_toriApi = new ToriTwitterAPI(this->_root);
+    this->_toriApi->getAccounts();
 }

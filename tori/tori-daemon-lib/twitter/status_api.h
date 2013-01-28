@@ -47,7 +47,7 @@ class StatusAPI : public QObject
 public:
     StatusAPI(tori::core::Account* account, QObject *parent = 0);
     ~StatusAPI();
-    
+
 public:
    void retweets(QString uuid, qlonglong tweet_id, QVariantMap options);
    void show(QString uuid, qlonglong tweet_id, QVariantMap options);

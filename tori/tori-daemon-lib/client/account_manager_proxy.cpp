@@ -23,4 +23,3 @@ AccountManagerProxy::AccountManagerProxy(const QString &service, const QString &
 AccountManagerProxy::~AccountManagerProxy()
 {
 }
-

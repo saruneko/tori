@@ -43,7 +43,7 @@ class TestXDGBasedir : public QObject
     Q_OBJECT
 public:
     explicit TestXDGBasedir(QObject *parent = 0);
-    
+
 private slots:
 
     void init();

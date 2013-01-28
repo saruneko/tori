@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
+ * Copyright (c) 2012-2013 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -28,11 +28,13 @@ Rectangle {
     width: units.gu(6)
     height: units.gu(6)
 
+    property string user_name: ""
+    property alias avatar: img.source
     property bool selected: false
 
     Image {
         id: img
-        source: "../img/gatox_face.png"
+        source: ""
         width: units.gu(6)
         height: units.gu(6)
         asynchronous: true

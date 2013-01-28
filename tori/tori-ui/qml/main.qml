@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
+ * Copyright (c) 2012-2013 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -42,6 +42,8 @@ Rectangle {
     property bool showing_dialog: false
 
     color: timeline_background_color
+
+    signal send_twit(string user, string status)
 
     Component {
          id: dialog
@@ -141,5 +143,9 @@ Rectangle {
         header.title = "Twit";
         read_twit.x = menuBar.width;
         current_line = read_twit;
+    }
+
+    function add_account(username, avatar){
+        write_twit.add_account(username, avatar);
     }
 }

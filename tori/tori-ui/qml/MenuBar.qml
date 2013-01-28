@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
+ * Copyright (c) 2012-2013 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -65,8 +65,8 @@ Rectangle {
             id: btnTimeline
             width: parent.width
             height: units.gu(5)
-            text: "timeline"
             color: "#34a3ec"
+            image.source: "../img/icons/timeline.png"
 
             onClicked: {
                 toggle_buttons(btnTimeline);
@@ -77,8 +77,8 @@ Rectangle {
             id: btnMentions
             width: parent.width
             height: units.gu(5)
-            text: "mentions"
             color: "transparent"
+            image.source: "../img/icons/mentions.png"
 
             onClicked: {
                 toggle_buttons(btnMentions);
@@ -89,8 +89,8 @@ Rectangle {
             id: btnDirect
             width: parent.width
             height: units.gu(5)
-            text: "direct messages"
             color: "transparent"
+            image.source: "../img/icons/direct_messages.png"
 
             onClicked: {
                 toggle_buttons(btnDirect);
@@ -101,8 +101,8 @@ Rectangle {
             id: btnUser
             width: parent.width
             height: units.gu(5)
-            text: "gatox"
             color: "transparent"
+            image.source: "../img/icons/my_account.png"
 
             onClicked: {
                 toggle_buttons(btnUser);
@@ -113,8 +113,8 @@ Rectangle {
             id: btnSearch
             width: parent.width
             height: units.gu(5)
-            text: "search"
             color: "transparent"
+            image.source: "../img/icons/search.png"
 
             onClicked: {
                 toggle_buttons(btnSearch);
@@ -123,13 +123,13 @@ Rectangle {
         }
     }
 
-    Button {
+    ButtonImage {
         id: btnWrite
         width: parent.width
-        height: units.gu(8)
-        color: "lightblue"
-        text: "write"
+        height: units.gu(6)
+        color: "transparent"
         anchors.bottom: parent.bottom
+        image.source: "../img/icons/write_tweet.png"
 
         onClicked: {
             toggle_buttons(btnWrite);

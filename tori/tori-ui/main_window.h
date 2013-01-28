@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2012 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
+ * Copyright (c) 2013 Diego Sarmentero <diego.sarmentero@ninja-ide.org>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -25,6 +25,7 @@
 #define MAIN_WINDOW_H
 
 #include <QQuickView>
+#include <QQuickItem>
 #include <QGuiApplication>
 #include "tori_twitter_api.h"
 
@@ -39,8 +40,10 @@ signals:
 public slots:
 
 private:
-    ToriTwitterAPI _toriApi;
+    QQuickItem *_root;
+    ToriTwitterAPI* _toriApi;
 
+    void initializeTwitterAccess();
 };
 
 #endif // MAIN_WINDOW_H
