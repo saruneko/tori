@@ -34,6 +34,10 @@ namespace twitter
 QString Coordinates::COORDINATES_KEY = "coordinates";
 QString Coordinates::TYPE_KEY = "type";
 
+Coordinates::Coordinates()
+{
+}
+
 Coordinates::Coordinates(const QJsonObject& jsonObject)
 {
 	if (jsonObject.contains(Coordinates::COORDINATES_KEY))
@@ -42,20 +46,20 @@ Coordinates::Coordinates(const QJsonObject& jsonObject)
 
 		bool longitudeParsed, latitudeParsed;
 
-		_longitude = array[0].toLongLong(&longitudeParsed);
-		_latitude = array[1].toLongLong(&latitudeParsed);
+		_longitude = array[0].toString().toLongLong(&longitudeParsed);
+		_latitude = array[1].toString().toLongLong(&latitudeParsed);
 		if (!longitudeParsed || !latitudeParsed)
 		{
 			qCritical() << "COuld not parsed longitud " << array[0] << " or latitude" << array[1];
 		}
 	}
-	if (jsonObject.const(Coordinates::TYPE_KEY))
+	if (jsonObject.contains(Coordinates::TYPE_KEY))
 	{
 		_type = jsonObject[Coordinates::TYPE_KEY].toString();
 	}
 }
 
-Coordinates::Coordinates(qlonglong longitude, qlonglong latitude, QString type) :
+Coordinates::Coordinates(qlonglong longitude, qlonglong latitude, const QString& type) :
 	_longitude(longitude),
 	_latitude(latitude),
 	_type(type)

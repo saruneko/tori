@@ -35,15 +35,16 @@ namespace twitter
 {
 
 class Contributor
-{
+{/*
 	Q_PROPERTY(qlonglong id READ getId)
-	Q_PROPERTY(QString idString READ getIdString)
+	Q_PROPERTY(QString idAsString READ getIdString)
 	Q_PROPERTY(QString screenName READ getScreenName)
-
+*/
 public:
+    Contributor();
     Contributor(const QJsonObject& jsonObject);
-	Contributor(qlonglong id, QString screenName);
-    Contributor(qlonglong id, QString idString, QString screenName);
+	Contributor(qlonglong id, const QString& screenName);
+    Contributor(qlonglong id, const QString& idString, const QString& screenName);
     Contributor(const Contributor& other);
     Contributor& operator=(const Contributor& other);
     ~Contributor();
@@ -67,5 +68,7 @@ private:
 } // twitter
 
 } // tori
+
+Q_DECLARE_METATYPE(tori::twitter::Contributor)
 
 #endif // CONTRIBUTOR_H

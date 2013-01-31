@@ -29,7 +29,11 @@ namespace tori
 namespace twitter
 {
 
-BoundingBox::BoundingBox(QList< QPair<qlong, qlong> > points, QString type) :
+BoundingBox::BoundingBox()
+{
+}
+
+BoundingBox::BoundingBox(QList< QPair<qlonglong, qlonglong> > points, QString type) :
 	_points(points),
 	_type(type)
 {
@@ -68,7 +72,7 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, BoundingBox& box)
 
 }
 
-QList< QPair<qlong, qlong> > BoundingBox::getPoints() const
+QList< QPair<qlonglong, qlonglong> > BoundingBox::getPoints() const
 {
 
 }

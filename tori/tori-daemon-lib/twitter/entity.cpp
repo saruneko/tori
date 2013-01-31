@@ -21,8 +21,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#included "entity.h"
 #include <QJsonArray>
+#include "entity.h"
 
 namespace tori
 {

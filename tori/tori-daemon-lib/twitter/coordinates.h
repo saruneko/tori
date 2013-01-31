@@ -26,6 +26,13 @@
 
 #include <QString>
 #include <QDBusArgument>
+#include <QJsonObject>
+
+namespace tori
+{
+
+namespace twitter
+{
 
 class Coordinates
 {
@@ -34,8 +41,9 @@ class Coordinates
     Q_PROPERTY(QString type READ getType)
 
 public:
+    Coordinates();
     Coordinates(const QJsonObject& jsonObject);
-    Coordinates(qlonglong longitude, qlonglong latitude, QString type);
+    Coordinates(qlonglong longitude, qlonglong latitude, const QString& type);
     Coordinates(const Coordinates& other);
     Coordinates& operator=(const Coordinates& other);
     ~Coordinates();
@@ -55,5 +63,11 @@ private:
 	qlonglong _latitude;
 	QString _type;
 };
+
+} // twitter
+
+} // tori
+
+Q_DECLARE_METATYPE(tori::twitter::Coordinates)
 
 #endif // COORDINATES_H

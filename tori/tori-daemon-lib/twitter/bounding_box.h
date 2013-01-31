@@ -23,6 +23,7 @@
 
 #ifndef BOUNDING_BOX_H
 #define BOUNDING_BOX_H 
+
 #include <QDBusArgument>
 #include <QJsonObject>
 #include <QList>
@@ -35,14 +36,17 @@ namespace tori
 namespace twitter
 {
 
+// define the type else Q_PORPERTY goes crazy
+typedef QList< QPair<qlonglong, qlonglong> > PointCollection;
+
 class BoundingBox
 {
-	Q_PROPERTY(QList< QPair<qlong, qlong> > points READ getPoints)
+	Q_PROPERTY(PointCollection points READ getPoints)
 	Q_PROPERTY(QString type READ getType)
 
-
 public:
-	BoundingBox(QList< QPair<qlong, qlong> > points, QString type);
+	BoundingBox();
+	BoundingBox(QList< QPair<qlonglong, qlonglong> > points, QString type);
 	BoundingBox(const QJsonObject& jsonObject);
 	BoundingBox(const BoundingBox& other);
     BoundingBox& operator=(const BoundingBox& other);
@@ -52,11 +56,11 @@ public:
     friend QDBusArgument &operator<<(QDBusArgument &argument, const BoundingBox& box);
     friend const QDBusArgument &operator>>(const QDBusArgument &argument, BoundingBox& box);
 
-	QList< QPair<qlong, qlong> > getPoints() const;
+	QList< QPair<qlonglong, qlonglong> > getPoints() const;
 	QString getType() const;
 
 private:
-	QList<QPair<qlong, qlong>> _points;
+	QList< QPair<qlonglong, qlonglong> > _points;
 	QString _type;
 };
 
@@ -64,4 +68,6 @@ private:
 
 } // tori
 
+Q_DECLARE_METATYPE(tori::twitter::PointCollection)
+Q_DECLARE_METATYPE(tori::twitter::BoundingBox)
 #endif // BOUNDING_BOX_H

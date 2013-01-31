@@ -47,12 +47,8 @@ SOURCES += \
     twitter/bounding_box.cpp \
     twitter/contributor.cpp \
     twitter/coordinates.cpp \
-    twitter/entity.cpp \
     twitter/oauth_signal_mapper.cpp \
-    twitter/media.cpp \
-    twitter/place.cpp \
-    twitter/status_api.cpp \
-    twitter/tweet.cpp
+    twitter/status_api.cpp 
 
 HEADERS +=\
     tori-daemon-lib_global.h \
@@ -77,13 +73,9 @@ HEADERS +=\
     twitter/bounding_box.h \
     twitter/contributor.h \
     twitter/coordinates.h \
-    twitter/entity.h \
     twitter/oauth_signal_mapper.h \
     twitter/oauth_utils.h \
-    twitter/media.cpp \
-    twitter/place.h \
-    twitter/status_api.h \
-    twitter/tweet.h
+    twitter/status_api.h 
 
 OTHER_FILES += \
     org.freedesktop.secret.session.xml \

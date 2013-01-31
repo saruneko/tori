@@ -27,6 +27,7 @@
 #include <QList>
 #include <QDBusArgument>
 #include <QJsonObject>
+#include <media.h>
 
 namespace tori
 {
@@ -39,7 +40,7 @@ class Mention;
 class CollapsedUrl;
 class Entity
 {
-	Q_PROPERTY(QList<QString> _hashtags READ getHashtags)
+	Q_PROPERTY(QList<QString> hashtags READ getHashtags)
 	Q_PROPERTY(Media media READ getMedia)
 	Q_PROPERTY(QList<CollapsedUrl> urls READ getUrls)
 	Q_PROPERTY(QList<Mention> mentions READ getMentions)

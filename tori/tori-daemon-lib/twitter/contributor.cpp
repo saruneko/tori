@@ -34,6 +34,10 @@ QString Contributor::ID_STRING_KEY = "id_str";
 QString Contributor::SCREEN_NAME_KEY = "screen_name";
 
 
+Contributor::Contributor()
+{
+}
+
 Contributor::Contributor(const QJsonObject& jsonObject)
 {
 	if (jsonObject.contains(Contributor::ID_STRING_KEY))
@@ -58,14 +62,14 @@ Contributor::Contributor(const QJsonObject& jsonObject)
 	}
 }
 
-Contributor::Contributor(qlonglong id, QString screenName) :
+Contributor::Contributor(qlonglong id, const QString& screenName) :
 	_id(id), 
-	_idString(QString::number(id),
+	_idString(QString::number(id)),
 	_screenName(screenName)
 {
 }
 
-Contributor::Contributor(qlonglong id, QString idString, QString screenName):
+Contributor::Contributor(qlonglong id, const QString& idString, const QString& screenName):
 	_id(id),
 	_idString(idString),
 	_screenName(screenName)
