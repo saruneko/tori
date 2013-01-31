@@ -43,6 +43,7 @@ class MediaSizeInfo
 
 public:
 	MediaSizeInfo();
+	MediaSizeInfo(QString name, int height, int width, QString resize);
 	MediaSizeInfo(QJsonObject data);
     MediaSizeInfo(const MediaSizeInfo& other);
     MediaSizeInfo& operator=(const MediaSizeInfo& other);

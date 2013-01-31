@@ -100,7 +100,6 @@ Contributor::~Contributor()
 
 QDBusArgument &operator<<(QDBusArgument &argument, const Contributor& contributor)
 {
-
     argument.beginStructure();
     argument << contributor._id;
     argument << contributor._idString;

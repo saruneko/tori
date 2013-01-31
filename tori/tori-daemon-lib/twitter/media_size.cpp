@@ -29,14 +29,16 @@ namespace tori
 namespace twitter
 {
 
-QString _name;
-	int _height;
-	int _width;
-	QString _resize;
-	
 MediaSizeInfo::MediaSizeInfo()
 {
+}
 
+MediaSizeInfo(QString name, int height, int width, QString resize) :
+	_name(name),
+	_height(height),
+	_width(width),
+	_resize(resize)
+{
 }
 
 MediaSizeInfo::MediaSizeInfo(QJsonObject data)
@@ -44,14 +46,22 @@ MediaSizeInfo::MediaSizeInfo(QJsonObject data)
 
 }
 
-MediaSizeInfo::MediaSizeInfo(const MediaSizeInfo& other)
+MediaSizeInfo::MediaSizeInfo(const MediaSizeInfo& other):
+	_name(other._name),
+	_height(other._height),
+	_width(other._width),
+	_resize(other._resize)
 {
 
 }
 
 MediaSizeInfo& MediaSizeInfo::operator=(const MediaSizeInfo& other)
 {
-
+	_name = other._name;
+	_height = other._height;
+	_width = other._width;
+	_resize = other._resize;
+	return *this;
 }
 
 MediaSizeInfo::~MediaSizeInfo()
@@ -71,22 +81,22 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, MediaSize& media)
 
 QString MediaSizeInfo::getName()
 {
-
+	return _name;
 }
 
 int MediaSizeInfo::getHeight()
 {
-
+	return _height;
 }
 
 int MediaSizeInfo::getWidth()
 {
-
+	return _width;
 }
 
 QString MediaSizeInfo::getResize()
 {
-
+	return _resize;
 }
 
 } // twitter

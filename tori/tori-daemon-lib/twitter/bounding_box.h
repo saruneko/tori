@@ -39,6 +39,25 @@ namespace twitter
 // define the type else Q_PORPERTY goes crazy
 typedef QList< QPair<qlonglong, qlonglong> > PointCollection;
 
+class Point : public QPair<qlonglong, qlonglong>
+{
+	Q_PROPERTY(qlonglong x READ getX)
+	Q_PROPERTY(qlonglong y READ getY)
+
+public:
+	Point();
+	Point(const QJsonObject& jsonObject);
+	Point(qlonglong x, qlonglong y);
+	Point(const Point& other);
+	Point& operator=(const Point& other);
+
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const Point& box);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, Point& box);
+
+    qlonglong getX();
+    qlonglong getY();
+};
+
 class BoundingBox
 {
 	Q_PROPERTY(PointCollection points READ getPoints)
@@ -68,6 +87,7 @@ private:
 
 } // tori
 
+Q_DECLARE_METATYPE(tori::twitter::Point)
 Q_DECLARE_METATYPE(tori::twitter::PointCollection)
 Q_DECLARE_METATYPE(tori::twitter::BoundingBox)
 #endif // BOUNDING_BOX_H

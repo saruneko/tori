@@ -29,6 +29,55 @@ namespace tori
 namespace twitter
 {
 
+Point::Point() : QPair<qlonglong, qlonglong>()
+{
+}
+
+Point::Point(const QJsonObject& jsonObject)
+{
+
+}
+
+Point::Point(qlonglong x, qlonglong y) : QPair<qlonglong, qlonglong>(x, y)
+{
+}
+
+Point::Point(const Point& other) : QPair<qlonglong, qlonglong>(other)
+{
+}
+
+Point& Point::operator=(const Point& other)
+{
+
+}
+
+QDBusArgument &operator<<(QDBusArgument &argument, const Point& box)
+{
+    argument.beginStructure();
+
+    argument.endStructure();
+
+    return argument;
+}
+
+const QDBusArgument &operator>>(const QDBusArgument &argument, Point& box)
+{
+    argument.beginStructure();
+    argument.endStructure();
+
+    return argument;
+}
+
+qlonglong Point::getX()
+{
+
+}
+
+qlonglong Point::getY()
+{
+
+}
+
 BoundingBox::BoundingBox()
 {
 }
@@ -54,6 +103,8 @@ BoundingBox::BoundingBox(const BoundingBox& other) :
 
 BoundingBox& BoundingBox::operator=(const BoundingBox& other)
 {
+	_points = other._points;
+	_type = other._type;
 	return *this;
 }
 
@@ -64,22 +115,28 @@ BoundingBox::~BoundingBox()
 
 QDBusArgument &operator<<(QDBusArgument &argument, const BoundingBox& box)
 {
+    argument.beginStructure();
+    argument.endStructure();
 
+    return argument;
 }
 
 const QDBusArgument &operator>>(const QDBusArgument &argument, BoundingBox& box)
 {
+    argument.beginStructure();
+    argument.endStructure();
 
+    return argument;
 }
 
 QList< QPair<qlonglong, qlonglong> > BoundingBox::getPoints() const
 {
-
+	return _points;
 }
 
 QString BoundingBox::getType() const
 {
-
+	return _type;
 }
 
 } // twitter
