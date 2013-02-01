@@ -29,69 +29,76 @@ namespace tori
 namespace twitter
 {
 
-Point::Point() : QPair<qlonglong, qlonglong>()
+Point::Point() : QPair<double, double>()
 {
 }
 
-Point::Point(const QJsonObject& jsonObject)
+Point::Point(const QJsonArray& jsonArray) : QPair<double, double>()
 {
-
+	first = jsonArray[0].toDouble();
+	second = jsonArray[1].toDouble();
 }
 
-Point::Point(qlonglong x, qlonglong y) : QPair<qlonglong, qlonglong>(x, y)
+Point::Point(double x, double y) : QPair<double, double>(x, y)
 {
 }
 
-Point::Point(const Point& other) : QPair<qlonglong, qlonglong>(other)
+Point::Point(const Point& other) : QPair<double, double>(other)
 {
 }
 
 Point& Point::operator=(const Point& other)
 {
-
+	QPair<double, double>::operator=(other);
 }
 
-QDBusArgument &operator<<(QDBusArgument &argument, const Point& box)
+QDBusArgument &operator<<(QDBusArgument &argument, const Point& point)
 {
     argument.beginStructure();
+    argument << point.first;
+    argument << point.second;
+    argument.endStructure();
+    return argument;
+}
 
+const QDBusArgument &operator>>(const QDBusArgument &argument, Point& point)
+{
+    argument.beginStructure();
+    argument >> point.first;
+    argument >> point.second;
     argument.endStructure();
 
     return argument;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &argument, Point& box)
+double Point::getX()
 {
-    argument.beginStructure();
-    argument.endStructure();
-
-    return argument;
+	return first;
 }
 
-qlonglong Point::getX()
+double Point::getY()
 {
-
-}
-
-qlonglong Point::getY()
-{
-
+	return second;
 }
 
 BoundingBox::BoundingBox()
 {
 }
 
-BoundingBox::BoundingBox(QList< QPair<qlonglong, qlonglong> > points, QString type) :
+BoundingBox::BoundingBox(QList<Point> points, QString type) :
 	_points(points),
 	_type(type)
 {
 
 }
 
-BoundingBox::BoundingBox(const QJsonObject& jsonObject)
+BoundingBox::BoundingBox(const QJsonArray& jsonArray)
 {
-
+	// loop over the array and add the diff points foudn there
+	for (int i = 0; i < jsonArray.count(); ++i)
+	{
+		_points.append(Point(jsonArray[i].toArray()));
+	}
 }
 
 BoundingBox::BoundingBox(const BoundingBox& other) :
@@ -116,6 +123,7 @@ BoundingBox::~BoundingBox()
 QDBusArgument &operator<<(QDBusArgument &argument, const BoundingBox& box)
 {
     argument.beginStructure();
+    argument << box._points;
     argument.endStructure();
 
     return argument;
@@ -124,12 +132,13 @@ QDBusArgument &operator<<(QDBusArgument &argument, const BoundingBox& box)
 const QDBusArgument &operator>>(const QDBusArgument &argument, BoundingBox& box)
 {
     argument.beginStructure();
+    argument >> box._points;
     argument.endStructure();
 
     return argument;
 }
 
-QList< QPair<qlonglong, qlonglong> > BoundingBox::getPoints() const
+QList<Point> BoundingBox::getPoints() const
 {
 	return _points;
 }

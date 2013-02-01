@@ -20,10 +20,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-
-#ifndef CONTRIBUTOR_H
-#define CONTRIBUTOR_H
-
+#ifndef COLLAPSED_URL_H
+#define COLLAPSED_URL_H
 #include <QString>
 #include <QDBusArgument>
 #include <QJsonObject>
@@ -34,41 +32,39 @@ namespace tori
 namespace twitter
 {
 
-class Contributor
+class CollapsedUrl
 {
-	Q_PROPERTY(qlonglong id READ getId)
-	Q_PROPERTY(QString idAsString READ getIdString)
-	Q_PROPERTY(QString screenName READ getScreenName)
+	Q_PROPERTY(QString displayUrl READ getDisplayUrl)
+	Q_PROPERTY(QString expandedUrl READ getExpandedUrl)
+	Q_PROPERTY(QString url READ getUrl)
 
 public:
-    Contributor();
-    Contributor(const QJsonObject& jsonObject);
-	Contributor(qlonglong id, const QString& screenName);
-    Contributor(qlonglong id, const QString& idString, const QString& screenName);
-    Contributor(const Contributor& other);
-    Contributor& operator=(const Contributor& other);
-    ~Contributor();
+	CollapsedUrl();
+	CollapsedUrl(const QJsonObject& data);
+	CollapsedUrl(QString displayUrl, QString expandedUrl, QString url);
+	CollapsedUrl(const CollapsedUrl& other);
+	CollapsedUrl& operator=(const CollapsedUrl& other);
 
-    friend QDBusArgument &operator<<(QDBusArgument &argument, const Contributor& contributor);
-    friend const QDBusArgument &operator>>(const QDBusArgument &argument, Contributor& contributor);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const CollapsedUrl& url);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, CollapsedUrl& url);
 
-    qlonglong getId() const;
-    QString getIdString() const;
-    QString getScreenName() const;
+    QString getDisplayUrl() const;
+    QString getExpandedUrl() const;
+    QString getUrl() const; 
 
 private:
-    static QString ID_STRING_KEY;
-    static QString SCREEN_NAME_KEY;
+	static QString DISPLAY_URL_KEY;
+	static QString EXPANDED_URL_KEY;
+	static QString URL_KEY;
 
-	qlonglong _id;
-	QString _idString;
-	QString _screenName;
+	QString _displayUrl;
+	QString _expandedUrl;
+	QString _url;
 };
 
 } // twitter
 
 } // tori
 
-Q_DECLARE_METATYPE(tori::twitter::Contributor)
-
-#endif // CONTRIBUTOR_H
+Q_DECLARE_METATYPE(tori::twitter::CollapsedUrl)
+#endif

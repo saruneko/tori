@@ -25,7 +25,7 @@
 #define BOUNDING_BOX_H 
 
 #include <QDBusArgument>
-#include <QJsonObject>
+#include <QJsonArray>
 #include <QList>
 #include <QPair>
 #include <QString>
@@ -36,37 +36,34 @@ namespace tori
 namespace twitter
 {
 
-// define the type else Q_PORPERTY goes crazy
-typedef QList< QPair<qlonglong, qlonglong> > PointCollection;
-
-class Point : public QPair<qlonglong, qlonglong>
+class Point : public QPair<double, double>
 {
-	Q_PROPERTY(qlonglong x READ getX)
-	Q_PROPERTY(qlonglong y READ getY)
+	Q_PROPERTY(double x READ getX)
+	Q_PROPERTY(double y READ getY)
 
 public:
 	Point();
-	Point(const QJsonObject& jsonObject);
-	Point(qlonglong x, qlonglong y);
+	Point(const QJsonArray& jsonArray);
+	Point(double x, double y);
 	Point(const Point& other);
 	Point& operator=(const Point& other);
 
     friend QDBusArgument &operator<<(QDBusArgument &argument, const Point& box);
     friend const QDBusArgument &operator>>(const QDBusArgument &argument, Point& box);
 
-    qlonglong getX();
-    qlonglong getY();
+    double getX();
+    double getY();
 };
 
 class BoundingBox
 {
-	Q_PROPERTY(PointCollection points READ getPoints)
+	Q_PROPERTY(QList<Point> points READ getPoints)
 	Q_PROPERTY(QString type READ getType)
 
 public:
 	BoundingBox();
-	BoundingBox(QList< QPair<qlonglong, qlonglong> > points, QString type);
-	BoundingBox(const QJsonObject& jsonObject);
+	BoundingBox(QList<Point> points, QString type);
+	BoundingBox(const QJsonArray& jsonArray);
 	BoundingBox(const BoundingBox& other);
     BoundingBox& operator=(const BoundingBox& other);
     ~BoundingBox();
@@ -75,11 +72,11 @@ public:
     friend QDBusArgument &operator<<(QDBusArgument &argument, const BoundingBox& box);
     friend const QDBusArgument &operator>>(const QDBusArgument &argument, BoundingBox& box);
 
-	QList< QPair<qlonglong, qlonglong> > getPoints() const;
+	QList<Point> getPoints() const;
 	QString getType() const;
 
 private:
-	QList< QPair<qlonglong, qlonglong> > _points;
+	QList<Point> _points;
 	QString _type;
 };
 
@@ -88,6 +85,5 @@ private:
 } // tori
 
 Q_DECLARE_METATYPE(tori::twitter::Point)
-Q_DECLARE_METATYPE(tori::twitter::PointCollection)
 Q_DECLARE_METATYPE(tori::twitter::BoundingBox)
 #endif // BOUNDING_BOX_H

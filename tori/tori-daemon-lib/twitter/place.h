@@ -26,6 +26,7 @@
 #include <QString>
 #include <QVariantMap>
 #include <QDBusArgument>
+#include <QJsonObject>
 #include "bounding_box.h"
 
 namespace tori
@@ -47,7 +48,8 @@ class Place
 	Q_PROPERTY(QString url READ getUrl)
 
 public:
-    Place(const QJsonObject* jsonObject);
+	Place();
+    Place(const QJsonObject& jsonObject);
     Place(QVariantMap attrs, BoundingBox boundingBox, QString country, QString countryCode, QString fullName,
     	QString id, QString name, QString placeType, QString url);
     Place(const Place& other);
@@ -94,4 +96,5 @@ private:
 
 } // tori
 
+Q_DECLARE_METATYPE(tori::twitter::Place)
 #endif // PLACE_H

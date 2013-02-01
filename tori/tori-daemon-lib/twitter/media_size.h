@@ -37,30 +37,34 @@ namespace twitter
 class MediaSizeInfo
 {
 	Q_PROPERTY(QString name READ getName)
-	Q_PROPERTY(int height READ getHeight)
-	Q_PROPERTY(int width READ getWidth)
+	Q_PROPERTY(double height READ getHeight)
+	Q_PROPERTY(double width READ getWidth)
 	Q_PROPERTY(QString resize READ getResize)
 
 public:
 	MediaSizeInfo();
-	MediaSizeInfo(QString name, int height, int width, QString resize);
-	MediaSizeInfo(QJsonObject data);
+	MediaSizeInfo(QString name, double height, double width, QString resize);
+	MediaSizeInfo(QString name, QJsonObject data);
     MediaSizeInfo(const MediaSizeInfo& other);
     MediaSizeInfo& operator=(const MediaSizeInfo& other);
     ~MediaSizeInfo();
 
-    friend QDBusArgument &operator<<(QDBusArgument &argument, const MediaSizeInfo& media);
-    friend const QDBusArgument &operator>>(const QDBusArgument &argument, MediaSizeInfo& media);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const MediaSizeInfo& mediaSizeInfo);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, MediaSizeInfo& mediaSizeInfo);
 
-    QString getName();
-    int getHeight();
-    int getWidth();
-    QString getResize();
+    QString getName() const;
+    double getHeight() const;
+    double getWidth() const;
+    QString getResize() const;
 
 private:
+	static QString HEIGHT_KEY;
+	static QString WIDTH_KEY;
+	static QString RESIZE_KEY;
+	
 	QString _name;
-	int _height;
-	int _width;
+	double _height;
+	double _width;
 	QString _resize;
 };
 
@@ -75,8 +79,8 @@ public:
     MediaSize& operator=(const MediaSize& other);
     ~MediaSize();
 
-    friend QDBusArgument &operator<<(QDBusArgument &argument, const MediaSize& media);
-    friend const QDBusArgument &operator>>(const QDBusArgument &argument, MediaSize& media);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const MediaSize& mediaSize);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, MediaSize& mediaSize);
 
 	QList<MediaSizeInfo> getSizes() const;
 

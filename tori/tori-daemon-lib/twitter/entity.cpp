@@ -36,6 +36,10 @@ QString Entity::MEDIA_KEY = "media";
 QString Entity::URLS_KEY = "urls";
 QString Entity::MENTIONS_KEY = "user_mentions";
 
+Entity::Entity()
+{
+}
+
 Entity::Entity(QList<QString> hashtags, Media media, QList<CollapsedUrl> urls, QList<Mention> mentions) :
 	_hashtags(hashtags),
 	_media(media),
@@ -125,22 +129,22 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, Entity& entity)
     return argument;
 }
 
-QList<QString> Entity::getHashtags()
+QList<QString> Entity::getHashtags() const
 {
 	return _hashtags;
 }
 
-Media Entity::getMedia()
+Media Entity::getMedia() const
 {
 	return _media;
 }
 
-QList<CollapsedUrl> Entity::getUrls()
+QList<CollapsedUrl> Entity::getUrls() const
 {
 	return _urls;
 }
 
-QList<Mention> Entity::getMentions()
+QList<Mention> Entity::getMentions() const
 {
 	return _mentions;
 }

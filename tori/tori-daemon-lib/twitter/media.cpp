@@ -47,7 +47,45 @@ Media::Media()
 
 Media::Media(QJsonObject data)
 {
-    
+    if (data.contains(Media::DISPLAY_URL_KEY))
+    {
+        _displayUrl = data[Media::DISPLAY_URL_KEY].toString();
+    }
+    if (data.contains(Media::EXPANDED_URL_KEY))
+    {
+        _expandedUrl = data[Media::EXPANDED_URL_KEY].toString();
+    }
+    if (data.contains(Media::ID_STRING_KEY))
+    {
+        _idString = data[Media::ID_STRING_KEY].toString();
+        _id = _idString.toLongLong();
+    }
+    if (data.contains(Media::MEDIA_URL_KEY))
+    {
+        _mediaUrl = data[Media::MEDIA_URL_KEY].toString();
+    }
+    if (data.contains(Media::MEDIA_HTTS_URL_KEY))
+    {
+        _mediaHttpsUrl = data[Media::MEDIA_HTTS_URL_KEY].toString();
+    }
+    if (data.contains(Media::SIZE_KEY))
+    {
+        _size = MediaSize(data[Media::SIZE_KEY].toObject());
+    }
+    if (data.contains(Media::SOURCES_STATUS_ID_STRING_KEY))
+    {
+        _sourceStatusIdString = data[Media::SOURCES_STATUS_ID_STRING_KEY].toString();
+        _sourceStatusId = _sourceStatusIdString.toLongLong();
+    }
+    if (data.contains(Media::TYPE_KEY))
+    {
+        _type = data[Media::TYPE_KEY].toString();
+    }
+    if (data.contains(Media::URL_KEY))
+    {
+        _url = data[Media::URL_KEY].toString();
+    }
+
 }
 
 Media::Media(const Media& other) :
@@ -55,7 +93,7 @@ Media::Media(const Media& other) :
     _expandedUrl(other._expandedUrl),
     _id(other._id),
     _idString(other._idString),
-    _mediaHttpsUrl(other._mediaUrl),
+    _mediaUrl(other._mediaUrl),
     _mediaHttpsUrl(other._mediaHttpsUrl),
     _size(other._size),
     _sourceStatusId(other._sourceStatusId),
@@ -75,7 +113,8 @@ Media& Media::operator=(const Media& other)
     _mediaUrl = other._mediaUrl;
     _mediaHttpsUrl = other._mediaHttpsUrl;
     _size = other._size;
-    _sourceStatusId = other._sourceStatusIdString;
+    _sourceStatusId = other._sourceStatusId;
+    _sourceStatusIdString = other._sourceStatusIdString;
     _type = other._type;
     _url = other._url;
 
@@ -124,57 +163,57 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, Media& media)
     return argument;
 }
 
-QString Media::getDisplayUrl()
+QString Media::getDisplayUrl() const
 {
     return _displayUrl;
 }
 
-QString Media::getExpandedUrl()
+QString Media::getExpandedUrl() const
 {
     return _expandedUrl;
 }
 
-qlonglong Media::getId()
+qlonglong Media::getId() const
 {
     return _id;
 }
 
-QString Media::getIdString()
+QString Media::getIdString() const
 {
     return _idString;
 }
 
-QString Media::getMediaUrl()
+QString Media::getMediaUrl() const
 {
     return _mediaUrl;
 }
 
-QString Media::getMediaHttpsUrl()
+QString Media::getMediaHttpsUrl() const
 {
     return _mediaHttpsUrl;
 }
 
-Size Media::getSizes()
+MediaSize Media::getSizes() const
 {
     return _size;
 }
 
-qlonglong Media::getSourceStatusId()
+qlonglong Media::getSourceStatusId() const
 {
     return _sourceStatusId;
 }
 
-QString Media::getSourceStatusIdString()
+QString Media::getSourceStatusIdString() const
 {
     return _sourceStatusIdString;
 }
 
-QString Media::getType()
+QString Media::getType() const
 {
     return _type;
 }
 
-QString Media::getUrl()
+QString Media::getUrl() const
 {
     return _url;
 }

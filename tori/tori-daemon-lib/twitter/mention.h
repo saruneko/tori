@@ -20,10 +20,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-
-#ifndef CONTRIBUTOR_H
-#define CONTRIBUTOR_H
-
+#ifndef MENTION_H
+#define MENTION_H
 #include <QString>
 #include <QDBusArgument>
 #include <QJsonObject>
@@ -34,34 +32,36 @@ namespace tori
 namespace twitter
 {
 
-class Contributor
+class Mention
 {
 	Q_PROPERTY(qlonglong id READ getId)
-	Q_PROPERTY(QString idAsString READ getIdString)
+	Q_PROPERTY(QString idString READ getIdString)
+	Q_PROPERTY(QString name READ getName)
 	Q_PROPERTY(QString screenName READ getScreenName)
 
 public:
-    Contributor();
-    Contributor(const QJsonObject& jsonObject);
-	Contributor(qlonglong id, const QString& screenName);
-    Contributor(qlonglong id, const QString& idString, const QString& screenName);
-    Contributor(const Contributor& other);
-    Contributor& operator=(const Contributor& other);
-    ~Contributor();
+	Mention();
+	Mention(const QJsonObject& data);
+    Mention(const Mention& other);
+    Mention& operator=(const Mention& other);
+    ~Mention();
 
-    friend QDBusArgument &operator<<(QDBusArgument &argument, const Contributor& contributor);
-    friend const QDBusArgument &operator>>(const QDBusArgument &argument, Contributor& contributor);
+    friend QDBusArgument &operator<<(QDBusArgument &argument, const Mention& mention);
+    friend const QDBusArgument &operator>>(const QDBusArgument &argument, Mention& mention);
 
     qlonglong getId() const;
     QString getIdString() const;
+    QString getName() const;
     QString getScreenName() const;
 
 private:
-    static QString ID_STRING_KEY;
-    static QString SCREEN_NAME_KEY;
-
+	static QString ID_STRING_KEY;
+	static QString NAME_KEY;
+	static QString SCREEN_NAME_KEY;
+	
 	qlonglong _id;
 	QString _idString;
+	QString _name;
 	QString _screenName;
 };
 
@@ -69,6 +69,6 @@ private:
 
 } // tori
 
-Q_DECLARE_METATYPE(tori::twitter::Contributor)
+Q_DECLARE_METATYPE(tori::twitter::Mention)
 
-#endif // CONTRIBUTOR_H
+#endif

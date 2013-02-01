@@ -47,7 +47,13 @@ SOURCES += \
     twitter/bounding_box.cpp \
     twitter/contributor.cpp \
     twitter/coordinates.cpp \
+    twitter/collapsed_url.cpp \
+    twitter/entity.cpp \
+    twitter/media_size.cpp \
+    twitter/media.cpp \
+    twitter/mention.cpp \
     twitter/oauth_signal_mapper.cpp \
+    twitter/place.cpp \
     twitter/status_api.cpp 
 
 HEADERS +=\
@@ -73,8 +79,14 @@ HEADERS +=\
     twitter/bounding_box.h \
     twitter/contributor.h \
     twitter/coordinates.h \
+    twitter/collapsed_url.h \
+    twitter/entity.h \
+    twitter/media_size.h \
+    twitter/media.h \
+    twitter/mention.h \
     twitter/oauth_signal_mapper.h \
     twitter/oauth_utils.h \
+    twitter/place.h \
     twitter/status_api.h 
 
 OTHER_FILES += \

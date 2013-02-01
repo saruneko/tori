@@ -29,11 +29,15 @@ namespace tori
 namespace twitter
 {
 
+QString MediaSizeInfo::HEIGHT_KEY = "h";
+QString MediaSizeInfo::WIDTH_KEY = "w";
+QString MediaSizeInfo::RESIZE_KEY = "resize";
+
 MediaSizeInfo::MediaSizeInfo()
 {
 }
 
-MediaSizeInfo(QString name, int height, int width, QString resize) :
+MediaSizeInfo::MediaSizeInfo(QString name, double height, double width, QString resize) :
 	_name(name),
 	_height(height),
 	_width(width),
@@ -41,8 +45,23 @@ MediaSizeInfo(QString name, int height, int width, QString resize) :
 {
 }
 
-MediaSizeInfo::MediaSizeInfo(QJsonObject data)
+MediaSizeInfo::MediaSizeInfo(QString name, QJsonObject data):
+	_name(name)
 {
+	if (data.contains(MediaSizeInfo::HEIGHT_KEY))
+	{
+		_height = data[MediaSizeInfo::HEIGHT_KEY].toDouble();
+	}
+
+	if (data.contains(MediaSizeInfo::WIDTH_KEY))
+	{
+		_width = data[MediaSizeInfo::WIDTH_KEY].toDouble();	
+	}
+
+	if (data.contains(MediaSizeInfo::RESIZE_KEY))
+	{
+		_resize = data[MediaSizeInfo::RESIZE_KEY].toString();
+	}
 
 }
 
@@ -69,34 +88,100 @@ MediaSizeInfo::~MediaSizeInfo()
 
 }
 
-QDBusArgument &operator<<(QDBusArgument &argument, const MediaSize& media)
+QDBusArgument &operator<<(QDBusArgument &argument, const MediaSizeInfo& mediaSizeInfo)
 {
+    argument.beginStructure();
+    argument << mediaSizeInfo._name;
+    argument << mediaSizeInfo._height;
+    argument << mediaSizeInfo._width;
+    argument << mediaSizeInfo._resize;
+    argument.endStructure();
 
+    return argument;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &argument, MediaSize& media)
+const QDBusArgument &operator>>(const QDBusArgument &argument, MediaSizeInfo& mediaSizeInfo)
 {
+    argument.beginStructure();
+    argument >> mediaSizeInfo._name;
+    argument >> mediaSizeInfo._height;
+    argument >> mediaSizeInfo._width;
+    argument >> mediaSizeInfo._resize;
+    argument.endStructure();
 
+    return argument;
 }
 
-QString MediaSizeInfo::getName()
+QString MediaSizeInfo::getName() const
 {
 	return _name;
 }
 
-int MediaSizeInfo::getHeight()
+double MediaSizeInfo::getHeight() const
 {
 	return _height;
 }
 
-int MediaSizeInfo::getWidth()
+double MediaSizeInfo::getWidth() const
 {
 	return _width;
 }
 
-QString MediaSizeInfo::getResize()
+QString MediaSizeInfo::getResize() const
 {
 	return _resize;
+}
+
+MediaSize::MediaSize()
+{
+
+}
+
+MediaSize::MediaSize(QJsonObject data)
+{
+	foreach(QString size, data.keys())
+	{
+		_sizes.append(MediaSizeInfo(size, data[size].toObject()));
+	}
+}
+
+MediaSize::MediaSize(const MediaSize& other) :
+	_sizes(other._sizes)
+{
+}
+
+MediaSize& MediaSize::operator=(const MediaSize& other)
+{
+	_sizes = other._sizes;
+	return *this;
+}
+
+MediaSize::~MediaSize()
+{
+
+}
+
+QDBusArgument &operator<<(QDBusArgument &argument, const MediaSize& mediaSize)
+{
+    argument.beginStructure();
+    argument << mediaSize._sizes;
+    argument.endStructure();
+
+    return argument;
+}
+
+const QDBusArgument &operator>>(const QDBusArgument &argument, MediaSize& mediaSize)
+{
+    argument.beginStructure();
+	argument >> mediaSize._sizes;
+    argument.endStructure();
+
+    return argument;
+}
+
+QList<MediaSizeInfo> MediaSize::getSizes() const
+{
+	return _sizes;
 }
 
 } // twitter

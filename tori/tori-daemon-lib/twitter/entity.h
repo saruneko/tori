@@ -27,7 +27,10 @@
 #include <QList>
 #include <QDBusArgument>
 #include <QJsonObject>
-#include <media.h>
+#include "collapsed_url.h"
+#include "media.h"
+#include "mention.h"
+#include "collapsed_url.h"
 
 namespace tori
 {
@@ -35,9 +38,6 @@ namespace tori
 namespace twitter
 {
 
-class Media;
-class Mention;
-class CollapsedUrl;
 class Entity
 {
 	Q_PROPERTY(QList<QString> hashtags READ getHashtags)
@@ -46,6 +46,7 @@ class Entity
 	Q_PROPERTY(QList<Mention> mentions READ getMentions)
 
 public:
+	Entity();
 	Entity(QList<QString> hashtags, Media media, QList<CollapsedUrl> urls, QList<Mention> mentions);
 	Entity(QJsonObject data);
     Entity(const Entity& other);
@@ -55,10 +56,10 @@ public:
     friend QDBusArgument &operator<<(QDBusArgument &argument, const Entity& entity);
     friend const QDBusArgument &operator>>(const QDBusArgument &argument, Entity& entity);
 
-	QList<QString> getHashtags();
-	Media getMedia();
-	QList<CollapsedUrl> getUrls();
-	QList<Mention> getMentions();
+	QList<QString> getHashtags() const;
+	Media getMedia() const;
+	QList<CollapsedUrl> getUrls() const;
+	QList<Mention> getMentions() const;
 
 private:
 	static QString HASHTAGS_KEY;
@@ -77,4 +78,5 @@ private:
 
 } // tori
 
+Q_DECLARE_METATYPE(tori::twitter::Entity)
 #endif

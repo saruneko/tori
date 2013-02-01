@@ -26,6 +26,7 @@
 #include <QString>
 #include <QDBusArgument>
 #include <QJsonObject>
+#include "media_size.h"
 
 namespace tori
 {
@@ -33,7 +34,6 @@ namespace tori
 namespace twitter
 {
 
-class MediaSize;
 class Media
 {
 	Q_PROPERTY(QString displayUrl READ getDisplayUrl)
@@ -58,17 +58,17 @@ public:
     friend QDBusArgument &operator<<(QDBusArgument &argument, const Media& media);
     friend const QDBusArgument &operator>>(const QDBusArgument &argument, Media& media);
 
-	QString getDisplayUrl();
-	QString getExpandedUrl();
-	qlonglong getId();
-	QString getIdString();
-	QString getMediaUrl();
-	QString getMediaHttpsUrl();
-	MediaSize getSizes();
-	qlonglong getSourceStatusId();
-	QString getSourceStatusIdString();
-	QString getType();
-	QString getUrl();
+	QString getDisplayUrl() const;
+	QString getExpandedUrl() const;
+	qlonglong getId() const;
+	QString getIdString() const;
+	QString getMediaUrl() const;
+	QString getMediaHttpsUrl() const;
+	MediaSize getSizes() const;
+	qlonglong getSourceStatusId() const;
+	QString getSourceStatusIdString() const;
+	QString getType() const;
+	QString getUrl() const;
 
 private:
     static QString DISPLAY_URL_KEY;
@@ -100,4 +100,5 @@ private:
 
 } // tori
 
+Q_DECLARE_METATYPE(tori::twitter::Media)
 #endif

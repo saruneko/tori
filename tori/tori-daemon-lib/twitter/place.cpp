@@ -21,12 +21,13 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+#include <QJsonArray>
 #include "place.h"
 
 namespace tori
 {
 
-namespace twiiter
+namespace twitter
 {
 
 QString Place::ATTRIBUTES_KEY = "attributes";
@@ -39,7 +40,11 @@ QString Place::NAME_KEY = "name";
 QString Place::PLACE_TYPE_KEY= "place_type";
 QString Place::URL_KEY = "url";
 
-Place::Place(const QJsonObject* jsonObject)
+Place::Place()
+{
+}
+
+Place::Place(const QJsonObject& jsonObject)
 {
 	if (jsonObject.contains(Place::ATTRIBUTES_KEY))
 	{
@@ -52,7 +57,7 @@ Place::Place(const QJsonObject* jsonObject)
 	}
 	if (jsonObject.contains(Place::BOUNDING_BOX_KEY))
 	{
-		QJsonObject data = jsonObject[Place::BOUNDING_BOX_KEY].toObject();
+		QJsonArray data = jsonObject[Place::BOUNDING_BOX_KEY].toArray();
 		_boundingBox = BoundingBox(data);
 	}
 	if (jsonObject.contains(Place::COUNTRY_KEY))
@@ -171,42 +176,42 @@ QVariantMap Place::getAttributes() const
 	return _attrs;
 }
 
-BoundingBox getBoundingBox() const
+BoundingBox Place::getBoundingBox() const
 {
 	return _boundingBox;
 }
 
-QString getCountry() const
+QString Place::getCountry() const
 {
 	return _country;
 }
 
-QString getCountryCode() const
+QString Place::getCountryCode() const
 {
 	return _countryCode;
 }
 
-QString getFullName() const
+QString Place::getFullName() const
 {
 	return _fullName;
 }
 
-QString getId() const
+QString Place::getId() const
 {
 	return _id;
 }
 
-QString getName() const
+QString Place::getName() const
 {
 	return _name;
 }
 
-QString getPlaceType() const
+QString Place::getPlaceType() const
 {
 	return _placeType;
 }
 
-QString getUrl() const
+QString Place::getUrl() const
 {
 	return _url;
 }
