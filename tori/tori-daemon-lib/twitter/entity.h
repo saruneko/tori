@@ -62,11 +62,11 @@ public:
 	QList<Mention> getMentions() const;
 
 private:
-	static QString HASHTAGS_KEY;
-	static QString HASHTAG_TEXT_KEY;
-	static QString MEDIA_KEY;
-	static QString URLS_KEY;
-	static QString MENTIONS_KEY;
+	static const QString& HASHTAGS_KEY;
+	static const QString& HASHTAG_TEXT_KEY;
+	static const QString& MEDIA_KEY;
+	static const QString& URLS_KEY;
+	static const QString& MENTIONS_KEY;
 
 	QList<QString> _hashtags;
 	Media _media;

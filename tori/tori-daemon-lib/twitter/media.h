@@ -71,17 +71,17 @@ public:
 	QString getUrl() const;
 
 private:
-    static QString DISPLAY_URL_KEY;
-    static QString EXPANDED_URL_KEY;
-    static QString ID_KEY;
-    static QString ID_STRING_KEY;
-    static QString MEDIA_URL_KEY;
-    static QString MEDIA_HTTS_URL_KEY;
-    static QString SIZE_KEY;
-    static QString SOURCES_STATUS_ID_KEY;
-    static QString SOURCES_STATUS_ID_STRING_KEY;
-    static QString TYPE_KEY;
-    static QString URL_KEY;
+    static const QString& DISPLAY_URL_KEY;
+    static const QString& EXPANDED_URL_KEY;
+    static const QString& ID_KEY;
+    static const QString& ID_STRING_KEY;
+    static const QString& MEDIA_URL_KEY;
+    static const QString& MEDIA_HTTS_URL_KEY;
+    static const QString& SIZE_KEY;
+    static const QString& SOURCES_STATUS_ID_KEY;
+    static const QString& SOURCES_STATUS_ID_STRING_KEY;
+    static const QString& TYPE_KEY;
+    static const QString& URL_KEY;
 
 	QString _displayUrl;
 	QString _expandedUrl;

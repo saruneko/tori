@@ -29,9 +29,9 @@ namespace tori
 namespace twitter
 {
 
-QString MediaSizeInfo::HEIGHT_KEY = "h";
-QString MediaSizeInfo::WIDTH_KEY = "w";
-QString MediaSizeInfo::RESIZE_KEY = "resize";
+const QString& MediaSizeInfo::HEIGHT_KEY = "h";
+const QString& MediaSizeInfo::WIDTH_KEY = "w";
+const QString& MediaSizeInfo::RESIZE_KEY = "resize";
 
 MediaSizeInfo::MediaSizeInfo()
 {

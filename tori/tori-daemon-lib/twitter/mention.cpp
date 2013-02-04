@@ -28,9 +28,9 @@ namespace tori
 namespace twitter
 {
 
-QString Mention::ID_STRING_KEY = "id_str";
-QString Mention::NAME_KEY = "name";
-QString Mention::SCREEN_NAME_KEY = "screen_name";
+const QString& Mention::ID_STRING_KEY = "id_str";
+const QString& Mention::NAME_KEY = "name";
+const QString& Mention::SCREEN_NAME_KEY = "screen_name";
 
 Mention::Mention()
 {

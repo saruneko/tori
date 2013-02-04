@@ -30,15 +30,15 @@ namespace tori
 namespace twitter
 {
 
-QString Place::ATTRIBUTES_KEY = "attributes";
-QString Place::BOUNDING_BOX_KEY = "bounding_box ";
-QString Place::COUNTRY_KEY = "country";
-QString Place::COUNTRY_CODE_KEY = "country_code ";
-QString Place::FULL_NAME_KEY = "full_name";
-QString Place::ID_KEY = "id";
-QString Place::NAME_KEY = "name";
-QString Place::PLACE_TYPE_KEY= "place_type";
-QString Place::URL_KEY = "url";
+const QString& Place::ATTRIBUTES_KEY = "attributes";
+const QString& Place::BOUNDING_BOX_KEY = "bounding_box ";
+const QString& Place::COUNTRY_KEY = "country";
+const QString& Place::COUNTRY_CODE_KEY = "country_code ";
+const QString& Place::FULL_NAME_KEY = "full_name";
+const QString& Place::ID_KEY = "id";
+const QString& Place::NAME_KEY = "name";
+const QString& Place::PLACE_TYPE_KEY= "place_type";
+const QString& Place::URL_KEY = "url";
 
 Place::Place()
 {

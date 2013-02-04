@@ -53,9 +53,9 @@ public:
     QString getUrl() const; 
 
 private:
-	static QString DISPLAY_URL_KEY;
-	static QString EXPANDED_URL_KEY;
-	static QString URL_KEY;
+	static const QString& DISPLAY_URL_KEY;
+	static const QString& EXPANDED_URL_KEY;
+	static const QString& URL_KEY;
 
 	QString _displayUrl;
 	QString _expandedUrl;

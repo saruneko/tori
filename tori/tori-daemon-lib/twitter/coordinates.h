@@ -56,8 +56,8 @@ public:
     QString getType() const;
 
 private:
-    static QString COORDINATES_KEY;
-    static QString TYPE_KEY;
+    static const QString& COORDINATES_KEY;
+    static const QString& TYPE_KEY;
 
 	qlonglong _longitude;
 	qlonglong _latitude;

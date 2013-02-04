@@ -58,9 +58,9 @@ public:
     QString getResize() const;
 
 private:
-	static QString HEIGHT_KEY;
-	static QString WIDTH_KEY;
-	static QString RESIZE_KEY;
+	static const QString& HEIGHT_KEY;
+	static const QString& WIDTH_KEY;
+	static const QString& RESIZE_KEY;
 	
 	QString _name;
 	double _height;

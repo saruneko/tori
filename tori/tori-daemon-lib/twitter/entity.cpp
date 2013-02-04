@@ -30,11 +30,11 @@ namespace tori
 namespace twitter
 {
 
-QString Entity::HASHTAGS_KEY = "hashtags";
-QString Entity::HASHTAG_TEXT_KEY = "text";
-QString Entity::MEDIA_KEY = "media";
-QString Entity::URLS_KEY = "urls";
-QString Entity::MENTIONS_KEY = "user_mentions";
+const QString& Entity::HASHTAGS_KEY = "hashtags";
+const QString& Entity::HASHTAG_TEXT_KEY = "text";
+const QString& Entity::MEDIA_KEY = "media";
+const QString& Entity::URLS_KEY = "urls";
+const QString& Entity::MENTIONS_KEY = "user_mentions";
 
 Entity::Entity()
 {

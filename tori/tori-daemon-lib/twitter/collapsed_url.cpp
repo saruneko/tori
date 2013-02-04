@@ -28,9 +28,9 @@ namespace tori
 namespace twitter
 {
 
-QString CollapsedUrl::DISPLAY_URL_KEY = "display_url";
-QString CollapsedUrl::EXPANDED_URL_KEY = "expanded_url";
-QString CollapsedUrl::URL_KEY = "url";
+const QString& CollapsedUrl::DISPLAY_URL_KEY = "display_url";
+const QString& CollapsedUrl::EXPANDED_URL_KEY = "expanded_url";
+const QString& CollapsedUrl::URL_KEY = "url";
 
 CollapsedUrl::CollapsedUrl()
 {

@@ -55,9 +55,9 @@ public:
     QString getScreenName() const;
 
 private:
-	static QString ID_STRING_KEY;
-	static QString NAME_KEY;
-	static QString SCREEN_NAME_KEY;
+	static const QString& ID_STRING_KEY;
+	static const QString& NAME_KEY;
+	static const QString& SCREEN_NAME_KEY;
 	
 	qlonglong _id;
 	QString _idString;

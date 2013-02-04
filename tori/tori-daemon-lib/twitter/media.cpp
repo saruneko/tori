@@ -29,17 +29,17 @@ namespace tori
 namespace twitter
 {
 
-QString Media::DISPLAY_URL_KEY = "display_url";
-QString Media::EXPANDED_URL_KEY = "expanded_url";
-QString Media::ID_KEY = "id";
-QString Media::ID_STRING_KEY = "id_str";
-QString Media::MEDIA_URL_KEY = "media_url";
-QString Media::MEDIA_HTTS_URL_KEY = "media_url_https";
-QString Media::SIZE_KEY = "sizes";
-QString Media::SOURCES_STATUS_ID_KEY = "source_status_id";
-QString Media::SOURCES_STATUS_ID_STRING_KEY = "source_status_id_str";
-QString Media::TYPE_KEY = "type";
-QString Media::URL_KEY = "url";
+const QString& Media::DISPLAY_URL_KEY = "display_url";
+const QString& Media::EXPANDED_URL_KEY = "expanded_url";
+const QString& Media::ID_KEY = "id";
+const QString& Media::ID_STRING_KEY = "id_str";
+const QString& Media::MEDIA_URL_KEY = "media_url";
+const QString& Media::MEDIA_HTTS_URL_KEY = "media_url_https";
+const QString& Media::SIZE_KEY = "sizes";
+const QString& Media::SOURCES_STATUS_ID_KEY = "source_status_id";
+const QString& Media::SOURCES_STATUS_ID_STRING_KEY = "source_status_id_str";
+const QString& Media::TYPE_KEY = "type";
+const QString& Media::URL_KEY = "url";
 
 Media::Media()
 {

@@ -31,8 +31,8 @@ namespace tori
 namespace twitter
 {
 
-QString Coordinates::COORDINATES_KEY = "coordinates";
-QString Coordinates::TYPE_KEY = "type";
+const QString& Coordinates::COORDINATES_KEY = "coordinates";
+const QString& Coordinates::TYPE_KEY = "type";
 
 Coordinates::Coordinates()
 {

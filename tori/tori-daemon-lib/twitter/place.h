@@ -71,15 +71,15 @@ public:
     QString getUrl() const;
 
 private:
-	static QString ATTRIBUTES_KEY;
-	static QString BOUNDING_BOX_KEY;
-	static QString COUNTRY_KEY;
-	static QString COUNTRY_CODE_KEY;
-	static QString FULL_NAME_KEY;
-	static QString ID_KEY;
-	static QString NAME_KEY;
-	static QString PLACE_TYPE_KEY;
-	static QString URL_KEY;
+	static const QString& ATTRIBUTES_KEY;
+	static const QString& BOUNDING_BOX_KEY;
+	static const QString& COUNTRY_KEY;
+	static const QString& COUNTRY_CODE_KEY;
+	static const QString& FULL_NAME_KEY;
+	static const QString& ID_KEY;
+	static const QString& NAME_KEY;
+	static const QString& PLACE_TYPE_KEY;
+	static const QString& URL_KEY;
 
 	QVariantMap _attrs;
 	BoundingBox _boundingBox;

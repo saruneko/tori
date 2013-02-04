@@ -54,7 +54,9 @@ SOURCES += \
     twitter/mention.cpp \
     twitter/oauth_signal_mapper.cpp \
     twitter/place.cpp \
-    twitter/status_api.cpp 
+    twitter/status_api.cpp \
+    twitter/tweet.cpp \
+    twitter/user.cpp
 
 HEADERS +=\
     tori-daemon-lib_global.h \
@@ -87,7 +89,9 @@ HEADERS +=\
     twitter/oauth_signal_mapper.h \
     twitter/oauth_utils.h \
     twitter/place.h \
-    twitter/status_api.h 
+    twitter/status_api.h \ 
+    twitter/tweet.h \
+    twitter/user.h
 
 OTHER_FILES += \
     org.freedesktop.secret.session.xml \

@@ -29,409 +29,319 @@ namespace tori
 namespace twitter
 {
 
-QString User::CONTRIBUTORS_ENABLED_KEY = "contributors_enabled"; 
-QString User::CREATION_DATE_KEY = "created_at";
-QString User::DESCRIPTION_KEY = "description";
-QString User::ENTITIES_KEY = "entities";
-QString User::FAVOURITES_COUNT_KEY = "favourites_count";
-QString User::FOLLOW_REQUEST_SENT_KEY = "follow_request_sent";
-QString User::FOLLOWING_KEY = "following";
-QString User::FOLLOWERS_COUNT_KEY = "followers_count";
-QString User::FRIEND_COUNT_KEY = "friends_count"
-QString User::GEO_ENABLED_KEY = "geo_enabled";
-QString User::ID_KEY = "id";
-QString User::ID_STRING_KEY = "id_str";
-QString User::IS_TRANSLATOR_KEY = "is_translator";
-QString User::LANGUAGE_KEY = "lang";
-QString User::LISTED_COUNT_KEY = "listed_count";
-QString User::LOCATION_KEY = "location";
-QString User::NAME_KEY = "name";
-QString User::PROTECTED_TWEETS_KEY = "protected";
-QString User::SCREEN_NAME_KEY = "screen_name";
-QString User::PROFILE_IMAGE_KEY = "profile_image_url";
-QString User::LAST_TWEET_KEY = "status";
-QString User::TWEET_COUNT_KEY = "statuses_count";
-QString User::TIME_ZONE_KEY = "time_zone";
-QString User::URL_KEY = "url";
-QString User::UTC_OFFSET_KEY = "utc_offset";
-QString User::VERIFIED_KEY = "verified";
+const QString& Tweet::CONTRIBUTORS_KEY = "contributors";
+const QString& Tweet::COORDINATES_KEY = "coordinates";
+const QString& Tweet::CREATION_DATE_KEY = "created_at";
+const QString& Tweet::RETWEET_KEY = "current_user_retweet";
+const QString& Tweet::ENTITIES_KEY = "entities";
+const QString& Tweet::FAVOURITED_KEY = "favorited";
+const QString& Tweet::ID_STRING_KEY = "id_str";
+const QString& Tweet::IN_REPLY_TO_SCREEN_NAME_KEY = "in_reply_to_screen_name";
+const QString& Tweet::IN_REPLY_TO_TWEET_KEY = "in_reply_to_status_id_str";
+const QString& Tweet::IN_REPLY_TO_USER_ID_KEY = "in_reply_to_user_id_str";
+const QString& Tweet::PLACE_KEY = "place";
+const QString& Tweet::POSSIBLY_SENSITIVE_KEY = "possibly_sensitive";
+const QString& Tweet::SCOPES_KEY = "scopes";
+const QString& Tweet::RETWEET_COUNT_KEY = "retweet_count";
+const QString& Tweet::RETWEETED_KEY = "retweeted";
+const QString& Tweet::SOURCE_KEY = "source";
+const QString& Tweet::TEXT_KEY = "text";
+const QString& Tweet::TRUNCATED_KEY = "truncated";
+const QString& Tweet::USER_KEY = "user";
 
-User::User()
+Tweet::Tweet()
 {
 }
 
-User::User(const QJsonObject& data)
+Tweet::Tweet(QJsonObject data)
 {
-	if (data.contains(User::CONTRIBUTORS_ENABLED_KEY))
+	if (data.contains(Tweet::CONTRIBUTORS_KEY) && !data[Tweet::CONTRIBUTORS_KEY].isNull())
 	{
-		_contributorsEnabled = data[User::CONTRIBUTORS_ENABLED_KEY].toBool();
+		QJsonArray contributorsJson = data[Tweet::CONTRIBUTORS_KEY].toArray();
+		for (int i = 0; i < contributorsJson.count(); ++i)
+		{
+			_contributors.append(Contributor(contributorsJson[i].toObject()));
+		}
 	}
-	if (data.contains(User::CREATION_DATE_KEY))
+	if (data.contains(Tweet::COORDINATES_KEY) && !data[Tweet::COORDINATES_KEY].isNull())
 	{
-		_creationDate = QDateTime::fromString(data[User::CREATION_DATE_KEY].toString(), "ddd MMM dd HH:mm:ss zzzz yyyy");
+		_coordinates = Coordinates(data[Tweet::COORDINATES_KEY].toObject());
 	}
-	if (data.contains(User::DESCRIPTION_KEY))
+	if (data.contains(Tweet::CREATION_DATE_KEY))
 	{
-		_description = data[User::DESCRIPTION_KEY].toString();
+		_creationDate = QDateTime::fromString(data[Tweet::CREATION_DATE_KEY].toString(), "ddd MMM dd HH:mm:ss zzzz yyyy");
 	}
-	if (data.contains(User::ENTITIES_KEY))
+	if (data.contains(Tweet::RETWEET_KEY))
 	{
-		_entity = Entity(data[User::ENTITIES_KEY].toObject());
+		QJsonObject retweetData = data[Tweet::RETWEET_KEY].toObject();
+		_retweet = retweetData[Tweet::ID_STRING_KEY].toString().toLongLong();
 	}
-	if (data.contains(User::FAVOURITES_COUNT_KEY))
+	if (data.contains(Tweet::ENTITIES_KEY))
 	{
-		_favouritesCount = static_cast<int>(data[User::FAVOURITES_COUNT_KEY].toDouble());
+		_entities = Entity(data[Tweet::ENTITIES_KEY].toObject());
 	}
-	if (data.contains(User::FOLLOW_REQUEST_SENT_KEY))
+	if (data.contains(Tweet::FAVOURITED_KEY))
 	{
-		_followRequestSent = data[User::FOLLOW_REQUEST_SENT_KEY].toBool();
+		_favourited = data[Tweet::FAVOURITED_KEY].toBool();
 	}
-	if (data.contains(User::FOLLOWING_KEY))
+	if (data.contains(Tweet::ID_STRING_KEY))
 	{
-		_following = data[User::FOLLOWING_KEY].toBool();
+		_id = data[Tweet::ID_STRING_KEY].toString().toLongLong();
 	}
-	if (data.contains(User::FOLLOWERS_COUNT_KEY))
+	if (data.contains(Tweet::IN_REPLY_TO_SCREEN_NAME_KEY) && !data[Tweet::IN_REPLY_TO_SCREEN_NAME_KEY].isNull())
 	{
-		_followersCount = static_cast<int>(data[User::FOLLOWERS_COUNT_KEY].toDouble());
+		_inReplyToScreeName = data[Tweet::IN_REPLY_TO_SCREEN_NAME_KEY].toString();
 	}
-	if (data.contains(User::FRIEND_COUNT_KEY))
+	if (data.contains(Tweet::IN_REPLY_TO_TWEET_KEY) && !data[Tweet::IN_REPLY_TO_TWEET_KEY].isNull())
 	{
-		_friendsCount = static_cast<int>(data[User::FRIEND_COUNT_KEY].toDouble()); 
+		_inReplyToTweet = data[Tweet::IN_REPLY_TO_TWEET_KEY].toString().toLongLong();
 	}
-	if (data.contains(User::GEO_ENABLED_KEY))
+	if (data.contains(Tweet::IN_REPLY_TO_USER_ID_KEY) && !data[Tweet::IN_REPLY_TO_USER_ID_KEY].isNull())
 	{
-		_geoEnabled = data[User::GEO_ENABLED_KEY].toBool();
+		_inReplyToUserId = data[Tweet::IN_REPLY_TO_USER_ID_KEY].toString().toLongLong();
 	}
-	
-	if (data.contains(User::ID_STRING_KEY))
+	if (data.contains(Tweet::PLACE_KEY) && !data[Tweet::PLACE_KEY].isNull())
 	{
-		_idString = data[User::ID_STRING_KEY].toString();
-		_id = _idString.toLongLong();	
+		_place = Place(data[Tweet::PLACE_KEY].toObject());
 	}
-	if (data.contains(User::IS_TRANSLATOR_KEY))
+	if (data.contains(Tweet::POSSIBLY_SENSITIVE_KEY) && !data[Tweet::POSSIBLY_SENSITIVE_KEY].isNull())
 	{
-		_isTranslator = data[User::IS_TRANSLATOR_KEY].toBool();
+		_possiblySensitive = data[Tweet::POSSIBLY_SENSITIVE_KEY].toBool();
 	}
-	if (data.contains(User::LANGUAGE_KEY))
+	if (data.contains(Tweet::SCOPES_KEY))
 	{
-		_language = data[User::LANGUAGE_KEY].toString();
+		QJsonObject scopesData = data[Tweet::SCOPES_KEY].toObject();
+		foreach (QString key, scopesData.keys())
+		{
+			_scopes[key] = scopesData.value(key);
+		}
 	}
-	if (data.contains(User::LISTED_COUNT_KEY))
+	if (data.contains(Tweet::RETWEET_COUNT_KEY))
 	{
-		_listedCount = static_cast<int>(data[User::LISTED_COUNT_KEY].toDouble());	
+		_retweetCount = static_cast<int>(data[Tweet::RETWEET_COUNT_KEY].toDouble());
 	}
-	if (data.contains(User::LOCATION_KEY))
+	if (data.contains(Tweet::RETWEETED_KEY))
 	{
-		_location = data[User::LOCATION_KEY].toString();
+		_retweeted = data[Tweet::RETWEETED_KEY].toBool();
 	}
-	if (data.contains(User::NAME_KEY))
+	if (data.contains(Tweet::SOURCE_KEY))
 	{
-		_name = data[User::NAME_KEY].toString();
+		_source = data[Tweet::SOURCE_KEY].toString();
 	}
-	if (data.contains(User::PROTECTED_TWEETS_KEY))
+	if (data.contains(Tweet::TEXT_KEY))
 	{
-		_protectedTweets = data[User::PROTECTED_TWEETS_KEY].toBool();
+		_text = data[Tweet::TEXT_KEY].toString();
 	}
-	if (data.contains(User::SCREEN_NAME_KEY))
+	if (data.contains(Tweet::TRUNCATED_KEY))
 	{
-		_screenName = data[User::SCREEN_NAME_KEY].toString();
+		_truncated = data[Tweet::TRUNCATED_KEY].toBool();
 	}
-	if (data.contains(User::PROFILE_IMAGE_KEY))
+	if (data.contains(Tweet::USER_KEY))
 	{
-		_profileImage = data[User::PROFILE_IMAGE_KEY].toString();
-	}
-	if (data.contains(User::LAST_TWEET_KEY))
-	{
-		_lastTweet = Tweet(data[User::LAST_TWEET_KEY].toObject());
-	}
-	if (data.contains(User::TWEET_COUNT_KEY))
-	{
-		_tweetCount = static_cast<int>(data[User::TWEET_COUNT_KEY].toDouble());
-	}
-	if (data.contains(User::TIME_ZONE_KEY))
-	{
-		_timeZone = data[User::TIME_ZONE_KEY].toString();
-	}
-	if (data.contains(User::URL_KEY))
-	{
-		_url = data[User::URL_KEY].toString();
-	}
-	if (data.contains(User::UTC_OFFSET_KEY))
-	{
-		_utcOffset = static_cast<int>(data[User::UTC_OFFSET_KEY].toDouble());
-	}
-	if (data.contains(User::VERIFIED_KEY))
-	{
-		_verified = data[User::VERIFIED_KEY].toBool();
+		_user = User(data[Tweet::USER_KEY].toObject());
 	}
 
 }
 
-User::User(const User& other) :
-	_contributorsEnabled(other._contributorsEnabled),
-    _creationDate(other._creationDate),
-    _description(other._description),
-    _entity(other._entity),
-    _favouritesCount(other._favouritesCount),
-    _followRequestSent(other._followRequestSent),
-    _following(other._following),
-    _followersCount(other._followersCount),
-    _friendsCount(other._friendsCount),
-    _geoEnabled(other._geoEnabled),
-    _id(other._id),
-    _idString(other._idString),
-    _isTranslator(other._isTranslator),
-    _language(other._language),
-    _listedCount(other._listedCount),
-    _location(other._location),
-    _name(other._name),
-    _protectedTweets(other._protectedTweets),
-    _screenName(other._screenName),
-    _profileImage(other._profileImage),
-    _lastTweet(other._lastTweet),
-    _tweetCount(other._tweetCount),
-    _timeZone(other._timeZone),
-    _url(other._url),
-    _utcOffset(other._utcOffset),
-    _verified(other._verified)
+Tweet::Tweet(const Tweet& other) :
+	_contributors(other._contributors),
+	_coordinates(other._coordinates),
+	_creationDate(other._creationDate),
+	_retweet(other._retweet),
+	_entities(other._entities),
+	_favourited(other._favourited),
+	_id(other._id),
+	_inReplyToScreeName(other._inReplyToScreeName),
+	_inReplyToTweet(other._inReplyToTweet),
+	_inReplyToUserId(other._inReplyToUserId),
+	_place(other._place),
+	_possiblySensitive(other._possiblySensitive),
+	_scopes(other._scopes),
+	_retweetCount(other._retweetCount),
+	_retweeted(other._retweeted),
+	_source(other._source),
+	_text(other._text),
+	_truncated(other._truncated),
+	_user(other._user)
 {
-
 }
 
-User& User::operator=(const User& other)
+Tweet& Tweet::operator=(const Tweet& other)
 {
-	_contributorsEnabled = other._contributorsEnabled;
-    _creationDate = other._creationDate;
-    _description = other._description;
-    _entity = other._entity;
-    _favouritesCount = other._favouritesCount;
-    _followRequestSent = other._followRequestSent;
-    _following = other._following;
-    _followersCount = other._followersCount;
-    _friendsCount = other._friendsCount;
-    _geoEnabled = other._geoEnabled;
-    _id = other._id;
-    _idString = other._idString;
-    _isTranslator = other._isTranslator;
-    _language = other._language;
-    _listedCount = other._listedCount;
-    _location = other._location;
-    _name = other._name;
-    _protectedTweets = other._protectedTweets;
-    _screenName = other._screenName;
-    _profileImage = other._profileImage;
-    _lastTweet = other._lastTweet;
-    _tweetCount = other._tweetCount;
-    _timeZone = other._timeZone;
-    _url = other._url;
-    _utcOffset = other._utcOffset;
-    _verified = other._verified;
+	_contributors = other._contributors;
+	_coordinates = other._coordinates;
+	_creationDate = other._creationDate;
+	_retweet = other._retweet;
+	_entities = other._entities;
+	_favourited = other._favourited;
+	_id = other._id;
+	_inReplyToScreeName = other._inReplyToScreeName;
+	_inReplyToTweet = other._inReplyToTweet;
+	_inReplyToUserId = other._inReplyToUserId;
+	_place = other._place;
+	_possiblySensitive = other._possiblySensitive;
+	_scopes = other._scopes;
+	_retweetCount = other._retweetCount;
+	_retweeted = other._retweeted;
+	_source = other._source;
+	_text = other._text;
+	_truncated = other._truncated;
+	_user = other._user;
 
 	return *this;
 }
 
-User::~User()
+Tweet::~Tweet()
 {
-
 }
 
-QDBusArgument &operator<<(QDBusArgument &argument, const User& user)
+QDBusArgument &operator<<(QDBusArgument &argument, const Tweet& tweet)
 {
 	argument.beginStructure();
-	argument << user._contributorsEnabled;
-    argument << user._creationDate;
-    argument << user._description;
-    argument << user._entity;
-    argument << user._favouritesCount;
-    argument << user._followRequestSent;
-    argument << user._following;
-    argument << user._followersCount;
-    argument << user._friendsCount;
-    argument << user._geoEnabled;
-    argument << user._id;
-    argument << user._idString;
-    argument << user._isTranslator;
-    argument << user._language;
-    argument << user._listedCount;
-    argument << user._location;
-    argument << user._name;
-    argument << user._protectedTweets;
-    argument << user._screenName;
-    argument << user._profileImage;
-    argument << user._lastTweet;
-    argument << user._tweetCount;
-    argument << user._timeZone;
-    argument << user._url;
-    argument << user._utcOffset;
-    argument << user._verified;
+	argument << tweet._contributors;
+	argument << tweet._creationDate;
+	argument << tweet._retweet;
+	argument << tweet._entities;
+	argument << tweet._favourited;
+	argument << tweet._id;
+	argument << tweet._inReplyToScreeName;
+	argument << tweet._inReplyToTweet;
+	argument << tweet._inReplyToUserId;
+	argument << tweet._place;
+	argument << tweet._possiblySensitive;
+	argument << tweet._scopes;
+	argument << tweet._retweetCount;
+	argument << tweet._retweeted;
+	argument << tweet._source;
+	argument << tweet._text;
+	argument << tweet._truncated;
+	argument << tweet._user;
     argument.endStructure();
 
     return argument;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &argument, User& user)
+const QDBusArgument &operator>>(const QDBusArgument &argument, Tweet& tweet)
 {
 	argument.beginStructure();
-	argument >> user._contributorsEnabled;
-    argument >> user._creationDate;
-    argument >> user._description;
-    argument >> user._entity;
-    argument >> user._favouritesCount;
-    argument >> user._followRequestSent;
-    argument >> user._following;
-    argument >> user._followersCount;
-    argument >> user._friendsCount;
-    argument >> user._geoEnabled;
-    argument >> user._id;
-    argument >> user._idString;
-    argument >> user._isTranslator;
-    argument >> user._language;
-    argument >> user._listedCount;
-    argument >> user._location;
-    argument >> user._name;
-    argument >> user._protectedTweets;
-    argument >> user._screenName;
-    argument >> user._profileImage;
-    argument >> user._lastTweet;
-    argument >> user._tweetCount;
-    argument >> user._timeZone;
-    argument >> user._url;
-    argument >> user._utcOffset;
-    argument >> user._verified;
+	argument >> tweet._contributors;
+	argument >> tweet._creationDate;
+	argument >> tweet._retweet;
+	argument >> tweet._entities;
+	argument >> tweet._favourited;
+	argument >> tweet._id;
+	argument >> tweet._inReplyToScreeName;
+	argument >> tweet._inReplyToTweet;
+	argument >> tweet._inReplyToUserId;
+	argument >> tweet._place;
+	argument >> tweet._possiblySensitive;
+	argument >> tweet._scopes;
+	argument >> tweet._retweetCount;
+	argument >> tweet._retweeted;
+	argument >> tweet._source;
+	argument >> tweet._text;
+	argument >> tweet._truncated;
+	argument >> tweet._user;
     argument.endStructure();
 
     return argument;
 }
 
-bool User::contributorsEnabled() const
+QList<Contributor> Tweet::getContributors() const
 {
-	return _contributorsEnabled;
+	return _contributors;
 }
 
-QDateTime User::creationDate() const
+Coordinates Tweet::getCoordinates() const
+{
+	return _coordinates;
+}
+
+QDateTime Tweet::getCreationDate() const
 {
 	return _creationDate;
 }
 
-QString User::description() const
+qlonglong Tweet::getRetweet() const
 {
-	return _description;
+	return _retweet;
 }
 
-Entity User::entities() const
+Entity Tweet::getEntities() const
 {
 	return _entities;
 }
 
-int User::favouritesCount() const
+bool Tweet::getFavourited() const
 {
-	return _favouritesCount;
+	return _favourited;
 }
 
-bool User::followRequestSent() const
-{
-	return _followRequestSent;
-}
-
-bool User::following() const
-{
-	return _following;
-}
-
-int User::followersCount() const
-{
-	return _followersCount;
-}
-
-int User::_friendsCount() const
-{
-	return _friendsCount;
-}
-
-bool User::geoEnabled() const
-{
-	return _geoEnabled;
-}
-
-qlonglong User::id() const
+qlonglong Tweet::getId() const
 {
 	return _id;
 }
 
-QString User::idString() const
+QString Tweet::getInReplyToScreenName() const
 {
-	return _idString;
+	return _inReplyToScreeName;
 }
 
-bool User::isTranslator() const
+qlonglong Tweet::getInReplyToTweet() const
 {
-	return _isTranslator;
+	return _inReplyToTweet;
 }
 
-QString User::language() const
+qlonglong Tweet::getInReplyToUserId() const
 {
-	return _language;
+	return _inReplyToUserId;
 }
 
-int User::listedCount() const
+Place Tweet::getPlace() const
 {
-	return _listedCount;
+	return _place;
 }
 
-QString User::location() const
+bool Tweet::getPossiblySensitive() const
 {
-	return _location;
+	return _possiblySensitive;
 }
 
-QString User::name() const
+QVariantMap Tweet::getScopes() const
 {
-	return _name;
+	return _scopes;
 }
 
-bool User::protectedTweets() const
+int Tweet::getRetweetCount() const
 {
-	return _protectedTweets;
+	return _retweetCount;
 }
 
-QString User::screenName() const
+bool Tweet::getRetweeted() const
 {
-	return _screenName;
+	return _retweeted;
 }
 
-QString User::profileImage() const
+QString Tweet::getSource() const
 {
-	return _profileImage;
+	return _source;
 }
 
-Tweet User::lastTweet() const
+QString Tweet::getText() const
 {
-	return _lastTweet;
+	return _text;
 }
 
-int User::tweetCount() const
+bool Tweet::getTruncated() const
 {
-	return _tweetCount;
+	return _truncated;
 }
 
-QString User::timeZone() const
+User Tweet::getUser() const
 {
-	return _timeZone;
+	return _user;
 }
 
-QString User::url() const
-{
-	return _url;
-}
-
-int User::utcOffset() const
-{
-	return _utcOffset;
-}
-
-bool User::verified() const
-{
-	return _verified;
-}
 
 } // twitter
 

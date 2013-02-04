@@ -30,8 +30,8 @@ namespace tori
 namespace twitter
 {
 
-QString Contributor::ID_STRING_KEY = "id_str";
-QString Contributor::SCREEN_NAME_KEY = "screen_name";
+const QString& Contributor::ID_STRING_KEY = "id_str";
+const QString& Contributor::SCREEN_NAME_KEY = "screen_name";
 
 
 Contributor::Contributor()
