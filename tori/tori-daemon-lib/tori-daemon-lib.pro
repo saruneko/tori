@@ -27,6 +27,10 @@ unix:!symbian {
 }
 
 SOURCES += \
+    client/account_client.cpp \
+    client/account_manager_client.cpp \
+    client/account_manager_proxy.cpp \
+    client/account_proxy.cpp \
     core/account_manager.cpp \
     core/account_manager_adaptor.cpp \
     core/account.cpp \
@@ -60,6 +64,10 @@ SOURCES += \
 
 HEADERS +=\
     tori-daemon-lib_global.h \
+    client/account_client.h \
+    client/account_manager_client.h \
+    client/account_manager_proxy.h \
+    client/account_proxy.h \
     core/account_manager.h \
     core/account_manager_adaptor.h \
     core/account.h \
