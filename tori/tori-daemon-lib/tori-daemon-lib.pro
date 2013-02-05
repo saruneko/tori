@@ -27,6 +27,10 @@ unix:!symbian {
 }
 
 SOURCES += \
+    client/account_client.cpp \
+    client/account_manager_client.cpp \
+    client/account_manager_proxy.cpp \
+    client/account_proxy.cpp \
     core/account_manager.cpp \
     core/account_manager_adaptor.cpp \
     core/account.cpp \
@@ -43,16 +47,27 @@ SOURCES += \
     keyring/interface_factory.cpp \
     keyring/keyring_signal_mapper.cpp \
     keyring/keyring.cpp \
-    tori_daemon.cpp \
+    tori_daemon.cpp \ 
+    twitter/bounding_box.cpp \
+    twitter/contributor.cpp \
+    twitter/coordinates.cpp \
+    twitter/collapsed_url.cpp \
+    twitter/entity.cpp \
+    twitter/media_size.cpp \
+    twitter/media.cpp \
+    twitter/mention.cpp \
     twitter/oauth_signal_mapper.cpp \
+    twitter/place.cpp \
     twitter/status_api.cpp \
-    client/account_client.cpp \
-    client/account_manager_client.cpp \
-    client/account_manager_proxy.cpp \
-    client/account_proxy.cpp
+    twitter/tweet.cpp \
+    twitter/user.cpp
 
 HEADERS +=\
     tori-daemon-lib_global.h \
+    client/account_client.h \
+    client/account_manager_client.h \
+    client/account_manager_proxy.h \
+    client/account_proxy.h \
     core/account_manager.h \
     core/account_manager_adaptor.h \
     core/account.h \
@@ -71,13 +86,20 @@ HEADERS +=\
     keyring/keyring_signal_mapper.h \
     keyring/keyring.h \
     tori_daemon.h \
+    twitter/bounding_box.h \
+    twitter/contributor.h \
+    twitter/coordinates.h \
+    twitter/collapsed_url.h \
+    twitter/entity.h \
+    twitter/media_size.h \
+    twitter/media.h \
+    twitter/mention.h \
     twitter/oauth_signal_mapper.h \
-    twitter/status_api.h \
     twitter/oauth_utils.h \
-    client/account_client.h \
-    client/account_manager_client.h \
-    client/account_manager_proxy.h \
-    client/account_proxy.h
+    twitter/place.h \
+    twitter/status_api.h \ 
+    twitter/tweet.h \
+    twitter/user.h
 
 OTHER_FILES += \
     org.freedesktop.secret.session.xml \
